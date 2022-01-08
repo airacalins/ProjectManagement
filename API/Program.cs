@@ -88,7 +88,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors(opt => {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration.GetValue<string>("AppUrl"));
+    opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
 });
 app.Run();
 
