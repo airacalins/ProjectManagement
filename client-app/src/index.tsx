@@ -1,12 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './app/layout/App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+import 'react-toastify/dist/ReactToastify.css';
+import { Provider } from 'react-redux';
+import { store } from './app/store/configureStore';
+
+import { createBrowserHistory } from "history";
+import CustomRouter from './app/layout/CustomRouter';
+export const history = createBrowserHistory();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CustomRouter history={history}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </CustomRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
