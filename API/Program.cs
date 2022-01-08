@@ -12,7 +12,35 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<PropertyManagmentContext>(opt => { opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")); });
+builder.Services.AddDbContext<PropertyManagmentContext>(opt =>
+{
+    var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+    string connectionString = "";
+
+    if (env == "Development")
+    {
+        connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    }
+    else
+    {
+        var conUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+        conUrl = conUrl!.Replace("postgres://", string.Empty);
+        var pgUserPass = conUrl.Split("@")[0];
+        var pgHostPortDb = conUrl.Split("@")[1];
+        var pgHostPort = pgHostPortDb.Split("/")[0];
+        var pgDb = pgHostPortDb.Split("/")[1];
+        var pgUser = pgUserPass.Split(":")[0];
+        var pgPass = pgUserPass.Split(":")[1];
+        var pgHost = pgHostPort.Split(":")[0];
+        var pgPort = pgHostPort.Split(":")[1];
+
+        connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};SSL Mode=Require;Trust Server Certificate=true";
+    }
+
+    opt.UseNpgsql(connectionString);
+});
+
 builder.Services.AddIdentityCore<User>(opt =>
 {
     opt.User.RequireUniqueEmail = true;
