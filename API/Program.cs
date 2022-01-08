@@ -111,13 +111,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
 app.UseCors(opt => {
     opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
 });
+
+app.UseEndpoints(opt => {
+    opt.MapControllers();
+    opt.MapFallbackToController("Index", "Fallback");
+});
+
 app.Run();
 
 async Task SeedData(WebApplication webApplication) {
