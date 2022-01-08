@@ -13,15 +13,23 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { toast } from 'react-toastify';
 import { history } from '../..';
+import { useAppSelecter } from '../../app/store/configureStore';
 
 interface Props {
 
 }
 
 const Register: React.FC<Props> = ({ }) => {
+  const {user} = useAppSelecter(state => state.account);
   const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid } } = useForm({
     mode: 'all'
   });
+  
+  React.useEffect(() => {
+    if (!!user) {
+      history.push('/');
+    }
+  }, [user])
 
   const handleApiErrors = (erros: any) => {
     if (errors) {
