@@ -19,7 +19,6 @@ export const signInUserAsync = createAsyncThunk<IUser, FieldValues>(
     try {
       const user = await agent.Account.login(data);
       localStorage.setItem('user', JSON.stringify(user));
-      history.push('/');
       return user;
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})

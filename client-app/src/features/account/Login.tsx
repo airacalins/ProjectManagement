@@ -17,8 +17,9 @@ import { useState } from 'react';
 import agent from '../../app/api/agent';
 import { FieldValues, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
-import { useAppDispatch } from '../../app/store/configureStore';
+import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import { signInUserAsync } from './accountSlice';
+import { history } from "../..";
 
 interface Props {
 
@@ -26,6 +27,7 @@ interface Props {
 
 const Login: React.FC<Props> = ({ }) => {
   const navigate = useNavigate();
+  const {user} = useAppSelecter(state => state.account);
   const dispatch = useAppDispatch();
 
   const { register, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({
@@ -35,6 +37,12 @@ const Login: React.FC<Props> = ({ }) => {
   const submitForm = async (data: FieldValues) => {
     await dispatch(signInUserAsync(data));
   }
+
+  React.useEffect(() => {
+    if (!!user) {
+      history.push('/');
+    }
+  }, [user])
 
   return (
     <Container component={Paper} maxWidth="sm" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 4 }}>

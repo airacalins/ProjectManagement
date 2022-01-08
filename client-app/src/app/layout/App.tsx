@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { fetchCurrentUserAsync } from '../../features/account/accountSlice';
 import LoadingComponent from './LoadingComponent';
 import PrivateRoute from './PrivateRoute';
+import Dashboard from '../../features/dashboard/Dashboard';
 
 function App() {
 
@@ -47,7 +48,7 @@ function App() {
       <Header />
       <Container>
         <Routes>
-          <Route path='/' element={<PrivateRoute><Tenants /></PrivateRoute>} />
+          <Route path='/' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path='/server-error' element={<ServerError />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
