@@ -13,8 +13,8 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class TenantsController: ControllerBase
     {
-    private readonly PropertyManagmentContext _context;
-        public TenantsController(PropertyManagmentContext context)
+    private readonly PropertyManagementContext _context;
+        public TenantsController(PropertyManagementContext context)
         {
             _context = context;
         }
