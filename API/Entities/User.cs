@@ -8,7 +8,7 @@ namespace API.Entities
 {
     public class User : IdentityUser
     {
-        public Guid PhotoId { get; set; }
-        public Photo Photo { get; set; }
+        public Guid? PhotoId { get; set; }
+        public Photo? Photo { get; set; }
     }
 }
