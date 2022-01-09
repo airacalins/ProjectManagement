@@ -9,13 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-  public class PropertyManagmentContext : IdentityDbContext<User>
+  public class PropertyManagementContext : IdentityDbContext<User>
   {
-    public PropertyManagmentContext(DbContextOptions options) : base(options)
+    public PropertyManagementContext(DbContextOptions options) : base(options)
     {
     }
 
     public DbSet<Tenant> Tenants { get; set; }
+    public DbSet<Photo> Photos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

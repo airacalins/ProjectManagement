@@ -1,5 +1,6 @@
 using System.Text;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Middleware;
 using API.Services;
@@ -12,7 +13,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<PropertyManagmentContext>(opt =>
+builder.Services.AddDbContext<PropertyManagementContext>(opt =>
 {
     var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -44,7 +45,7 @@ builder.Services.AddDbContext<PropertyManagmentContext>(opt =>
 builder.Services.AddIdentityCore<User>(opt =>
 {
     opt.User.RequireUniqueEmail = true;
-}).AddRoles<IdentityRole>().AddEntityFrameworkStores<PropertyManagmentContext>();
+}).AddRoles<IdentityRole>().AddEntityFrameworkStores<PropertyManagementContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(opt => 
 {
@@ -94,7 +95,12 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 
+builder.Services.Configure<CloudinarySettingsDto>
+    (builder.Configuration.GetSection("Cloudinary"));
+    
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<PhotoAccessorService>();
+builder.Services.AddScoped<PhotoService>();
 
 var app = builder.Build();
 
@@ -131,7 +137,7 @@ app.Run();
 
 async Task SeedData(WebApplication webApplication) {
     using var scope = webApplication.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<PropertyManagmentContext>();
+    var context = scope.ServiceProvider.GetRequiredService<PropertyManagementContext>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     try

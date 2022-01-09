@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.Migrations
 {
-    [DbContext(typeof(PropertyManagmentContext))]
-    partial class PropertyManagmentContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PropertyManagementContext))]
+    partial class PropertyManagementContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,25 @@ namespace API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("API.Entities.Photo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photos");
+                });
 
             modelBuilder.Entity("API.Entities.Tenant", b =>
                 {
@@ -94,6 +113,9 @@ namespace API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid>("PhotoId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -112,6 +134,8 @@ namespace API.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -144,15 +168,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f40cd2aa-cec1-4c11-86fd-906fc791f921",
-                            ConcurrencyStamp = "9037edb5-95c5-4cbd-b7bb-a67b39b28743",
+                            Id = "359aa43e-eba4-409c-b8ba-12f32f256095",
+                            ConcurrencyStamp = "3a607d39-9d03-4ee7-9ec1-76bf78e01dd4",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "4f8831e3-4624-4a33-858f-24a429d5d0b1",
-                            ConcurrencyStamp = "62627e70-25d3-46df-ae78-a6eca8af76f6",
+                            Id = "8549faaf-3c88-40e3-b04a-0ff2ed3d63e1",
+                            ConcurrencyStamp = "f1642175-f018-47a7-a92a-776822ccd3f6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -262,6 +286,17 @@ namespace API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("API.Entities.User", b =>
+                {
+                    b.HasOne("API.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

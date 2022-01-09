@@ -9,7 +9,7 @@ namespace API.Data
 {
     public static class DbInitializer
     {
-        public static async Task Initialize(PropertyManagmentContext context, UserManager<User> userManager)
+        public static async Task Initialize(PropertyManagementContext context, UserManager<User> userManager)
         {
             if (!userManager.Users.Any())
             {
