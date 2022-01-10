@@ -13,7 +13,7 @@ namespace API.Services
       _context = context;
 
     }
-    public async Task<string> UploadUserPhoto(IFormFile file, Guid userId)
+    public async Task<string> UploadUserPhoto(IFormFile file, string userId)
     {
         var photoResult = await _photoAccessorService.AddPhoto(file);
         var photo = new Photo { Url = photoResult.Url, PublicId = photoResult.PublicId };

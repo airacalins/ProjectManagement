@@ -51,7 +51,7 @@ namespace API.Data
                     LastName = "Eloise",
                     Phone = "09123456789",
                     Email = "ayaheloise@sample.com",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.UtcNow
                 },
                 new Tenant
                 {
@@ -59,7 +59,7 @@ namespace API.Data
                     LastName = "Gals",
                     Phone = "09123456789",
                     Email = "airagals@sample.com",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.UtcNow
                 },
                 new Tenant
                 {
@@ -67,7 +67,7 @@ namespace API.Data
                     LastName = "Calin",
                     Phone = "09123456789",
                     Email = "lexcalin@sample.com",
-                    DateCreated = DateTimeOffset.Now
+                    DateCreated = DateTimeOffset.UtcNow
                 },
             };
 

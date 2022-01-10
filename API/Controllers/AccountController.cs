@@ -17,11 +17,13 @@ namespace API.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly TokenService _tokenService;
+        private readonly PhotoService _photoService;
 
-        public AccountController(UserManager<User> userManager, TokenService tokenService)
+    public AccountController(UserManager<User> userManager, TokenService tokenService, PhotoService photoService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _photoService = photoService;
         }
 
         [HttpPost("login")]
@@ -69,6 +71,14 @@ namespace API.Controllers
                 Email = user.Email,
                 Token = await _tokenService.GenerateToken(user)
             };
+        }
+
+        [Authorize]
+        [HttpPost("setPhoto")]
+        public async Task<ActionResult<string>> SetPhoto(IFormFile file)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            return await _photoService.UploadUserPhoto(file, user.Id);
         }
     }
 }
