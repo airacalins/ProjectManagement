@@ -1,0 +1,45 @@
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Grid, Header, Label, Segment } from "semantic-ui-react";
+import ContainerPage from "../../app/layouts/components/container/ContainerPage";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import { useStore } from "../../app/stores/store";
+
+const Map = () => {
+
+    const { slotStore } = useStore();
+    const { initialLoading, loadSlots, availableSlots: slots } = slotStore;
+
+    useEffect(() => {
+        loadSlots()
+    }, [loadSlots])
+
+    if (initialLoading) return (<LoadingComponent content="Loading available slots..." />)
+
+    return (
+        <ContainerPage>
+            <Segment padded="very" textAlign="left">
+                <Header as="h1" content="Slot Locator" />
+                <img src="/maximarket-map.png" alt="" style={{ width: "100%" }} />
+            </Segment>
+
+            <Segment padded="very" style={{ marginTop: "50px" }} textAlign="left">
+                <Header as="h1" content="Available Slots" />
+                <Grid columns="12" stretched style={{ marginTop: "25px" }}>
+                    {
+                        slots.map(s =>
+                            <Grid.Column>
+                                <Label as={Link} to={`tenants/${s.id}/create`} content={s.slotNumber} size="large" color="teal" />
+                            </Grid.Column>
+                        )
+                    }
+                </Grid>
+
+            </Segment>
+
+        </ContainerPage >
+    )
+}
+
+export default observer(Map);

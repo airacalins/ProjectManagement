@@ -25,11 +25,10 @@ const Dashboard: React.FC<Props> = ({ }) => {
 
       <Grid container>
 
-        <IconMenu title="Slot" description='27 available slots' icon={<StorefrontIcon color="disabled" sx={{ fontSize: 60 }} />} />
-        <IconMenu title="Tenant" description='3 tenants' icon={<PeopleAltOutlinedIcon color="disabled" sx={{ fontSize: 60 }} />} />
-        <IconMenu title="Payment" description='1 new payment' icon={<AttachMoneyOutlinedIcon color="disabled" sx={{ fontSize: 60 }} />} />
-        <IconMenu title="Late Payment" description='1 late payment' icon={<CloseOutlinedIcon color="disabled" sx={{ fontSize: 60 }} />} />
-
+        <Item><IconMenu title="Slot" description='27 available slots' icon={<StorefrontIcon color="disabled" sx={{ fontSize: 60 }} />} /></Item>
+        <Item><IconMenu title="Tenant" description='3 tenants' icon={<PeopleAltOutlinedIcon color="disabled" sx={{ fontSize: 60 }} />} /></Item>
+        <Item><IconMenu title="Payment" description='1 new payment' icon={<AttachMoneyOutlinedIcon color="disabled" sx={{ fontSize: 60 }} />} /></Item>
+        <Item><IconMenu title="Late Payment" description='1 late payment' icon={<CloseOutlinedIcon color="disabled" sx={{ fontSize: 60 }} />} /></Item>
       </Grid>
 
     </>

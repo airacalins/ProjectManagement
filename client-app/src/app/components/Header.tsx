@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelecter } from '../store/configureStore';
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import SignedInMenu from './SignedInMenu';
+import SignedInMenu from '../layout/SignedInMenu';
 
 interface Props {
 

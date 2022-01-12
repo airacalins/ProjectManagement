@@ -10,13 +10,13 @@ import { ToastContainer } from 'react-toastify';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Dashboard from '../../features/dashboard/Dashboard';
-import Header from './Header';
 import LoadingComponent from './LoadingComponent';
 import Login from '../../features/account/Login';
 import NotFound from '../errors/NotFound';
 import Register from '../../features/account/Register';
 import ServerError from '../errors/ServerError';
-import colors from '../styles/colors';
+import SideMenu from '../components/SideMenu';
+import Header from '../components/Header';
 
 function App() {
 
@@ -51,6 +51,8 @@ function App() {
       <ToastContainer />
 
       <CssBaseline />
+
+      <SideMenu />
 
       <Header />
 

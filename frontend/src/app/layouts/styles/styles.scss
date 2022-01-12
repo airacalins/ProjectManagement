@@ -1,0 +1,62 @@
+@import './variables.scss';
+
+.ui {
+  .navbar {
+    &.navbar__bg--primary {
+      background-color: $charcoal !important;
+      color: white;
+    }
+  }
+
+  &.margin {
+    &.margin__m--0 {
+      margin: 0;
+    }
+    &.margin__mt--1 {
+      margin-top: 1em;
+    }
+    &.margin__mt--2 {
+      margin-top: 2em;
+    }
+    &.margin__mt--3 {
+      margin-top: 3em;
+    }
+    &.margin__mt--4 {
+      margin-top: 4em;
+    }
+    &.margin__mt--5 {
+      margin-top: 5em;
+    }
+    &.margin__mb--1 {
+      margin-bottom: 1em;
+    }
+    &.margin__mb--2 {
+      margin-bottom: 2em;
+    }
+    &.margin__mb--3 {
+      margin-bottom: 3em;
+    }
+    &.margin__mb--4 {
+      margin-bottom: 4em;
+    }
+    &.margin__mb--5 {
+      margin-bottom: 5em;
+    }
+  }
+
+  .padding {
+    &.padding__px--1 {
+      padding-left: 1em;
+      padding-right: 1em;
+    }
+
+    &.padding__pr--1 {
+      padding-right: 1em;
+    }
+
+    &.padding__px--5 {
+      padding-top: 5em;
+      padding-bottom: 5em;
+    }
+  }
+}
