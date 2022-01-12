@@ -1,24 +1,29 @@
-import { Container, CssBaseline } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
-import Tenants from '../../features/tenants/Tenants';
-import Header from './Header';
-import ServerError from '../errors/ServerError';
-import NotFound from '../errors/NotFound';
-import Login from '../../features/account/Login';
-import Register from '../../features/account/Register';
-import { ToastContainer } from 'react-toastify';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAppDispatch } from '../store/configureStore';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchCurrentUserAsync } from '../../features/account/accountSlice';
-import LoadingComponent from './LoadingComponent';
+
+import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+
+import { Container, CssBaseline } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import Dashboard from '../../features/dashboard/Dashboard';
+import Header from './Header';
+import LoadingComponent from './LoadingComponent';
+import Login from '../../features/account/Login';
+import NotFound from '../errors/NotFound';
+import Register from '../../features/account/Register';
+import ServerError from '../errors/ServerError';
+import colors from '../styles/colors';
 
 function App() {
 
   const [loading, setLoading] = useState(true);
+
   const dispatch = useAppDispatch();
+
   const theme = createTheme({
     palette: {
       mode: 'light'
@@ -44,8 +49,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer />
+
       <CssBaseline />
+
       <Header />
+
       <Container>
         <Routes>
           <Route path='/' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
@@ -55,6 +63,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Container>
+
     </ThemeProvider>
   );
 }
