@@ -41,38 +41,84 @@ namespace API.Data
                 await userManager.AddToRoleAsync(user2, "User");
             }
 
-            if (context.Tenants.Any()) return;
-
-            var tenants = new List<Tenant>
+            if (!context.Tenants.Any())
             {
-                new Tenant
+                var tenants = new List<Tenant>
                 {
-                    FirstName = "Ayah",
-                    LastName = "Eloise",
-                    Phone = "09123456789",
-                    Email = "ayaheloise@sample.com",
-                    DateCreated = DateTimeOffset.UtcNow
-                },
-                new Tenant
-                {
-                    FirstName = "Aira",
-                    LastName = "Gals",
-                    Phone = "09123456789",
-                    Email = "airagals@sample.com",
-                    DateCreated = DateTimeOffset.UtcNow
-                },
-                new Tenant
-                {
-                    FirstName = "Lex",
-                    LastName = "Calin",
-                    Phone = "09123456789",
-                    Email = "lexcalin@sample.com",
-                    DateCreated = DateTimeOffset.UtcNow
-                },
-            };
+                    new Tenant
+                    {
+                        FirstName = "Ayah",
+                        LastName = "Eloise",
+                        Phone = "09123456789",
+                        Email = "ayaheloise@sample.com",
+                        DateCreated = DateTimeOffset.UtcNow
+                    },
+                    new Tenant
+                    {
+                        FirstName = "Aira",
+                        LastName = "Gals",
+                        Phone = "09123456789",
+                        Email = "airagals@sample.com",
+                        DateCreated = DateTimeOffset.UtcNow
+                    },
+                    new Tenant
+                    {
+                        FirstName = "Lex",
+                        LastName = "Calin",
+                        Phone = "09123456789",
+                        Email = "lexcalin@sample.com",
+                        DateCreated = DateTimeOffset.UtcNow
+                    },
+                };
 
-            context.Tenants.AddRange(tenants);
-            context.SaveChanges();
+                context.Tenants.AddRange(tenants);
+                context.SaveChanges();
+            }
+
+            if (!context.Announcements.Any())
+            {
+                var announcements = new List<Announcement>
+                {
+                    new Announcement
+                    {
+                        Title = "Test Announcement",
+                        Message = "This is to test the announcement",
+                        DateCreated = DateTimeOffset.UtcNow,
+                        IsArchived = false
+                    },
+                    new Announcement
+                    {
+                        Title = "Second Announcement",
+                        Message = "This is another test announcement",
+                        DateCreated = DateTimeOffset.UtcNow.AddSeconds(10),
+                        IsArchived = false
+                    },
+                    new Announcement
+                    {
+                        Title = "Third Announcement",
+                        Message = "This is the third test announcement",
+                        DateCreated = DateTimeOffset.UtcNow.AddSeconds(20),
+                        IsArchived = false
+                    },
+                    new Announcement
+                    {
+                        Title = "Fourth Announcement",
+                        Message = "This is the fourth test announcement",
+                        DateCreated = DateTimeOffset.UtcNow.AddSeconds(30),
+                        IsArchived = false
+                    },
+                    new Announcement
+                    {
+                        Title = "Fifth Announcement",
+                        Message = "This is the fifth test announcement",
+                        DateCreated = DateTimeOffset.UtcNow.AddSeconds(40),
+                        IsArchived = false
+                    }
+                };
+
+                context.Announcements.AddRange(announcements);
+                context.SaveChanges();
+            }
         }
     }
 }

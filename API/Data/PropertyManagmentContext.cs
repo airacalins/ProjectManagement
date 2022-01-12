@@ -24,6 +24,7 @@ namespace API.Data
     public DbSet<Unit> Units { get; set; }
     public DbSet<UnitPrice> UnitPrices { get; set; }
     public DbSet<UnitPhoto> UnitPhotos { get; set; }
+    public DbSet<Announcement> Announcements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
