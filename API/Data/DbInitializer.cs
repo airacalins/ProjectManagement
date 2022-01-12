@@ -119,6 +119,34 @@ namespace API.Data
                 context.Announcements.AddRange(announcements);
                 context.SaveChanges();
             }
+
+            if (!context.ModeOfPayments.Any())
+            {
+                var modeOfPayments = new List<ModeOfPayment>
+                {
+                    new ModeOfPayment
+                    {
+                        BankName = "BDO",
+                        AccountName = "Maximo Galutera",
+                        AccountNumber = "00191928280"
+                    },                    
+                    new ModeOfPayment
+                    {
+                        BankName = "GCASH",
+                        AccountName = "Maximo Galutera",
+                        AccountNumber = "00191928280"
+                    },                    
+                    new ModeOfPayment
+                    {
+                        BankName = "UNIONBANK",
+                        AccountName = "Maximo Galutera",
+                        AccountNumber = "00191928280"
+                    }
+                };
+
+                context.ModeOfPayments.AddRange(modeOfPayments);
+                context.SaveChanges();
+            }
         }
     }
 }

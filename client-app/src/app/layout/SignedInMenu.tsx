@@ -24,7 +24,7 @@ const SignedInMenu = () => {
   return (
     <>
       <Button onClick={handleClick} color='inherit' sx={{ typography: 'h6' }}>
-        {user?.email}
+        {user?.username}
       </Button>
 
       <Menu

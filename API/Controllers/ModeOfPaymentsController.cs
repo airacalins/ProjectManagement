@@ -11,19 +11,19 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AnnouncementsController : ControllerBase
+    public class ModeOfPaymentsController : ControllerBase
     {
         private readonly PropertyManagementContext _context;
-        public AnnouncementsController(PropertyManagementContext context)
+        public ModeOfPaymentsController(PropertyManagementContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Announcement>>> GetAnnouncements()
+        public async Task<ActionResult<List<ModeOfPayment>>> GetModeOfPayments()
         {
-            var announcements = await _context.Announcements.OrderByDescending(i => i.DateCreated).Take(10).ToListAsync();
-            return Ok(announcements);
+            var modeOfPayments = await _context.ModeOfPayments.ToListAsync();
+            return Ok(modeOfPayments);
         }
         
     }

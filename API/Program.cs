@@ -19,13 +19,27 @@ builder.Services.AddDbContext<PropertyManagementContext>(opt =>
 
     string connectionString = "";
 
-    if (env == "Development")
-    {
-        connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    }
-    else
-    {
-        var conUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    // if (env == "Development")
+    // {
+    //     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    // }
+    // else
+    // {
+    //     var conUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    //     conUrl = conUrl!.Replace("postgres://", string.Empty);
+    //     var pgUserPass = conUrl.Split("@")[0];
+    //     var pgHostPortDb = conUrl.Split("@")[1];
+    //     var pgHostPort = pgHostPortDb.Split("/")[0];
+    //     var pgDb = pgHostPortDb.Split("/")[1];
+    //     var pgUser = pgUserPass.Split(":")[0];
+    //     var pgPass = pgUserPass.Split(":")[1];
+    //     var pgHost = pgHostPort.Split(":")[0];
+    //     var pgPort = pgHostPort.Split(":")[1];
+
+    //     connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};SSL Mode=Require;Trust Server Certificate=true";
+    // }
+
+        var conUrl = "postgres://omkvwsofzdvbhh:7c5c1cb0bfc0690196cd7aba21e63ab5571059d38ab6d23b86bb62957100663d@ec2-44-193-150-214.compute-1.amazonaws.com:5432/d52q2bsm0qgqdg";
         conUrl = conUrl!.Replace("postgres://", string.Empty);
         var pgUserPass = conUrl.Split("@")[0];
         var pgHostPortDb = conUrl.Split("@")[1];
@@ -37,14 +51,12 @@ builder.Services.AddDbContext<PropertyManagementContext>(opt =>
         var pgPort = pgHostPort.Split(":")[1];
 
         connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};SSL Mode=Require;Trust Server Certificate=true";
-    }
-
     opt.UseNpgsql(connectionString);
 });
 
 builder.Services.AddIdentityCore<User>(opt =>
 {
-    opt.User.RequireUniqueEmail = true;
+    opt.User.RequireUniqueEmail = false;
 }).AddRoles<IdentityRole>().AddEntityFrameworkStores<PropertyManagementContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(opt => 
