@@ -75,6 +75,18 @@ namespace API.Data
                 context.SaveChanges();
             }
 
+            if (!context.Units.Any())
+            {
+                var units = new List<Unit>();
+                for(var i = 1; i <= 50; i++)
+                {
+                    units.Add(new Unit { Name = $"Unit {i}", Code = $"UNT{i}" });
+                }
+
+                context.Units.AddRange(units);
+                context.SaveChanges();
+            }
+
             if (!context.Announcements.Any())
             {
                 var announcements = new List<Announcement>
