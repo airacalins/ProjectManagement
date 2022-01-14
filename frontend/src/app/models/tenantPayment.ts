@@ -1,5 +1,5 @@
-export interface TenantPayment {
-  id: number;
+export interface ITenantPayment {
+  id: string;
   billingDate: string;
   amount: number;
   tenantContractId: number;
@@ -8,10 +8,10 @@ export interface TenantPayment {
   referenceNumber: string;
 }
 
-export interface TenantPaymentFailed {
+export interface ITenantPaymentFailed {
   payentStatus: 'Declined';
 }
 
-export interface TenantPaymentSucceed {
+export interface ITenantPaymentSucceed {
   payentStatus: 'Success';
 }

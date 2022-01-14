@@ -1,22 +1,23 @@
-import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import ContainerPage from "../../app/layouts/components/container/ContainerPage";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import Tab from "../../app/layouts/components/tabs/Tab";
 import TabButton from "../../app/layouts/components/tabs/TabButton";
 import TabItem from "../../app/layouts/components/tabs/TabItem";
-import { useStore } from "../../app/stores/store";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchTenantsAsync } from "./tenantSlice";
 import TenantTable from "./TenantTable";
 
 const Tenant = () => {
-    const { tenantStore } = useStore();
-    const { initialLoading, loadTenants, tenants } = tenantStore
-
+    
+    const {tenants, isFetching: isFetchingTenants} = useAppSelecter(state => state.tenant);
+    const dispatch = useAppDispatch();
+  
     useEffect(() => {
-        loadTenants()
-    }, [loadTenants])
+      dispatch(fetchTenantsAsync());
+    }, [])
 
-    if (initialLoading) return <LoadingComponent content="Loading Tenants..." />
+    if (isFetchingTenants) return <LoadingComponent content="Loading Tenants..." />
 
     return (
         <ContainerPage
@@ -34,4 +35,4 @@ const Tenant = () => {
     );
 }
 
-export default observer(Tenant);
+export default Tenant;

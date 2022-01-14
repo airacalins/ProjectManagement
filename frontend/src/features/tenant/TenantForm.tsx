@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useStore } from "../../app/stores/store";
-import { observer } from "mobx-react-lite";
 import { Button } from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { Form, Formik } from "formik";
@@ -9,24 +7,43 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import FormContainer from "../../app/layouts/components/form/FormContainer";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchTenantDetailsAsync } from "./tenantSlice";
+import { fetchSlotsAsync } from "../slot/slotSlice";
 
-interface TenantInput {
-    id: number;
+interface ITenantInput {
+    id: string;
     fullName: string;
     companyName: string;
     address: string;
     contact: string;
-    slotId?: number;
+    slotId?: string;
 }
 
 const TenantForm = () => {
-    const { slotStore } = useStore();
-    const { loadSlots, loadSlot, slots } = slotStore;
-
-    const { tenantStore } = useStore();
-    const { loadTenant, initialLoading, selectedTenant } = tenantStore;
+    
     const { id, slotId: routeSlotId } = useParams<{ id: string, slotId: string }>();
-    const [tenant, setTenant] = useState<TenantInput>({ id: 0, fullName: "", companyName: "", address: "", contact: "", slotId: undefined })
+    const [tenant, setTenant] = useState<ITenantInput>({ id: "", fullName: "", companyName: "", address: "", contact: "", slotId: undefined })    
+    
+    const { tenant: tenantData, isFetchingDetails } = useAppSelecter(state => state.tenant);
+    const dispatch = useAppDispatch();
+    
+    const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
+
+    useEffect(() => {
+        dispatch(fetchSlotsAsync());
+    }, [])
+
+
+    useEffect(() => {
+       if(id) dispatch(fetchTenantDetailsAsync(id));
+    }, [id])
+    
+    useEffect(() => {
+        tenantData && setTenant(prev => { return {...prev, fullName: tenantData.fullName, companyName: tenantData.companyName, address: tenantData.address, contact: tenantData.phone,
+        slotId: !!tenantData.slotContract ? tenantData.slotContract.slot.id : routeSlotId }});
+     }, [tenantData])
+
 
     const validationSchema = Yup.object({
         fullName: Yup.string().required("Full Name is required."),
@@ -35,22 +52,7 @@ const TenantForm = () => {
         contact: Yup.string().required("Contact Number is required.")
     })
 
-    useEffect(() => {
-        if (!slots.length) loadSlots()
-    }, [slots.length, loadSlots])
-
-    useEffect(() => {
-        if (routeSlotId) {
-            loadSlot(+routeSlotId)
-            setTenant({ ...tenant, slotId: +routeSlotId })
-        }
-    }, [loadSlot, routeSlotId])
-
-    useEffect(() => {
-        if (id) loadTenant(+id).then(() => setTenant(selectedTenant!))
-    }, [id, loadTenant, selectedTenant])
-
-    if (initialLoading) return (<LoadingComponent content="Loading tenants..." />)
+    if (isFetchingDetails) return (<LoadingComponent content="Loading tenants..." />)
 
     return (
         <FormContainer
@@ -72,7 +74,7 @@ const TenantForm = () => {
 
                                 <div>
                                     <Button type="submit" content="Submit" color="orange" />
-                                    <Button type="button" as={Link} to={id ? `/tenants/${selectedTenant?.id}/details` : "/tenants"} content="Cancel" />
+                                    <Button type="button" as={Link} to={id ? `/tenants/${tenantData?.id}/details` : "/tenants"} content="Cancel" />
                                 </div>
                             </Form>
                         )
@@ -83,4 +85,4 @@ const TenantForm = () => {
     )
 }
 
-export default observer(TenantForm);
+export default TenantForm;

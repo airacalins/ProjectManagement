@@ -1,5 +1,5 @@
-export interface Announcement {
-  id: number;
+export interface IAnnouncement {
+  id: string;
   subject: string;
   message: string;
   dateCreated: string;

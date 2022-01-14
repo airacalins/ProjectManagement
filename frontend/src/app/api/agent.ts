@@ -1,90 +1,90 @@
-import axios, { AxiosResponse } from 'axios';
-import { TenantPayment } from '../models/tenantPayment';
-import { Slot } from '../models/slot';
-import { Tenant } from '../models/tenant';
-import { ModeOfPayment } from '../models/modeOfPayment';
-import { Announcement } from '../models/announcement';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
+import { store } from '../store/configureStore';
+import history from '../utils/history';
 
-const sleep = (delay: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-};
+//axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = 'https://fast-badlands-66183.herokuapp.com/api/';
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
+const responseBody = (response: AxiosResponse) => response.data;
 
-axios.interceptors.response.use(async (response) => {
-  try {
-    await sleep(1000);
-    return response;
-  } catch (error) {
-    console.log(error);
-    return Promise.reject(error);
-  }
+axios.interceptors.request.use((config) => {
+  const token = store.getState().account.user?.token;
+  if (token) config.headers!.Authorization = `Bearer ${token}`;
+  return config;
 });
 
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error: AxiosError) => {
+    const { data, status } = error.response!;
+    switch (status) {
+      case 400:
+        if (data.errors) {
+          const modelStateErrors: string[] = [];
+          for (const key in data.errors) {
+            if (data.errors[key]) {
+              modelStateErrors.push(data.errors[key]);
+            }
+          }
+          throw modelStateErrors.flat();
+        }
+        toast.error(data.title);
+        break;
+      case 401:
+        toast.error(data.title || 'Unauthorized');
+        break;
+      case 500:
+        history.push('/server-error');
+        break;
+      default:
+        break;
+    }
+    return Promise.reject(error.response);
+  }
+);
 
 const request = {
-  get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-  post: <T>(url: string, body: {}) =>
-    axios.post<T>(url, body).then(responseBody),
-  put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+  get: (url: string) => axios.get(url).then(responseBody),
+  post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
+  put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
+  delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
-const Slots = {
-  list: () => request.get<Slot[]>('/slots'),
-  details: (id: number) => request.get<Slot>(`slots/${id}`),
-  create: (slot: Slot) => axios.post('./slots', slot),
-  update: (slot: Slot) => axios.put(`slots/${slot.id}`, slot),
-  delete: (id: number) => axios.delete(`slots/${id}`),
+const Tenant = {
+  list: () => request.get('tenants'),
+  details: (id: string) => request.get(`tenants/${id}`),
 };
 
-const Tenants = {
-  list: () => request.get<Tenant[]>('/tenants'),
-  details: (id: number) => request.get<Tenant>(`tenants/${id}`),
-  create: (tenant: Tenant) => axios.post('./tenants', tenant),
-  update: (tenant: Tenant) => axios.put(`tenants/${tenant.id}`, tenant),
-  delete: (id: number) => axios.delete(`tenants/${id}`),
+const Announcement = {
+  list: () => request.get('announcements'),
+  details: (id: string) => request.get(`announcements/${id}`),
 };
 
-const TenantPayments = {
-  list: () => request.get<TenantPayment[]>('/tenantPayments'),
-  details: (id: number) => request.get<TenantPayment>(`tenantPayments/${id}`),
-  create: (tenantPayment: TenantPayment) =>
-    axios.post('./tenantPayments', tenantPayment),
-  update: (tenantPayment: TenantPayment) =>
-    axios.put(`tenantPayments/${tenantPayment.id}`, tenantPayment),
-  delete: (id: number) => axios.delete(`tenantPayments/${id}`),
+const Slot = {
+  list: () => request.get('slots'),
+  details: (id: string) => request.get(`slots/${id}`),
 };
 
-const ModeOfPayments = {
-  list: () => request.get<ModeOfPayment[]>('/modeOfPayments'),
-  details: (id: number) => request.get<ModeOfPayment>(`modeOfPayments/${id}`),
-  create: (modeOfPayment: ModeOfPayment) =>
-    axios.post('./modeOfPayments', modeOfPayment),
-  update: (modeOfPayment: ModeOfPayment) =>
-    axios.put(`modeOfPayments/${modeOfPayment.id}`, modeOfPayment),
-  delete: (id: number) => axios.delete(`modeOfPayments/${id}`),
+const Account = {
+  login: (values: any) => request.post('account/login', values),
+  register: (values: any) => request.post('account/register', values),
+  currentUser: () => request.get('account/currentUser'),
 };
 
-const Announcements = {
-  list: () => request.get<Announcement[]>('/announcements'),
-  details: (id: number) => request.get<Announcement>(`announcements/${id}`),
-  create: (announcement: Announcement) =>
-    axios.post('./announcements', announcement),
-  update: (announcement: Announcement) =>
-    axios.put(`announcements/${announcement.id}`, announcement),
-  delete: (id: number) => axios.delete(`announcement/${id}`),
+const ModeOfPayment = {
+  list: () => request.get('modeofpayments'),
+  details: (id: string) => request.get(`modeofpayments/${id}`)
 };
 
 const agent = {
-  Slots,
-  Tenants,
-  TenantPayments,
-  ModeOfPayments,
-  Announcements,
+  Tenant,
+  Account,
+  Slot,
+  Announcement,
+  ModeOfPayment
 };
 
 export default agent;

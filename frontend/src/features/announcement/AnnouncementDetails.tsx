@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import Details from "../../app/layouts/components/common/Details"
@@ -7,20 +6,21 @@ import DetailsInput from "../../app/layouts/components/common/DetailsInput"
 import ContainerDetails from "../../app/layouts/components/container/ContainerDetails"
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
 import { dateFormatter } from "../../app/layouts/formatter/common"
-import { useStore } from "../../app/stores/store"
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore"
+import { fetchAnnouncementDetailsAsync } from "./announcementSlice"
 
 const AnnouncementDetails = () => {
+    
+    const {announcement, isFetchingDetails} = useAppSelecter(state => state.announcement);
+    const dispatch = useAppDispatch();
 
-    const { announcementStore } = useStore()
-    const { initialLoading, announcements, loadAnnouncement, selectAnnouncement, selectedAnnouncement: announcement } = announcementStore;
     const { id } = useParams<{ id: string }>();
-
+  
     useEffect(() => {
-        if (!announcements) selectAnnouncement(+id)
-        if (!announcement) loadAnnouncement(+id)
-    }, [id, announcements, selectAnnouncement, announcement, loadAnnouncement])
+      dispatch(fetchAnnouncementDetailsAsync(id));
+    }, [])
 
-    if (initialLoading || !announcement) return (<LoadingComponent content="Loading announcement details..." />)
+    if (isFetchingDetails || !announcement) return (<LoadingComponent content="Loading announcement details..." />)
 
     return (
         <ContainerDetails goBackTo={"/announcements"} >
@@ -46,4 +46,4 @@ const AnnouncementDetails = () => {
     )
 }
 
-export default observer(AnnouncementDetails)
+export default AnnouncementDetails

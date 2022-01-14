@@ -1,10 +1,10 @@
-import { TenantContract } from './tenantContract';
+import { ITenantContract } from './tenantContract';
 
-export interface Slot {
-  id: number;
+export interface ISlot {
+  id: string;
   slotNumber: string;
   size: number;
   price: number;
   slotStatus: number;
-  tenantContract?: TenantContract;
+  tenantContract?: ITenantContract;
 }

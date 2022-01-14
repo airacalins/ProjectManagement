@@ -27,7 +27,7 @@ namespace API.Controllers
         }
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tenant>> GetTenant(int id)
+        public async Task<ActionResult<Tenant>> GetTenant(Guid id)
         {
             var tenant = await _context.Tenants.FindAsync(id);
             return Ok(tenant);

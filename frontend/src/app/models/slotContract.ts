@@ -1,8 +1,8 @@
-import { Slot } from './slot';
+import { ISlot } from './slot';
 
 export interface SlotContract {
-  id: number;
-  slot: Slot;
+  id: string;
+  slot: ISlot;
   contractPrice: number;
   deposit: number;
   advance: number;

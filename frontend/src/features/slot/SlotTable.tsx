@@ -1,13 +1,12 @@
-import { observer } from "mobx-react-lite";
 import { Table } from "semantic-ui-react";
 import TableBody from "../../app/layouts/components/table/TableBody";
 import TableComponent from "../../app/layouts/components/table/TableComponent";
 import TableHeader from "../../app/layouts/components/table/TableHeader";
 import { currencyFormatter } from "../../app/layouts/formatter/common";
-import { Slot } from "../../app/models/slot";
+import { ISlot } from "../../app/models/slot";
 
 interface Props {
-    slots: Slot[]
+    slots: ISlot[]
 }
 
 const SlotTable = ({ slots }: Props) => {
@@ -42,4 +41,4 @@ const SlotTable = ({ slots }: Props) => {
     );
 }
 
-export default observer(SlotTable);
+export default SlotTable;

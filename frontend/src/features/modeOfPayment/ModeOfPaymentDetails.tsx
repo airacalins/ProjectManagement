@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Details from "../../app/layouts/components/common/Details";
@@ -6,20 +5,21 @@ import DetailsAction from "../../app/layouts/components/common/DetailsAction";
 import DetailsInput from "../../app/layouts/components/common/DetailsInput";
 import ContainerDetails from "../../app/layouts/components/container/ContainerDetails";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import { useStore } from "../../app/stores/store";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 
 const ModeOfPaymentDetails = () => {
 
-    const { modeOfPaymentStore } = useStore()
-    const { initialLoading, modeOfPayments, loadModeOfPayment, selectModeOfPayment, selectedModeOfPayment: modeOfPayment } = modeOfPaymentStore
+    const {modeOfPayment, isFetchingDetails } = useAppSelecter(state => state.modeOfPayment);
+    const dispatch = useAppDispatch();
+
     const { id } = useParams<{ id: string }>();
-
+  
     useEffect(() => {
-        if (!modeOfPayments) selectModeOfPayment(+id)
-        if (!modeOfPayment) loadModeOfPayment(+id)
-    }, [id, modeOfPayments, selectModeOfPayment, modeOfPayment, loadModeOfPayment])
-
-    if (initialLoading || !modeOfPayment) return (<LoadingComponent content="Loading mode of payment details..." />)
+      dispatch(fetchModeOfPaymentDetailsAsync(id));
+    }, [])
+    
+    if (isFetchingDetails || !modeOfPayment) return (<LoadingComponent content="Loading mode of payment details..." />)
 
     return (
         <ContainerDetails>
@@ -45,4 +45,4 @@ const ModeOfPaymentDetails = () => {
     );
 }
 
-export default observer(ModeOfPaymentDetails);
+export default ModeOfPaymentDetails;

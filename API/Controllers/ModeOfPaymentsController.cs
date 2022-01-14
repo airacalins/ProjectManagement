@@ -25,6 +25,13 @@ namespace API.Controllers
             var modeOfPayments = await _context.ModeOfPayments.ToListAsync();
             return Ok(modeOfPayments);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ModeOfPayment>> GetModeOfPayment(Guid id)
+        {
+            var modeOfPayment = await _context.ModeOfPayments.FindAsync(id);
+            return Ok(modeOfPayment);
+        }
         
     }
 }

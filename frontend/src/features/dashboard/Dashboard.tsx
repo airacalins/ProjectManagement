@@ -1,7 +1,8 @@
-import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
-import { useStore } from "../../app/stores/store"
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore"
+import { fetchSlotsAsync } from "../slot/slotSlice"
+import { fetchTenantsAsync } from "../tenant/tenantSlice"
 import DashboardBodyItem from "./DashbboardBodyItem"
 import DashboardBody from "./DashboardBody"
 import DashboardHeader from "./DashboardHeader"
@@ -9,30 +10,22 @@ import DashboardHeaderCard from "./DashboardHeaderCard"
 
 const Dashboard = () => {
 
-    const { slotStore, tenantStore } = useStore();
-    const { initialLoading: initialLoadingSlot, availableSlots, loadSlots } = slotStore;
-    const { initialLoading: initialLoadingTenant, tenants, loadTenants } = tenantStore;
-
+    const {tenants, isFetching: isFetchingTenants} = useAppSelecter(state => state.tenant);
+    const {slots, isFetching: isFetchingSlots} = useAppSelecter(state => state.slot);
+    const dispatch = useAppDispatch();
+  
     useEffect(() => {
-        if (!availableSlots.length) loadSlots()
-    }, [availableSlots.length, loadSlots])
+      dispatch(fetchTenantsAsync());
+      dispatch(fetchSlotsAsync());
+    }, [])
 
-    useEffect(() => {
-        if (!tenants.length) loadTenants()
-    }, [tenants.length, loadTenants])
-
-    // useEffect(() => {
-    //     if (!availableSlots.length) loadSlots()
-    //     if (!tenants.length) loadTenants()
-    // }, [availableSlots.length, loadSlots, tenants.length, loadTenants])
-
-    if (initialLoadingSlot && initialLoadingTenant) return (<LoadingComponent content="Loading dashboard..." />)
+    if (isFetchingTenants || isFetchingSlots) return (<LoadingComponent content="Loading dashboard..." />)
 
 
     return (
         <>
             <DashboardHeader>
-                <DashboardHeaderCard title="Slot" subtitle={`${availableSlots.length} available slots`} icon="location arrow" iconColor="pink" />
+                <DashboardHeaderCard title="Slot" subtitle={`${slots.filter(s => !s.tenantContract).length} available slots`} icon="location arrow" iconColor="pink" />
                 <DashboardHeaderCard title="Tenant" subtitle={`${tenants.length} tenants`} icon="users" iconColor="green" />
                 <DashboardHeaderCard title="Payment" subtitle="1 new payment" icon="credit card" iconColor="olive" />
                 <DashboardHeaderCard title="Late Payment" subtitle="1 late payment" icon="times" iconColor="purple" />
@@ -47,4 +40,4 @@ const Dashboard = () => {
     )
 }
 
-export default observer(Dashboard)
+export default Dashboard

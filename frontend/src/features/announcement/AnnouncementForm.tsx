@@ -5,27 +5,34 @@ import { Form, FormTextArea, Button } from "semantic-ui-react";
 import FormContainer from "../../app/layouts/components/form/FormContainer";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import * as Yup from 'yup';
-import { Announcement } from "../../app/models/announcement";
-import { useStore } from "../../app/stores/store";
+import { IAnnouncement } from "../../app/models/announcement";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchAnnouncementDetailsAsync } from "./announcementSlice";
 
 const AnnouncementForm = () => {
+    
+    const {announcement: announcementData, isFetchingDetails} = useAppSelecter(state => state.announcement);
+    const dispatch = useAppDispatch();
 
-    const { announcementStore } = useStore();
-    const { loadAnnouncement, initialLoading, selectedAnnouncement } = announcementStore;
+    const [announcement, setAnnouncement] = useState<IAnnouncement>({ id: "", subject: "", message: "", dateCreated: "" })
+
     const { id } = useParams<{ id: string }>();
-    const [announcement, setAnnouncement] = useState<Announcement>({ id: 0, subject: "", message: "", dateCreated: "" })
+  
+    useEffect(() => {
+        if (id) dispatch(fetchAnnouncementDetailsAsync(id));
+    }, [id])
+    
+    useEffect(() => {
+        announcementData && setAnnouncement(announcementData);
+      }, [announcementData])
 
     const validationSchema = Yup.object({
         subject: Yup.string().required("Subject is required."),
         message: Yup.number().required("Message is required."),
     })
 
-    useEffect(() => {
-        if (id) loadAnnouncement(+id).then(() => setAnnouncement(selectedAnnouncement!))
-    }, [id, loadAnnouncement, selectedAnnouncement])
-
-    if (initialLoading) return (<LoadingComponent content="Loading announcements..." />)
+    if (isFetchingDetails) return (<LoadingComponent content="Loading announcements..." />)
 
     return (
         <FormContainer
@@ -44,7 +51,7 @@ const AnnouncementForm = () => {
 
                                 <div>
                                     <Button type="submit" content="Submit" color="orange" />
-                                    <Button type="button" as={Link} to={id ? `/announcements/${selectedAnnouncement?.id}/details` : "/announcements"} content="Cancel" />
+                                    <Button type="button" as={Link} to={id ? `/announcements/${announcementData?.id}/details` : "/announcements"} content="Cancel" />
                                 </div>
                             </Form>
                         )

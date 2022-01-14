@@ -1,23 +1,25 @@
-import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import ContainerPage from "../../app/layouts/components/container/ContainerPage";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import Tab from "../../app/layouts/components/tabs/Tab";
 import TabButton from "../../app/layouts/components/tabs/TabButton";
 import TabItem from "../../app/layouts/components/tabs/TabItem";
-import { useStore } from "../../app/stores/store";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchTenantsAsync } from "../tenant/tenantSlice";
+import { fetchAnnouncementsAsync } from "./announcementSlice";
 import AnnouncementTable from "./AnnouncementTable";
 
 const Announcement = () => {
 
-    const { announcementStore } = useStore();
-    const { initialLoading, loadAnnouncements, announcements } = announcementStore;
-
+    const {announcements, isFetching} = useAppSelecter(state => state.announcement);
+    const dispatch = useAppDispatch();
+  
     useEffect(() => {
-        loadAnnouncements()
-    }, [loadAnnouncements])
+      dispatch(fetchAnnouncementsAsync());
+    }, [])
+  
 
-    if (initialLoading) return <LoadingComponent content="Loading Announcements..." />
+    if (isFetching) return <LoadingComponent content="Loading Announcements..." />
 
     return (
         <ContainerPage
@@ -33,4 +35,4 @@ const Announcement = () => {
             } />);
 }
 
-export default observer(Announcement);
+export default Announcement;

@@ -25,6 +25,13 @@ namespace API.Controllers
             var announcements = await _context.Announcements.OrderByDescending(i => i.DateCreated).Take(10).ToListAsync();
             return Ok(announcements);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Announcement>> GetAnnouncement(Guid id)
+        {
+            var announcement = await _context.Announcements.FindAsync(id);
+            return Ok(announcement);
+        }
         
     }
 }

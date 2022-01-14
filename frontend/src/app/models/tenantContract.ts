@@ -1,7 +1,7 @@
-import { Tenant } from './tenant';
+import { ITenant } from './tenant';
 
-export interface TenantContract {
-  id: number;
+export interface ITenantContract {
+  id: string;
   slotId: number;
   contractPrice: number;
   deposit: number;
@@ -12,5 +12,5 @@ export interface TenantContract {
   contractEarlyTerminationReason: string;
   nextBillingDate: string;
   status: string;
-  tenant: Tenant;
+  tenant: ITenant;
 }

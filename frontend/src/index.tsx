@@ -4,16 +4,18 @@ import './app/layouts/styles/styles.css'
 import './app/layouts/styles/styles.scss'
 import App from './app/layouts/components/App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
-import { store, StoreContext } from './app/stores/store';
+import { BrowserRouter, Router } from 'react-router-dom';
+import { store } from './app/store/configureStore';
+import history from './app/utils/history';
+import { Provider } from 'react-redux';
 
 ReactDOM.render(
 
-  <StoreContext.Provider value={store}>
-    <BrowserRouter>
+  <Provider store={store}>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
-  </StoreContext.Provider>,
+    </Router>
+  </Provider>,
 
   document.getElementById('root')
 );

@@ -1,12 +1,11 @@
-import { observer } from "mobx-react-lite";
 import { Table } from "semantic-ui-react";
 import TableBody from "../../app/layouts/components/table/TableBody";
 import TableComponent from "../../app/layouts/components/table/TableComponent";
 import TableHeader from "../../app/layouts/components/table/TableHeader";
-import { Tenant } from "../../app/models/tenant";
+import { ITenant } from "../../app/models/tenant";
 
 interface Props {
-    tenants: Tenant[]
+    tenants: ITenant[]
 }
 
 const TenantTable = ({ tenants }: Props) => {
@@ -40,4 +39,4 @@ const TenantTable = ({ tenants }: Props) => {
     )
 }
 
-export default observer(TenantTable);
+export default TenantTable;

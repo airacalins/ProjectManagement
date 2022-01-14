@@ -1,12 +1,11 @@
-import { observer } from "mobx-react-lite";
 import { Icon } from "semantic-ui-react";
-import { ModeOfPayment } from "../../app/models/modeOfPayment";
 import TableBody from "../../app/layouts/components/table/TableBody";
 import TableComponent from "../../app/layouts/components/table/TableComponent";
 import TableHeader from "../../app/layouts/components/table/TableHeader";
+import { IModeOfPayment } from "../../app/models/modeOfPayment";
 
 interface Props {
-    modeOfPayments: ModeOfPayment[]
+    modeOfPayments: IModeOfPayment[]
 }
 
 const ModeOfPaymentTable = ({ modeOfPayments }: Props) => {
@@ -38,4 +37,4 @@ const ModeOfPaymentTable = ({ modeOfPayments }: Props) => {
             } />)
 }
 
-export default observer(ModeOfPaymentTable);
+export default ModeOfPaymentTable;

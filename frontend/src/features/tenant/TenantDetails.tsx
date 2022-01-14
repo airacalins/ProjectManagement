@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Table, Button } from "semantic-ui-react";
@@ -8,20 +7,21 @@ import DetailsInput from "../../app/layouts/components/common/DetailsInput";
 import ContainerDetails from "../../app/layouts/components/container/ContainerDetails";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import { dateFormatter } from "../../app/layouts/formatter/common";
-import { useStore } from "../../app/stores/store";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchTenantDetailsAsync } from "./tenantSlice";
 
 const TenantDetails = () => {
 
-    const { tenantStore } = useStore();
-    const { tenants, loadTenant, selectTenant, initialLoading, selectedTenant: tenant } = tenantStore;
     const { id } = useParams<{ id: string }>();
+    
+    const { tenant, isFetchingDetails } = useAppSelecter(state => state.tenant);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (!tenants) selectTenant(+id);
-        if (!tenant) loadTenant(+id);
-    }, [id, tenants, selectTenant, tenant, loadTenant])
+        dispatch(fetchTenantDetailsAsync(id));
+    }, [])
 
-    if (initialLoading || !tenant) return (<LoadingComponent content="Loading tenant..." />)
+    if (isFetchingDetails || !tenant) return (<LoadingComponent content="Loading tenant..." />)
 
     return (
         <ContainerDetails goBackTo="/tenants">
@@ -58,4 +58,4 @@ const TenantDetails = () => {
     );
 }
 
-export default observer(TenantDetails);
+export default TenantDetails;

@@ -1,7 +1,14 @@
 import { SlotContract } from './slotContract';
 
-export interface Tenant {
-  id: number;
+export interface ITenant {  
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  dateCreated: Date;
+
+  
   fullName: string;
   companyName: string;
   address: string;

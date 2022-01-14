@@ -1,21 +1,23 @@
-import { observer } from "mobx-react-lite";
+
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Grid, Header, Label, Segment } from "semantic-ui-react";
 import ContainerPage from "../../app/layouts/components/container/ContainerPage";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import { useStore } from "../../app/stores/store";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchSlotsAsync } from "../slot/slotSlice";
 
 const Map = () => {
 
-    const { slotStore } = useStore();
-    const { initialLoading, loadSlots, availableSlots: slots } = slotStore;
-
+    const {slots, isFetching: isFetchingSlots} = useAppSelecter(state => state.slot);
+    const dispatch = useAppDispatch();
+  
     useEffect(() => {
-        loadSlots()
-    }, [loadSlots])
+      dispatch(fetchSlotsAsync());
+    }, [])
 
-    if (initialLoading) return (<LoadingComponent content="Loading available slots..." />)
+
+    if (isFetchingSlots) return (<LoadingComponent content="Loading available slots..." />)
 
     return (
         <ContainerPage>
@@ -42,4 +44,4 @@ const Map = () => {
     )
 }
 
-export default observer(Map);
+export default Map;

@@ -1,24 +1,23 @@
 import { useEffect } from "react";
-import { useStore } from "../../app/stores/store";
 import ContainerPage from "../../app/layouts/components/container/ContainerPage";
 import Tab from "../../app/layouts/components/tabs/Tab";
 import TabButton from "../../app/layouts/components/tabs/TabButton";
 import TabItem from "../../app/layouts/components/tabs/TabItem";
 import ModeOfPaymentTable from "./ModeOfPaymentTable";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import { observer } from "mobx-react-lite";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchModeOfPaymentsAsync } from "./modeOfPaymentSlice";
 
 const ModeOfPayment = () => {
 
-
-    const { modeOfPaymentStore } = useStore();
-    const { initialLoading, loadModeOfPayments, modeOfPayments } = modeOfPaymentStore
-
+    const {modeOfPayments, isFetching } = useAppSelecter(state => state.modeOfPayment);
+    const dispatch = useAppDispatch();
+  
     useEffect(() => {
-        loadModeOfPayments()
-    }, [loadModeOfPayments])
-
-    if (initialLoading) return <LoadingComponent content="Loading Mode of Payments..." />
+      dispatch(fetchModeOfPaymentsAsync());
+    }, [])
+    
+    if (isFetching) return <LoadingComponent content="Loading Mode of Payments..." />
 
     return (
         <ContainerPage children={
@@ -35,4 +34,4 @@ const ModeOfPayment = () => {
     );
 }
 
-export default observer(ModeOfPayment);
+export default ModeOfPayment;
