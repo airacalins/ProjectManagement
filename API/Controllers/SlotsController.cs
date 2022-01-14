@@ -27,7 +27,7 @@ namespace API.Controllers
             var result = units.Select(i => new UnitDto
             {
                 Id = i.Id,
-                Code = i.Code,
+                SlotNumber = i.Code,
                 Size = i.Size,
                 RentalFee = i.UnitPrices.Any() ? i.UnitPrices.OrderByDescending(p => p.DateImplemented).FirstOrDefault()!.Price.ToString() : "N/A",
                 Status = i.SlotStatus.ToString()
