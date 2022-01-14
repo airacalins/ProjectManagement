@@ -223,6 +223,12 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<double>("Size")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("SlotStatus")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.ToTable("Units");
@@ -371,15 +377,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ee60a78f-5be6-4722-8fee-a3e28c0d9c9f",
-                            ConcurrencyStamp = "dd3388c8-f005-4242-9d6f-920e05c49945",
+                            Id = "a18b65e5-8cb5-4ef9-898c-6226419a106e",
+                            ConcurrencyStamp = "af7bc134-f7d7-487f-a999-13d937624930",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "17f20aba-1798-4375-a76c-517a1da3ee16",
-                            ConcurrencyStamp = "f6b85a24-8551-4f89-91b1-b4e634020624",
+                            Id = "546608eb-c22d-4de1-97bf-072c1bca8b98",
+                            ConcurrencyStamp = "3ef622e6-9398-41df-b8e4-32f59583b51a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -547,7 +553,7 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Entities.Unit", "Unit")
-                        .WithMany()
+                        .WithMany("TenantContracts")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -566,7 +572,7 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Entities.Unit", "Unit")
-                        .WithMany()
+                        .WithMany("UnitPhotos")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -579,7 +585,7 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.UnitPrice", b =>
                 {
                     b.HasOne("API.Entities.Unit", "Unit")
-                        .WithMany()
+                        .WithMany("UnitPrices")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -650,6 +656,15 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Invoice", b =>
                 {
                     b.Navigation("InvoiceItems");
+                });
+
+            modelBuilder.Entity("API.Entities.Unit", b =>
+                {
+                    b.Navigation("TenantContracts");
+
+                    b.Navigation("UnitPhotos");
+
+                    b.Navigation("UnitPrices");
                 });
 #pragma warning restore 612, 618
         }

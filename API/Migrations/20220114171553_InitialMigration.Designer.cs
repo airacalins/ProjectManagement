@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    [Migration("20220110151022_AddInvoiceData")]
-    partial class AddInvoiceData
+    [Migration("20220114171553_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,31 @@ namespace API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("API.Entities.Announcement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Announcements");
+                });
 
             modelBuilder.Entity("API.Entities.Invoice", b =>
                 {
@@ -74,6 +99,29 @@ namespace API.Migrations
                     b.HasIndex("InvoiceId");
 
                     b.ToTable("InvoiceItems");
+                });
+
+            modelBuilder.Entity("API.Entities.ModeOfPayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AccountName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ModeOfPayments");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>
@@ -176,6 +224,12 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<double>("Size")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("SlotStatus")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -325,15 +379,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5cd49fa3-8d52-4e96-95ed-bd4f4bc52102",
-                            ConcurrencyStamp = "42b08963-cd25-436d-8687-0ef6920a14bc",
+                            Id = "a18b65e5-8cb5-4ef9-898c-6226419a106e",
+                            ConcurrencyStamp = "af7bc134-f7d7-487f-a999-13d937624930",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "d8d2f795-ef02-40da-a0d6-b5ec4233be21",
-                            ConcurrencyStamp = "c7fc7fa2-1136-45b1-b7ce-003ddc214e4d",
+                            Id = "546608eb-c22d-4de1-97bf-072c1bca8b98",
+                            ConcurrencyStamp = "3ef622e6-9398-41df-b8e4-32f59583b51a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -501,7 +555,7 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Entities.Unit", "Unit")
-                        .WithMany()
+                        .WithMany("TenantContracts")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -520,7 +574,7 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.HasOne("API.Entities.Unit", "Unit")
-                        .WithMany()
+                        .WithMany("UnitPhotos")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -533,7 +587,7 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.UnitPrice", b =>
                 {
                     b.HasOne("API.Entities.Unit", "Unit")
-                        .WithMany()
+                        .WithMany("UnitPrices")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -604,6 +658,15 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Invoice", b =>
                 {
                     b.Navigation("InvoiceItems");
+                });
+
+            modelBuilder.Entity("API.Entities.Unit", b =>
+                {
+                    b.Navigation("TenantContracts");
+
+                    b.Navigation("UnitPhotos");
+
+                    b.Navigation("UnitPrices");
                 });
 #pragma warning restore 612, 618
         }

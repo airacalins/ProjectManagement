@@ -80,7 +80,7 @@ namespace API.Data
                 var units = new List<Unit>();
                 for(var i = 1; i <= 50; i++)
                 {
-                    units.Add(new Unit { Name = $"Unit {i}", Code = $"UNT{i}" });
+                    units.Add(new Unit { Name = $"Unit {i}", Code = $"UNT{i}", Size = 30,  });
                 }
 
                 context.Units.AddRange(units);
