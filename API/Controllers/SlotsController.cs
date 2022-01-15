@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,17 +24,78 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UnitDto>>> GetSlots()
         {
-            var units = await _context.Units.Include(i => i.UnitPrices).Include(i => i.UnitPhotos).ThenInclude(p => p.Photo).ToListAsync();
-            var result = units.Select(i => new UnitDto
+            var units = await _context.Units.Include(i => i.UnitPhotos).ThenInclude(p => p.Photo)
+            .Select(i => new UnitDto
             {
                 Id = i.Id,
-                SlotNumber = i.Code,
+                SlotNumber = i.SlotNumber,
                 Size = i.Size,
-                RentalFee = i.UnitPrices != null && i.UnitPrices.Any() ? i.UnitPrices.OrderByDescending(p => p.DateImplemented).FirstOrDefault()!.Price.ToString() : "N/A",
-                Status = i.SlotStatus.ToString()
-            });
-            return Ok(result);
+                Price = i.Price,
+                Status = i.SlotStatus
+            }).ToListAsync();
+
+            return Ok(units);
         }
         
+        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UnitDto>> GetSlot(Guid id)
+        {
+            var unit = await _context.Units.Include(i => i.UnitPhotos).ThenInclude(p => p.Photo)
+            .Select(i => new UnitDto
+            {
+                Id = i.Id,
+                SlotNumber = i.SlotNumber,
+                Size = i.Size,
+                Price = i.Price,
+                Status = i.SlotStatus
+            }).FirstOrDefaultAsync(i => i.Id == id);
+            return Ok(unit);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UnitDto>> AddSlot(UnitDto input)
+        {
+            var unit = new Unit{
+                SlotNumber = input.SlotNumber,
+                Size = input.Size,
+                Price = input.Price,
+                SlotStatus = input.Status
+            };
+            _context.Units.Add(unit);
+            await _context.SaveChangesAsync();
+
+            return Ok(unit);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<UnitDto>> UpdateSlot(UnitDto input)
+        {
+            var unit = await _context.Units.FindAsync(input.Id);
+            if (unit == null)
+                return NotFound("Slot not found");
+
+            unit.SlotNumber = input.SlotNumber;
+            unit.Size = input.Size;
+            unit.Price = input.Price;
+            unit.SlotStatus = input.Status;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(unit);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<UnitDto>> DeleteSlot(int id)
+        {
+            var unit = await _context.Units.FindAsync(id);
+            if (unit == null)
+                return NotFound("Slot not found");
+                
+            _context.Units.Remove(unit);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

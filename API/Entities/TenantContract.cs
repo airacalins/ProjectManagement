@@ -17,5 +17,7 @@ namespace API.Entities
         public TenantContractStatus Status { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
+        public double Price { get; set; }
+        public int NumberOfDeposit { get; set; }
     }
 }

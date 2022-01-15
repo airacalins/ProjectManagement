@@ -7,43 +7,43 @@ using Microsoft.AspNetCore.Identity;
 
 namespace API.Data
 {
-    public static class DbInitializer
+  public static class DbInitializer
+  {
+    public static async Task Initialize(PropertyManagementContext context, UserManager<User> userManager)
     {
-        public static async Task Initialize(PropertyManagementContext context, UserManager<User> userManager)
+      if (!userManager.Users.Any())
+      {
+        var admin = new User
         {
-            if (!userManager.Users.Any())
-            {
-                var admin = new User
-                {
-                    UserName = "airagals",
-                    Email = "airagals@sample.com",
-                };
+          UserName = "airagals",
+          Email = "airagals@sample.com",
+        };
 
-                await userManager.CreateAsync(admin, "EFp3GZ(V2=7q<kze");
-                await userManager.AddToRolesAsync(admin, new []{"User", "Admin"});
-                
-                var user1 = new User
-                {
-                    UserName = "lexcalin",
-                    Email = "lexcalin@sample.com",
-                };
+        await userManager.CreateAsync(admin, "EFp3GZ(V2=7q<kze");
+        await userManager.AddToRolesAsync(admin, new[] { "User", "Admin" });
 
-                await userManager.CreateAsync(user1, "EFp3GZ(V2=7q<kze");
-                await userManager.AddToRoleAsync(user1, "User");
-                
-                var user2 = new User
-                {
-                    UserName = "ayaheloise",
-                    Email = "ayaheloise@sample.com",
-                };
+        var user1 = new User
+        {
+          UserName = "lexcalin",
+          Email = "lexcalin@sample.com",
+        };
 
-                await userManager.CreateAsync(user2, "EFp3GZ(V2=7q<kze");
-                await userManager.AddToRoleAsync(user2, "User");
-            }
+        await userManager.CreateAsync(user1, "EFp3GZ(V2=7q<kze");
+        await userManager.AddToRoleAsync(user1, "User");
 
-            if (!context.Tenants.Any())
-            {
-                var tenants = new List<Tenant>
+        var user2 = new User
+        {
+          UserName = "ayaheloise",
+          Email = "ayaheloise@sample.com",
+        };
+
+        await userManager.CreateAsync(user2, "EFp3GZ(V2=7q<kze");
+        await userManager.AddToRoleAsync(user2, "User");
+      }
+
+      if (!context.Tenants.Any())
+      {
+        var tenants = new List<Tenant>
                 {
                     new Tenant
                     {
@@ -71,25 +71,30 @@ namespace API.Data
                     },
                 };
 
-                context.Tenants.AddRange(tenants);
-                context.SaveChanges();
-            }
+        context.Tenants.AddRange(tenants);
+        context.SaveChanges();
+      }
 
-            if (!context.Units.Any())
-            {
-                var units = new List<Unit>();
-                for(var i = 1; i <= 50; i++)
-                {
-                    units.Add(new Unit { Name = $"Unit {i}", Code = $"UNT{i}", Size = 30,  });
-                }
+      if (!context.Units.Any())
+      {
+        var units = new List<Unit>();
+        for (var i = 1; i <= 50; i++)
+        {
+          units.Add(new Unit
+          {
+            SlotNumber = $"UNT{i}",
+            Size = 30,
+            Price = 15000
+          });
+        }
 
-                context.Units.AddRange(units);
-                context.SaveChanges();
-            }
+        context.Units.AddRange(units);
+        context.SaveChanges();
+      }
 
-            if (!context.Announcements.Any())
-            {
-                var announcements = new List<Announcement>
+      if (!context.Announcements.Any())
+      {
+        var announcements = new List<Announcement>
                 {
                     new Announcement
                     {
@@ -128,26 +133,26 @@ namespace API.Data
                     }
                 };
 
-                context.Announcements.AddRange(announcements);
-                context.SaveChanges();
-            }
+        context.Announcements.AddRange(announcements);
+        context.SaveChanges();
+      }
 
-            if (!context.ModeOfPayments.Any())
-            {
-                var modeOfPayments = new List<ModeOfPayment>
+      if (!context.ModeOfPayments.Any())
+      {
+        var modeOfPayments = new List<ModeOfPayment>
                 {
                     new ModeOfPayment
                     {
                         BankName = "BDO",
                         AccountName = "Maximo Galutera",
                         AccountNumber = "00191928280"
-                    },                    
+                    },
                     new ModeOfPayment
                     {
                         BankName = "GCASH",
                         AccountName = "Maximo Galutera",
                         AccountNumber = "00191928280"
-                    },                    
+                    },
                     new ModeOfPayment
                     {
                         BankName = "UNIONBANK",
@@ -156,9 +161,9 @@ namespace API.Data
                     }
                 };
 
-                context.ModeOfPayments.AddRange(modeOfPayments);
-                context.SaveChanges();
-            }
-        }
+        context.ModeOfPayments.AddRange(modeOfPayments);
+        context.SaveChanges();
+      }
     }
+  }
 }

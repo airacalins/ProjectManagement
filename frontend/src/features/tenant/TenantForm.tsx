@@ -40,7 +40,7 @@ const TenantForm = () => {
     }, [id])
     
     useEffect(() => {
-        tenantData && setTenant(prev => { return {...prev, fullName: tenantData.fullName, companyName: tenantData.companyName, address: tenantData.address, contact: tenantData.phone,
+        tenantData && setTenant(prev => { return {...prev, fullName: tenantData.firstName, companyName: tenantData.companyName, address: tenantData.address, contact: tenantData.phone,
         slotId: !!tenantData.slotContract ? tenantData.slotContract.slot.id : routeSlotId }});
      }, [tenantData])
 

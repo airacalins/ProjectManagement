@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,10 +71,10 @@ namespace API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Code = table.Column<string>(type: "text", nullable: false),
+                    SlotNumber = table.Column<string>(type: "text", nullable: false),
                     Size = table.Column<double>(type: "double precision", nullable: false),
-                    SlotStatus = table.Column<int>(type: "integer", nullable: false)
+                    SlotStatus = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,26 +153,6 @@ namespace API.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UnitPhotos_Units_UnitId",
-                        column: x => x.UnitId,
-                        principalTable: "Units",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UnitPrices",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UnitId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false),
-                    DateImplemented = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UnitPrices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UnitPrices_Units_UnitId",
                         column: x => x.UnitId,
                         principalTable: "Units",
                         principalColumn: "Id",
@@ -296,7 +276,9 @@ namespace API.Migrations
                     NextPaymentDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     StartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    EndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    EndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    NumberOfDeposit = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -373,8 +355,8 @@ namespace API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "546608eb-c22d-4de1-97bf-072c1bca8b98", "3ef622e6-9398-41df-b8e4-32f59583b51a", "Admin", "ADMIN" },
-                    { "a18b65e5-8cb5-4ef9-898c-6226419a106e", "af7bc134-f7d7-487f-a999-13d937624930", "USER", "USER" }
+                    { "52627f53-5997-4fbb-9c64-493071814383", "5e36594d-59e6-4fd6-a9ec-2926e4810203", "Admin", "ADMIN" },
+                    { "f76fd764-75d7-4ea8-b8f7-cfeb0da5c33f", "91a4d2d3-c3f8-4ff0-a778-2be2978be6e9", "USER", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -463,11 +445,6 @@ namespace API.Migrations
                 name: "IX_UnitPhotos_UnitId",
                 table: "UnitPhotos",
                 column: "UnitId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UnitPrices_UnitId",
-                table: "UnitPrices",
-                column: "UnitId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -498,9 +475,6 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "UnitPhotos");
-
-            migrationBuilder.DropTable(
-                name: "UnitPrices");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

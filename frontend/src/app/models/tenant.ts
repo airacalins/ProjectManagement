@@ -7,11 +7,8 @@ export interface ITenant {
   phone: string;
   email: string;
   dateCreated: Date;
-
   
-  fullName: string;
   companyName: string;
   address: string;
-  contact: string;
   slotContract?: SlotContract;
 }

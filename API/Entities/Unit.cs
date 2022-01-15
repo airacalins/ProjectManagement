@@ -10,11 +10,10 @@ namespace API.Entities
     {
         
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
+        public string SlotNumber { get; set; }
         public double Size { get; set; }
         public SlotStatus SlotStatus { get; set; }
-        public ICollection<UnitPrice> UnitPrices { get; set; }
+        public double Price { get; set; }
         public ICollection<UnitPhoto> UnitPhotos { get; set; }
         public ICollection<TenantContract> TenantContracts { get; set; }
     }

@@ -30,9 +30,10 @@ const TenantDetails = () => {
                 detailsInput={
                     <>
                         <DetailsInput label="Business Name" input={tenant.companyName} />
-                        <DetailsInput label="Full Name" input={tenant.fullName} />
+                        <DetailsInput label="First Name" input={tenant.firstName} />
+                        <DetailsInput label="Last Name" input={tenant.lastName} />
                         <DetailsInput label="Address" input={tenant.address} />
-                        <DetailsInput label="Contact Number" input={tenant.contact} />
+                        <DetailsInput label="Contact Number" input={tenant.phone} />
                         <DetailsInput label="Tenant Since" input="input" />
                         <DetailsInput label="contract Start Date" input={dateFormatter(tenant.slotContract?.contractStartDate)} />
                         <DetailsInput label="Contract End Date" input={dateFormatter(tenant.slotContract?.contractEndDate)} />

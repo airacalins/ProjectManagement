@@ -22,7 +22,7 @@ const SlotTable = ({ slots }: Props) => {
                     <TableHeader name="" />
                 </>
             }
-
+            
             tableBody={
                 !slots.length ?
                     <TableBody colSpan="5" content="No slots..." />
@@ -31,7 +31,7 @@ const SlotTable = ({ slots }: Props) => {
                         <Table.Row key={s.id}>
                             <TableBody content={s.slotNumber} />
                             <TableBody content={`${s.size} sqm.`} />
-                            <TableBody content={`${currencyFormatter(s.price)} / monthly`} />
+                            <TableBody content={!!s.price ? `${currencyFormatter(s.price)} / monthly` : 'Not Configured'} />
                             <TableBody content={s.tenantContract ? "Rented" : "Available"} badgeColor={s.tenantContract ? "blue" : "green"} />
                             <TableBody content=">" navigateTo={`/slots/${s.id}/details`} />
                         </Table.Row>

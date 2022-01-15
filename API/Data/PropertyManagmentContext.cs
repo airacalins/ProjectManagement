@@ -22,7 +22,6 @@ namespace API.Data
     public DbSet<InvoiceItem> InvoiceItems { get; set; }
     public DbSet<TenantContract> TenantContracts { get; set; }
     public DbSet<Unit> Units { get; set; }
-    public DbSet<UnitPrice> UnitPrices { get; set; }
     public DbSet<UnitPhoto> UnitPhotos { get; set; }
     public DbSet<Announcement> Announcements { get; set; }
     public DbSet<ModeOfPayment> ModeOfPayments { get; set; }

@@ -27,9 +27,9 @@ const TenantTable = ({ tenants }: Props) => {
                     :
                     tenants.map(t => (
                         <Table.Row key={t.id}>
-                            <TableBody content={t.fullName} />
+                            <TableBody content={`${t.firstName} ${t.lastName}`} />
                             <TableBody content={t.companyName} />
-                            <TableBody content={t.contact} />
+                            <TableBody content={t.phone} />
                             <TableBody content={t.slotContract?.slot.slotNumber} />
                             <TableBody content=">" navigateTo={`/tenants/${t.id}/details`} />
                         </Table.Row>

@@ -31,7 +31,7 @@ const SlotDetails = () => {
           <>
             <DetailsInput label="Slot Number" input={slot.slotNumber} />
             <DetailsInput label="Size" input={`${slot.size} sqm.`} />
-            <DetailsInput label="Rental Fee" input={currencyFormatter(slot.price)} />
+            <DetailsInput label="Rental Fee" input={slot.price ? currencyFormatter(slot.price) : "Not Configured"} />
             <DetailsInput label="Next Billing Date" input="input" />
           </>
         }
@@ -51,9 +51,10 @@ const SlotDetails = () => {
               detailsInput={
                 <>
                   <DetailsInput label="Business Name" input={slot.tenantContract?.tenant.companyName} />
-                  <DetailsInput label="Full Name" input={slot.tenantContract?.tenant.fullName} />
+                  <DetailsInput label="First Name" input={slot.tenantContract?.tenant.firstName} />
+                  <DetailsInput label="Last Name" input={slot.tenantContract?.tenant.lastName} />
                   <DetailsInput label="Address" input={slot.tenantContract?.tenant.address} />
-                  <DetailsInput label="Contact Number" input={slot.tenantContract?.tenant.contact} />
+                  <DetailsInput label="Contact Number" input={slot.tenantContract?.tenant.phone} />
                 </>
               }
               detailsButton={

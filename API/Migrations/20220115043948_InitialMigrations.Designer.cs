@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    [Migration("20220114171553_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220115043948_InitialMigrations")]
+    partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -190,6 +190,12 @@ namespace API.Migrations
                     b.Property<DateTimeOffset>("NextPaymentDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("NumberOfDeposit")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -217,16 +223,15 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<double>("Size")
                         .HasColumnType("double precision");
+
+                    b.Property<string>("SlotNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("SlotStatus")
                         .HasColumnType("integer");
@@ -258,28 +263,6 @@ namespace API.Migrations
                     b.HasIndex("UnitId");
 
                     b.ToTable("UnitPhotos");
-                });
-
-            modelBuilder.Entity("API.Entities.UnitPrice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("DateImplemented")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.Property<Guid>("UnitId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UnitId");
-
-                    b.ToTable("UnitPrices");
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>
@@ -379,15 +362,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a18b65e5-8cb5-4ef9-898c-6226419a106e",
-                            ConcurrencyStamp = "af7bc134-f7d7-487f-a999-13d937624930",
+                            Id = "f76fd764-75d7-4ea8-b8f7-cfeb0da5c33f",
+                            ConcurrencyStamp = "91a4d2d3-c3f8-4ff0-a778-2be2978be6e9",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "546608eb-c22d-4de1-97bf-072c1bca8b98",
-                            ConcurrencyStamp = "3ef622e6-9398-41df-b8e4-32f59583b51a",
+                            Id = "52627f53-5997-4fbb-9c64-493071814383",
+                            ConcurrencyStamp = "5e36594d-59e6-4fd6-a9ec-2926e4810203",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -584,17 +567,6 @@ namespace API.Migrations
                     b.Navigation("Unit");
                 });
 
-            modelBuilder.Entity("API.Entities.UnitPrice", b =>
-                {
-                    b.HasOne("API.Entities.Unit", "Unit")
-                        .WithMany("UnitPrices")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Unit");
-                });
-
             modelBuilder.Entity("API.Entities.User", b =>
                 {
                     b.HasOne("API.Entities.Photo", "Photo")
@@ -665,8 +637,6 @@ namespace API.Migrations
                     b.Navigation("TenantContracts");
 
                     b.Navigation("UnitPhotos");
-
-                    b.Navigation("UnitPrices");
                 });
 #pragma warning restore 612, 618
         }
