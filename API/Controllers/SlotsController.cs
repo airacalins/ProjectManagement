@@ -23,13 +23,13 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UnitDto>>> GetSlots()
         {
-            var units = await _context.Units.ToListAsync();
+            var units = await _context.Units.Include(i => i.UnitPrices).Include(i => i.UnitPhotos).ThenInclude(p => p.Photo).ToListAsync();
             var result = units.Select(i => new UnitDto
             {
                 Id = i.Id,
                 SlotNumber = i.Code,
                 Size = i.Size,
-                RentalFee = i.UnitPrices.Any() ? i.UnitPrices.OrderByDescending(p => p.DateImplemented).FirstOrDefault()!.Price.ToString() : "N/A",
+                RentalFee = i.UnitPrices != null && i.UnitPrices.Any() ? i.UnitPrices.OrderByDescending(p => p.DateImplemented).FirstOrDefault()!.Price.ToString() : "N/A",
                 Status = i.SlotStatus.ToString()
             });
             return Ok(result);
