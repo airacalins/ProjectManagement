@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Message } from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { Formik, Form } from "formik"
 import * as Yup from 'yup';
@@ -8,13 +8,13 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { ISlot } from "../../app/models/slot";
-import { fetchSlotDetailsAsync } from "./slotSlice";
+import { fetchSlotDetailsAsync, updateSlotDetailsAsync } from "./slotSlice";
 
 const SlotForm = () => {
     const { id } = useParams<{ id: string }>();
     const [slot, setSlot] = useState<ISlot>({ id: "", slotNumber: "", size: 0, price: 0, slotStatus: 0, tenantContract: undefined })
 
-    const { slot: slotDetails, isFetchingDetails } = useAppSelecter(state => state.slot);
+    const { slot: slotDetails, isFetchingDetails, isSaving } = useAppSelecter(state => state.slot);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -33,6 +33,10 @@ const SlotForm = () => {
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading slot..." />)
 
+    const onSubmit = (values:any) => {
+        if(id) dispatch(updateSlotDetailsAsync(values));
+    }
+
     return (
         <FormContainer
             title={id ? "Update Slot" : "New Slot"}
@@ -41,17 +45,20 @@ const SlotForm = () => {
                     validationSchema={validationSchema}
                     enableReinitialize
                     initialValues={slot}
-                    onSubmit={values => console.log(values)}>
+                    onSubmit={values => onSubmit(values)}>
                     {
                         ({ handleSubmit }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                                {id && <Message
+                                    content='Change in price will not affect any on going contract for this slot.'
+                                />}
                                 <FormTextInput name="slotNumber" placeholder="Slot Number" />
                                 <FormTextInput name="size" placeholder="Size" />
                                 <FormTextInput name="price" placeholder="Rental Fee" />
 
                                 <div>
-                                    <Button type="submit" content="Submit" color="orange" />
-                                    <Button type="button" as={Link} to={!id ? "/slots" : `/slots/${slotDetails?.id}/details`} content="Cancel" />
+                                    <Button type="submit" content="Submit" color="orange" loading={isSaving} />
+                                    <Button type="button" as={Link} to={!id ? "/slots" : `/slots/${slotDetails?.id}/details`} content="Cancel" disabled={isSaving || isFetchingDetails} />
                                 </div>
                             </Form>
                         )

@@ -66,6 +66,9 @@ const Announcement = {
 const Slot = {
   list: () => request.get('slots'),
   details: (id: string) => request.get(`slots/${id}`),
+  create: (values: any) => request.post('slots', values),
+  update: (values: any) => request.put('slots', values),
+  delete: (id: string) => request.delete(`slots/${id}`),
 };
 
 const Account = {

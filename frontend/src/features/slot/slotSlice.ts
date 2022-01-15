@@ -7,13 +7,15 @@ export interface ISlotState {
   isFetching: boolean;
   slot?: ISlot;
   isFetchingDetails: boolean;
+  isSaving: boolean;
 }
 
 const initialState: ISlotState = {
   slots: [],
   isFetching: false,
   slot: undefined,
-  isFetchingDetails: false
+  isFetchingDetails: false,
+  isSaving: false
 }
 
 export const fetchSlotsAsync = createAsyncThunk<ISlot[]>(
@@ -38,6 +40,16 @@ export const fetchSlotDetailsAsync = createAsyncThunk<ISlot, string>(
   }
 )
 
+export const updateSlotDetailsAsync = createAsyncThunk<ISlot, ISlot>(
+  'announcements/updateSlotDetailsAsync',
+  async (slot, thunkAPI) => {
+    try {
+      return await agent.Slot.update(slot);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
 
 export const slotSlice = createSlice({
   name: 'slot',
@@ -66,6 +78,18 @@ export const slotSlice = createSlice({
     });
     builder.addCase(fetchSlotDetailsAsync.rejected, (state, action) => {
       state.isFetchingDetails = false;
+    });
+    
+    
+    builder.addCase(updateSlotDetailsAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(updateSlotDetailsAsync.fulfilled, (state, action) => {
+      state.slot = action.payload;
+      state.isSaving = false;
+    });
+    builder.addCase(updateSlotDetailsAsync.rejected, (state, action) => {
+      state.isSaving = false;
     });
   })
 })
