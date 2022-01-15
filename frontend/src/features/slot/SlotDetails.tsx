@@ -32,7 +32,7 @@ const SlotDetails = () => {
             <DetailsInput label="Slot Number" input={slot.slotNumber} />
             <DetailsInput label="Size" input={`${slot.size} sqm.`} />
             <DetailsInput label="Rental Fee" input={slot.price ? currencyFormatter(slot.price) : "Not Configured"} />
-            <DetailsInput label="Next Billing Date" input="input" />
+            <DetailsInput label="Next Billing Date" input={slot.slotStatus} />
           </>
         }
         detailsButton={

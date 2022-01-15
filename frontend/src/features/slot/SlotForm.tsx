@@ -7,12 +7,12 @@ import FormContainer from "../../app/layouts/components/form/FormContainer";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { ISlot } from "../../app/models/slot";
+import { ISlot, slotStatus } from "../../app/models/slot";
 import { fetchSlotDetailsAsync, updateSlotDetailsAsync } from "./slotSlice";
 
 const SlotForm = () => {
     const { id } = useParams<{ id: string }>();
-    const [slot, setSlot] = useState<ISlot>({ id: "", slotNumber: "", size: 0, price: 0, slotStatus: 0, tenantContract: undefined })
+    const [slot, setSlot] = useState<ISlot>({ id: "", slotNumber: "", size: 0, price: 0, slotStatus: slotStatus.Available, tenantContract: undefined })
 
     const { slot: slotDetails, isFetchingDetails, isSaving } = useAppSelecter(state => state.slot);
     const dispatch = useAppDispatch();
