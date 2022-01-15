@@ -32,7 +32,7 @@ namespace API.Controllers
                 RentalFee = i.UnitPrices.Any() ? i.UnitPrices.OrderByDescending(p => p.DateImplemented).FirstOrDefault()!.Price.ToString() : "N/A",
                 Status = i.SlotStatus.ToString()
             });
-            return Ok(units);
+            return Ok(result);
         }
         
     }
