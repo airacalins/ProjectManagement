@@ -1,4 +1,4 @@
-import { Icon } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 import TableBody from "../../app/layouts/components/table/TableBody";
 import TableComponent from "../../app/layouts/components/table/TableComponent";
 import TableHeader from "../../app/layouts/components/table/TableHeader";
@@ -26,13 +26,13 @@ const ModeOfPaymentTable = ({ modeOfPayments }: Props) => {
                     <TableBody colSpan="5" content="No mode of payments..." />
                     :
                     modeOfPayments.map(mop => (
-                        <>
+                        <Table.Row key={mop.id}>
                             <TableBody content={mop.bankName} />
                             <TableBody content={mop.accountName} />
                             <TableBody content={mop.accountNumber} />
                             <TableBody content={<Icon name="toggle on" color="blue" size="large"></Icon>} />
                             <TableBody content=">" navigateTo={`/mode-of-payments/${mop.id}/details`} />
-                        </>
+                        </Table.Row>
                     ))
             } />)
 }

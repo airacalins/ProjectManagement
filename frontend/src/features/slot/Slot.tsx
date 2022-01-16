@@ -10,6 +10,7 @@ import { fetchSlotsAsync } from "./slotSlice";
 import { Card } from "semantic-ui-react";
 import DashboardHeader from "../dashboard/DashboardHeader";
 import DashboardHeaderCard from "../dashboard/DashboardHeaderCard";
+import SearchBar from "../../app/layouts/components/SearchBar";
 
 const Slot = () => {
 
@@ -34,13 +35,12 @@ const Slot = () => {
             <TabButton name="Add Slot" navigateTo="/slots/create" />
           </Tab> */}
 
-          
-            <DashboardHeader>
-                <DashboardHeaderCard title="Slot" subtitle={`10 available slots`} icon="location arrow" iconColor="pink" />
-                <DashboardHeaderCard title="Tenant" subtitle={`10 tenants`} icon="users" iconColor="green" />
-                <DashboardHeaderCard title="Payment" subtitle="1 new payment" icon="credit card" iconColor="olive" />
-                <DashboardHeaderCard title="Late Payment" subtitle="1 late payment" icon="times" iconColor="purple" />
-            </DashboardHeader>
+          <DashboardHeader>
+            <DashboardHeaderCard title="Slot" subtitle={`10 available slots`} icon="location arrow" iconColor="pink" />
+            <DashboardHeaderCard title="Tenant" subtitle={`10 tenants`} icon="users" iconColor="green" />
+            <DashboardHeaderCard title="Payment" subtitle="1 new payment" icon="credit card" iconColor="olive" />
+            <DashboardHeaderCard title="Late Payment" subtitle="1 late payment" icon="times" iconColor="purple" />
+          </DashboardHeader>
 
           <SlotTable slots={slots} />
         </>
