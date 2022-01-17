@@ -50,6 +50,7 @@ namespace API.Data
                         FirstName = "Ayah",
                         LastName = "Eloise",
                         Phone = "09123456789",
+                        BusinessName = "BN1",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                     new Tenant
@@ -57,6 +58,7 @@ namespace API.Data
                         FirstName = "Aira",
                         LastName = "Gals",
                         Phone = "09123456789",
+                        BusinessName = "BN2",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                     new Tenant
@@ -64,6 +66,7 @@ namespace API.Data
                         FirstName = "Lex",
                         LastName = "Calin",
                         Phone = "09123456789",
+                        BusinessName = "BN3",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                 };

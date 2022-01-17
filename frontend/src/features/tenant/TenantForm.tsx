@@ -13,6 +13,7 @@ import { fetchSlotsAsync } from "../slot/slotSlice";
 import FormDateInput from "../../app/layouts/components/form/FormDateInput";
 import { ICreateTenantInput } from "../../app/models/tenant";
 import { format } from "date-fns";
+import history from '../../app/utils/history';
 
 interface ITenantInput {
     id: string;
@@ -34,7 +35,7 @@ const TenantForm = () => {
     const { tenant: tenantData, isFetchingDetails } = useAppSelecter(state => state.tenant);
     const dispatch = useAppDispatch();
     
-    const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
+    const { slots, isFetching: isFetchingSlots, isSaving } = useAppSelecter(state => state.slot);
 
     useEffect(() => {
         dispatch(fetchSlotsAsync());
@@ -61,8 +62,11 @@ const TenantForm = () => {
 
     if (isFetchingDetails || isFetchingSlots) return (<LoadingComponent content="Loading tenants and slot..." />)
 
-    const onSubmit = (values:ITenantInput) => {
-        dispatch(createTenantsAsync({...values, startDate: format(values.startDate, 'MMMM d, yyyy'), endDate: format(values.startDate, 'MMMM d, yyyy')}));
+    const onSubmit = async (values:ITenantInput) => {
+        if (!values.firstName)
+            return;
+        await dispatch(createTenantsAsync({...values, startDate: format(values.startDate, 'yyyy-MM-dd'), endDate: format(values.startDate, 'yyyy-MM-dd'), slotId: values.slotId ?? ''}));
+        history.push('/tenants')
     }
 
     return (
@@ -77,7 +81,7 @@ const TenantForm = () => {
                         onSubmit(values);
                     }}>
                     {
-                        ({ handleSubmit, errors, isValid }) => (
+                        ({ handleSubmit, touched, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
                                 <FormSelectInput options={slots.map(s => ({ text: s.slotNumber, value: s.id }))} name="slotId" placeholder="Slot Number" label="Slot Number" />
                                 
@@ -89,7 +93,7 @@ const TenantForm = () => {
                                 <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />
                                 <FormDateInput name="endDate" placeholderText="End date" label="End Date" />
                                 <div>
-                                    <Button type="submit" content="Submit" color="orange" disabled={!isValid} />
+                                    <Button type="submit" content="Submit" color="orange" disabled={!isValid || isSaving} loading={isSaving} />
                                     <Button type="button" as={Link} to={id ? `/tenants/${tenantData?.id}/details` : "/tenants"} content="Cancel" />
                                 </div>
                             </Form>

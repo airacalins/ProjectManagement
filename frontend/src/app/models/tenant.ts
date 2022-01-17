@@ -20,7 +20,7 @@ export interface ICreateTenantInput {
   companyName: string;
   address: string;
   contact: string;
-  slotId?: string;
-  startDate?: string;
-  endDate?: string;
+  slotId: string;
+  startDate: string;
+  endDate: string;
 }

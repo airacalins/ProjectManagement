@@ -50,7 +50,7 @@ namespace API.Controllers
         FirstName = input.FirstName,
         LastName = input.LastName,
         Phone = input.Contact,
-        BusinessName = input.BusinessName,
+        BusinessName = input.CompanyName ?? string.Empty,
         DateCreated = DateTimeOffset.UtcNow
       };
       _context.Tenants.Add(tenant);
@@ -60,9 +60,9 @@ namespace API.Controllers
       {
         TenantId = tenant.Id,
         UnitId = input.SlotId,
-        StartDate = input.StartDate,
-        NextPaymentDate = input.StartDate.AddMonths(1),
-        EndDate = input.EndDate,
+        StartDate = input.StartDate.ToUniversalTime(),
+        NextPaymentDate = input.StartDate.AddMonths(1).ToUniversalTime(),
+        EndDate = input.EndDate.ToUniversalTime(),
         Status = TenantContractStatus.Active,
         Price = unit.Price,
         NumberOfDeposit = 1
