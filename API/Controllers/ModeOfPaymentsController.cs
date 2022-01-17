@@ -33,5 +33,37 @@ namespace API.Controllers
             return Ok(modeOfPayment);
         }
         
+        
+
+        [HttpPost]
+        public async Task<ActionResult<ModeOfPayment>> CreateModeOfPayment(ModeOfPayment input)
+        {
+            var newModeOfPayment = new ModeOfPayment
+            {
+                AccountName = input.AccountName,
+                AccountNumber = input.AccountNumber,
+                BankName = input.BankName
+            };
+            
+            _context.ModeOfPayments.Add(newModeOfPayment);
+            await _context.SaveChangesAsync();
+            return Ok(newModeOfPayment);
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult<ModeOfPayment>> UpdateSlot(ModeOfPayment input)
+        {
+            var modeOfPayment = await _context.ModeOfPayments.FindAsync(input.Id);
+            if (modeOfPayment == null)
+                return NotFound("Mode of payment not found");
+
+            modeOfPayment.BankName = input.BankName;
+            modeOfPayment.AccountName = input.AccountName;
+            modeOfPayment.AccountNumber = input.AccountName;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(modeOfPayment);
+        }
     }
 }
