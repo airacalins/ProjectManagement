@@ -50,7 +50,6 @@ namespace API.Data
                         FirstName = "Ayah",
                         LastName = "Eloise",
                         Phone = "09123456789",
-                        Email = "ayaheloise@sample.com",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                     new Tenant
@@ -58,7 +57,6 @@ namespace API.Data
                         FirstName = "Aira",
                         LastName = "Gals",
                         Phone = "09123456789",
-                        Email = "airagals@sample.com",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                     new Tenant
@@ -66,7 +64,6 @@ namespace API.Data
                         FirstName = "Lex",
                         LastName = "Calin",
                         Phone = "09123456789",
-                        Email = "lexcalin@sample.com",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                 };

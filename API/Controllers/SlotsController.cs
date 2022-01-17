@@ -92,6 +92,9 @@ namespace API.Controllers
             if (unit == null)
                 return NotFound("Slot not found");            
             
+            if (unit.SlotStatus == SlotStatus.Rented || unit.SlotStatus == SlotStatus.Reserved)
+                return NotFound("Can't delete rented or reserved slots");
+                      
             _context.Units.Remove(unit);
             await _context.SaveChangesAsync();
 

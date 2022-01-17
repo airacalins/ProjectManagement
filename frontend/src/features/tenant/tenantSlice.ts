@@ -1,19 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
-import { ITenant } from "../../app/models/tenant";
+import { ICreateTenantInput, ITenant } from "../../app/models/tenant";
 
 export interface ITenantState {
   tenants: ITenant[];
   isFetching: boolean;
   tenant?: ITenant;
   isFetchingDetails: boolean;
+  isSaving: boolean;
 }
 
 const initialState: ITenantState = {
   tenants: [],
   isFetching: false,
   tenant: undefined,
-  isFetchingDetails: false
+  isFetchingDetails: false,
+  isSaving: false
 }
 
 export const fetchTenantsAsync = createAsyncThunk<ITenant[]>(
@@ -32,6 +34,18 @@ export const fetchTenantDetailsAsync = createAsyncThunk<ITenant, string>(
   async (id, thunkAPI) => {
     try {
       return await agent.Tenant.details(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+
+export const createTenantsAsync = createAsyncThunk<ITenant, ICreateTenantInput>(
+  'announcements/createTenantsAsync',
+  async (tenant, thunkAPI) => {
+    try {
+      return await agent.Tenant.create(tenant);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})
     }
@@ -66,6 +80,17 @@ export const tenantSlice = createSlice({
     });
     builder.addCase(fetchTenantDetailsAsync.rejected, (state, action) => {
       state.isFetchingDetails = false;
+    });
+    
+    
+    builder.addCase(createTenantsAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(createTenantsAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(createTenantsAsync.rejected, (state, action) => {
+      state.isSaving = false;
     });
   })
 })

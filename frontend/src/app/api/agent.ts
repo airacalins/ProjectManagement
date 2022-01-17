@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
+import { ICreateTenantInput } from '../models/tenant';
 import { store } from '../store/configureStore';
 import history from '../utils/history';
 
@@ -56,6 +57,7 @@ const request = {
 const Tenant = {
   list: () => request.get('tenants'),
   details: (id: string) => request.get(`tenants/${id}`),
+  create: (values: ICreateTenantInput) => request.post('tenants', values)
 };
 
 const Announcement = {
