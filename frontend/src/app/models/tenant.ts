@@ -12,3 +12,15 @@ export interface ITenant {
   address: string;
   slotContract?: SlotContract;
 }
+
+export interface ICreateTenantInput {
+  id: string;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  address: string;
+  contact: string;
+  slotId: string;
+  startDate: string;
+  endDate: string;
+}

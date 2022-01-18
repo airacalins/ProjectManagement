@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,5 +34,38 @@ namespace API.Controllers
             return Ok(modeOfPayment);
         }
         
+        
+
+        [HttpPost]
+        public async Task<ActionResult<ModeOfPayment>> CreateModeOfPayment(CreateModeOfPaymentDto input)
+        {
+            var newModeOfPayment = new ModeOfPayment
+            {
+                AccountName = input.AccountName,
+                AccountNumber = input.AccountNumber,
+                BankName = input.BankName,
+                IsEnabled = true
+            };
+            
+            _context.ModeOfPayments.Add(newModeOfPayment);
+            await _context.SaveChangesAsync();
+            return Ok(newModeOfPayment);
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult<ModeOfPayment>> UpdateSlot(UpdateModeOfPaymentDto input)
+        {
+            var modeOfPayment = await _context.ModeOfPayments.FindAsync(input.Id);
+            if (modeOfPayment == null)
+                return NotFound("Mode of payment not found");
+
+            modeOfPayment.BankName = input.BankName;
+            modeOfPayment.AccountName = input.AccountName;
+            modeOfPayment.AccountNumber = input.AccountName;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(modeOfPayment);
+        }
     }
 }

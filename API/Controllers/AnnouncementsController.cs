@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,51 @@ namespace API.Controllers
         {
             var announcement = await _context.Announcements.FindAsync(id);
             return Ok(announcement);
+        }
+        
+        [HttpPost]
+        public async Task<ActionResult<Announcement>> CreateModeOfPayment(CreateAnnouncementDto input)
+        {
+            var announcement = new Announcement
+            {
+                Title = input.Title,
+                Message = input.Message,
+                DateCreated = DateTimeOffset.UtcNow,
+                IsArchived = false
+            };
+            
+            _context.Announcements.Add(announcement);
+            await _context.SaveChangesAsync();
+            return Ok(announcement);
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult<Announcement>> UpdateSlot(CreateAnnouncementDto input)
+        {
+            var announcement = await _context.Announcements.FindAsync(input.Id);
+            if (announcement == null)
+                return NotFound("Announcement not found");
+
+            announcement.Title = input.Title;
+            announcement.Message = input.Message;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(announcement);
+        }
+
+        
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteSlot(Guid id)
+        {
+            var announcement = await _context.Announcements.FirstOrDefaultAsync(i => i.Id == id);
+            if (announcement == null)
+                return NotFound("Announcement not found");            
+                      
+            _context.Announcements.Remove(announcement);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
         
     }

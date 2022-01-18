@@ -7,13 +7,15 @@ export interface IModeOfPaymentState {
   isFetching: boolean;
   modeOfPayment?: IModeOfPayment;
   isFetchingDetails: boolean;
+  isSaving: boolean;
 }
 
 const initialState: IModeOfPaymentState = {
   modeOfPayments: [],
   isFetching: false,
   modeOfPayment: undefined,
-  isFetchingDetails: false
+  isFetchingDetails: false,
+  isSaving: false
 }
 
 export const fetchModeOfPaymentsAsync = createAsyncThunk<IModeOfPayment[]>(
@@ -38,6 +40,19 @@ export const fetchModeOfPaymentDetailsAsync = createAsyncThunk<IModeOfPayment, s
   }
 )
 
+
+export const createModeOfPaymentAsync = createAsyncThunk<IModeOfPayment, IModeOfPayment>(
+  'announcements/createModeOfPaymentAsync',
+  async (modeOfPayment, thunkAPI) => {
+    try {
+      return await agent.ModeOfPayment.create(modeOfPayment);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+
 export const modeOfPaymentSlice = createSlice({
   name: 'modeOfPayment',
   initialState,
@@ -54,7 +69,6 @@ export const modeOfPaymentSlice = createSlice({
     builder.addCase(fetchModeOfPaymentsAsync.rejected, (state, action) => {
       state.isFetching = false;
     });
-
     
     
     builder.addCase(fetchModeOfPaymentDetailsAsync.pending, (state, action) => {
@@ -66,6 +80,17 @@ export const modeOfPaymentSlice = createSlice({
     });
     builder.addCase(fetchModeOfPaymentDetailsAsync.rejected, (state, action) => {
       state.isFetchingDetails = false;
+    });
+
+    
+    builder.addCase(createModeOfPaymentAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(createModeOfPaymentAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(createModeOfPaymentAsync.rejected, (state, action) => {
+      state.isSaving = false;
     });
   })
 })

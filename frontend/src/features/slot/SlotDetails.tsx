@@ -7,13 +7,15 @@ import DetailsInput from "../../app/layouts/components/common/DetailsInput";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import { currencyFormatter, dateFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchSlotDetailsAsync } from "./slotSlice";
+import { deleteSlotDetailsAsync, fetchSlotDetailsAsync } from "./slotSlice";
+import { getSlotStatusText } from "../../app/utils/common";
+import { SlotStatus } from "../../app/models/slot";
 
 const SlotDetails = () => {
 
   const { id } = useParams<{ id: string }>();
   
-  const { slot, isFetchingDetails } = useAppSelecter(state => state.slot);
+  const { slot, isFetchingDetails, isSaving } = useAppSelecter(state => state.slot);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -21,6 +23,10 @@ const SlotDetails = () => {
   }, [])
   
   if (isFetchingDetails || !slot) return (<LoadingComponent content="Loading slot details..." />)
+
+  const onDelete = () => {
+    if(id) dispatch(deleteSlotDetailsAsync(id));
+  }
 
   return (
     <ContainerDetails goBackTo={"/slots"} >
@@ -32,13 +38,16 @@ const SlotDetails = () => {
             <DetailsInput label="Slot Number" input={slot.slotNumber} />
             <DetailsInput label="Size" input={`${slot.size} sqm.`} />
             <DetailsInput label="Rental Fee" input={slot.price ? currencyFormatter(slot.price) : "Not Configured"} />
-            <DetailsInput label="Next Billing Date" input={slot.slotStatus} />
+            <DetailsInput label="Next Billing Date" input={getSlotStatusText(slot.status)} />
           </>
         }
         detailsButton={
           <Button.Group vertical>
-            <Button as={Link} to={`/slots/${slot.id}/manage`} content="Edit" color="yellow" />
-            <Button content="Delete" color="red" style={{ marginTop: "10px" }} />
+            <Button as={Link} to={`/slots/${slot.id}/manage`} content="Edit" color="yellow" disabled={isSaving} />
+            <Button content="Delete" color="red" style={{ marginTop: "10px" }} disabled={slot.status === SlotStatus.Rented || slot.status === SlotStatus.Reserved}
+              loading={isSaving}
+              onClick={() => onDelete()}
+            />
           </Button.Group>
         }
       />

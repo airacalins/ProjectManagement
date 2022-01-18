@@ -3,4 +3,5 @@ export interface IModeOfPayment {
   bankName: string;
   accountName: string;
   accountNumber: string;
+  isEnabled:boolean;
 }

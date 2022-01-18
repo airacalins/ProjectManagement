@@ -86,12 +86,15 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UnitDto>> DeleteSlot(Guid id)
+        public async Task<ActionResult> DeleteSlot(Guid id)
         {
             var unit = await _context.Units.Include(i => i.TenantContracts).FirstOrDefaultAsync(i => i.Id == id);
             if (unit == null)
                 return NotFound("Slot not found");            
             
+            if (unit.SlotStatus == SlotStatus.Rented || unit.SlotStatus == SlotStatus.Reserved)
+                return NotFound("Can't delete rented or reserved slots");
+                      
             _context.Units.Remove(unit);
             await _context.SaveChangesAsync();
 

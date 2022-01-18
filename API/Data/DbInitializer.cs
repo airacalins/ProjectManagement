@@ -50,7 +50,7 @@ namespace API.Data
                         FirstName = "Ayah",
                         LastName = "Eloise",
                         Phone = "09123456789",
-                        Email = "ayaheloise@sample.com",
+                        BusinessName = "BN1",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                     new Tenant
@@ -58,7 +58,7 @@ namespace API.Data
                         FirstName = "Aira",
                         LastName = "Gals",
                         Phone = "09123456789",
-                        Email = "airagals@sample.com",
+                        BusinessName = "BN2",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                     new Tenant
@@ -66,7 +66,7 @@ namespace API.Data
                         FirstName = "Lex",
                         LastName = "Calin",
                         Phone = "09123456789",
-                        Email = "lexcalin@sample.com",
+                        BusinessName = "BN3",
                         DateCreated = DateTimeOffset.UtcNow
                     },
                 };
@@ -145,19 +145,22 @@ namespace API.Data
                     {
                         BankName = "BDO",
                         AccountName = "Maximo Galutera",
-                        AccountNumber = "00191928280"
+                        AccountNumber = "00191928280",
+                        IsEnabled = true
                     },
                     new ModeOfPayment
                     {
                         BankName = "GCASH",
                         AccountName = "Maximo Galutera",
-                        AccountNumber = "00191928280"
+                        AccountNumber = "00191928280",
+                        IsEnabled = true
                     },
                     new ModeOfPayment
                     {
                         BankName = "UNIONBANK",
                         AccountName = "Maximo Galutera",
-                        AccountNumber = "00191928280"
+                        AccountNumber = "00191928280",
+                        IsEnabled = true
                     }
                 };
 

@@ -5,13 +5,13 @@ export interface ISlot {
   slotNumber: string;
   size: number;
   price?: number;
-  slotStatus: slotStatus;
+  status: SlotStatus;
   tenantContract?: ITenantContract;
 }
 
-export enum slotStatus {
-  Available,
-  Rented,
-  UnderMaintenance,
-  Reserved
+export enum SlotStatus {
+  Available = 0,
+  Rented = 1,
+  UnderMaintenance = 2,
+  Reserved = 3
 }

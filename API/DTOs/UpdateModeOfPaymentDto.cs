@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Entities
+namespace API.DTOs
 {
-    public class ModeOfPayment
-    {
+    public class UpdateModeOfPaymentDto
+    {   
         public Guid Id { get; set; }
         public string BankName { get; set; }
         public string AccountName { get; set; }

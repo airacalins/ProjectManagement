@@ -8,15 +8,15 @@ import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import { Button } from "semantic-ui-react";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
+import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 
 
 const ModeOfPaymentForm = () => {
-
-    const { modeOfPayment: modeOfPaymentData, isFetchingDetails } = useAppSelecter(state => state.modeOfPayment);
+  
+    const [modeOfPayment, setModefPayment] = useState<IModeOfPayment>({ id: "", bankName: "", accountName: "", accountNumber: "", isEnabled: true })    
+    
+    const {modeOfPayment: modeOfPaymentData, isFetchingDetails, isSaving } = useAppSelecter(state => state.modeOfPayment);
     const dispatch = useAppDispatch();
-
-    const [modeOfPayment, setModefPayment] = useState<IModeOfPayment>({ id: "", bankName: "", accountName: "", accountNumber: "" })
 
     const { id } = useParams<{ id: string }>();
 
@@ -26,15 +26,19 @@ const ModeOfPaymentForm = () => {
 
 
     useEffect(() => {
-        modeOfPaymentData && setModefPayment(modeOfPaymentData)
-    }, [modeOfPayment])
-
+        if(id && modeOfPaymentData) setModefPayment(modeOfPaymentData)
+      }, [id, modeOfPayment])
 
     const validationSchema = Yup.object({
         bankName: Yup.string().required("Bank name is required."),
         accountName: Yup.string().required("Account name is required."),
         accountNumber: Yup.string().required("Account number is required."),
     })
+
+    
+    const onSubmit = (values:any) => {
+        if(!!values.bankName) dispatch(createModeOfPaymentAsync(values));
+    }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading mode of payments..." />)
 
@@ -46,16 +50,16 @@ const ModeOfPaymentForm = () => {
                     validationSchema={validationSchema}
                     enableReinitialize
                     initialValues={modeOfPayment}
-                    onSubmit={values => console.log(values)}>
+                    onSubmit={values => onSubmit(values)}>
                     {
-                        ({ handleSubmit }) => (
+                        ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
                                 <FormTextInput label="Bank Name" name="bankName" placeholder="Bank Name" />
                                 <FormTextInput label="Account Name" name="accountName" placeholder="Accounnt Name" />
                                 <FormTextInput label="Account Number" name="accountNumber" placeholder="Account Number" />
 
                                 <div>
-                                    <Button type="submit" content="Submit" color="orange" />
+                                    <Button type="submit" content="Submit" color="orange" loading={isSaving} disabled={!isValid} />
                                     <Button type="button" as={Link} to={id ? `/mode-of-payment/${modeOfPayment?.id}/details` : "/mode-of-payments"} content="Cancel" />
                                 </div>
                             </Form>
