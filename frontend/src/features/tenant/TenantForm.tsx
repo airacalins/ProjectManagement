@@ -28,8 +28,9 @@ interface ITenantInput {
   }
 
 const TenantForm = () => {
-    
+
     const { id, slotId: routeSlotId } = useParams<{ id: string, slotId: string }>();
+  
     const [tenant, setTenant] = useState<ITenantInput>({ id: "", firstName: "", lastName: "", companyName: "", address: "", contact: "", slotId: undefined, startDate: new Date(), endDate: new Date() })    
     
     const { tenant: tenantData, isFetchingDetails } = useAppSelecter(state => state.tenant);
@@ -43,13 +44,17 @@ const TenantForm = () => {
 
 
     useEffect(() => {
-       if(id) dispatch(fetchTenantDetailsAsync(id));
+        if (id) dispatch(fetchTenantDetailsAsync(id));
     }, [id])
-    
+
     useEffect(() => {
-        tenantData && setTenant(prev => { return {...prev, fullName: tenantData.firstName, companyName: tenantData.companyName, address: tenantData.address, contact: tenantData.phone,
-        slotId: !!tenantData.slotContract ? tenantData.slotContract.slot.id : routeSlotId }});
-     }, [tenantData])
+        tenantData && setTenant(prev => {
+            return {
+                ...prev, fullName: tenantData.firstName, companyName: tenantData.companyName, address: tenantData.address, contact: tenantData.phone,
+                slotId: !!tenantData.slotContract ? tenantData.slotContract.slot.id : routeSlotId
+            }
+        });
+    }, [tenantData])
 
     const validationSchema = Yup.object({
         firstName: Yup.string().required("First Name is required."),
@@ -83,6 +88,7 @@ const TenantForm = () => {
                     {
                         ({ handleSubmit, touched, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                            
                                 <FormSelectInput options={slots.map(s => ({ text: s.slotNumber, value: s.id }))} name="slotId" placeholder="Slot Number" label="Slot Number" />
                                 
                                 <FormTextInput name="firstName" placeholder="First Name" label="First Name" />

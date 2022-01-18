@@ -12,23 +12,23 @@ import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync } from "./mode
 
 
 const ModeOfPaymentForm = () => {
+  
     const [modeOfPayment, setModefPayment] = useState<IModeOfPayment>({ id: "", bankName: "", accountName: "", accountNumber: "", isEnabled: true })    
     
     const {modeOfPayment: modeOfPaymentData, isFetchingDetails, isSaving } = useAppSelecter(state => state.modeOfPayment);
     const dispatch = useAppDispatch();
 
     const { id } = useParams<{ id: string }>();
-  
+
     useEffect(() => {
-      if(id) dispatch(fetchModeOfPaymentDetailsAsync(id));
+        if (id) dispatch(fetchModeOfPaymentDetailsAsync(id));
     }, [id])
 
-    
+
     useEffect(() => {
         if(id && modeOfPaymentData) setModefPayment(modeOfPaymentData)
       }, [id, modeOfPayment])
 
-      
     const validationSchema = Yup.object({
         bankName: Yup.string().required("Bank name is required."),
         accountName: Yup.string().required("Account name is required."),
@@ -54,9 +54,9 @@ const ModeOfPaymentForm = () => {
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                <FormTextInput name="bankName" placeholder="Bank Name" />
-                                <FormTextInput name="accountName" placeholder="Accounnt Name" />
-                                <FormTextInput name="accountNumber" placeholder="Account Number" />
+                                <FormTextInput label="Bank Name" name="bankName" placeholder="Bank Name" />
+                                <FormTextInput label="Account Name" name="accountName" placeholder="Accounnt Name" />
+                                <FormTextInput label="Account Number" name="accountNumber" placeholder="Account Number" />
 
                                 <div>
                                     <Button type="submit" content="Submit" color="orange" loading={isSaving} disabled={!isValid} />

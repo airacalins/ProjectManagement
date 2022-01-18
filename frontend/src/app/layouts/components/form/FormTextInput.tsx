@@ -14,7 +14,9 @@ const FormTextInput = (props: Props) => {
     return (
 
         <Form.Field error={meta.touched && !!meta.error}>
-            <label>{props.label}</label>
+            {
+                meta.touched && <label className="label dark-gray">{props.label}</label>
+            }
 
             <input {...field} {...props} />
 

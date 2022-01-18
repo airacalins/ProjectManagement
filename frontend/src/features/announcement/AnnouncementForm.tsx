@@ -10,22 +10,29 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchAnnouncementDetailsAsync } from "./announcementSlice";
 
+interface IAnnouncementInput {
+    id: string,
+    subject: string,
+    message: string,
+}
+
 const AnnouncementForm = () => {
-    
-    const {announcement: announcementData, isFetchingDetails} = useAppSelecter(state => state.announcement);
+
+    const { id } = useParams<{ id: string }>();
+
+    const { announcement: announcementData, isFetchingDetails } = useAppSelecter(state => state.announcement);
     const dispatch = useAppDispatch();
 
     const [announcement, setAnnouncement] = useState<IAnnouncement>({ id: "", subject: "", message: "", dateCreated: "" })
 
-    const { id } = useParams<{ id: string }>();
-  
+
     useEffect(() => {
         if (id) dispatch(fetchAnnouncementDetailsAsync(id));
     }, [id])
-    
+
     useEffect(() => {
         announcementData && setAnnouncement(announcementData);
-      }, [announcementData])
+    }, [announcementData])
 
     const validationSchema = Yup.object({
         subject: Yup.string().required("Subject is required."),
@@ -46,8 +53,8 @@ const AnnouncementForm = () => {
                     {
                         ({ handleSubmit }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                <FormTextInput name="subject" placeholder="Subject" />
-                                <FormTextArea name="message" placeholder="Message" />
+                                <FormTextInput label="Subject" name="subject" placeholder="Subject" />
+                                <FormTextArea label="Message" name="message" placeholder="Message" />
 
                                 <div>
                                     <Button type="submit" content="Submit" color="orange" />
