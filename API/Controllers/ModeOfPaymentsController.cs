@@ -53,7 +53,7 @@ namespace API.Controllers
         }
         
         [HttpPut]
-        public async Task<ActionResult<ModeOfPayment>> UpdateSlot(CreateModeOfPaymentDto input)
+        public async Task<ActionResult<ModeOfPayment>> UpdateSlot(UpdateModeOfPaymentDto input)
         {
             var modeOfPayment = await _context.ModeOfPayments.FindAsync(input.Id);
             if (modeOfPayment == null)
