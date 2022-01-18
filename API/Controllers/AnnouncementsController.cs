@@ -51,7 +51,7 @@ namespace API.Controllers
         }
         
         [HttpPut]
-        public async Task<ActionResult<Announcement>> UpdateSlot(CreateAnnouncementDto input)
+        public async Task<ActionResult<Announcement>> UpdateSlot(UpdateAnnouncementDto input)
         {
             var announcement = await _context.Announcements.FindAsync(input.Id);
             if (announcement == null)

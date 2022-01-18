@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace API.DTOs
 {
-    public class CreateAnnouncementDto
+    public class UpdateAnnouncementDto
     {
+        public Guid Id { get; set; }
+        
         public string Title { get; set; }
         public string Message { get; set; }
     }
