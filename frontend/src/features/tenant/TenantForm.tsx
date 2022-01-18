@@ -21,13 +21,13 @@ interface ITenantInput {
 }
 
 const TenantForm = () => {
-    
+
     const { id, slotId: routeSlotId } = useParams<{ id: string, slotId: string }>();
-    const [tenant, setTenant] = useState<ITenantInput>({ id: "", fullName: "", companyName: "", address: "", contact: "", slotId: undefined })    
-    
+    const [tenant, setTenant] = useState<ITenantInput>({ id: "", fullName: "", companyName: "", address: "", contact: "", slotId: undefined })
+
     const { tenant: tenantData, isFetchingDetails } = useAppSelecter(state => state.tenant);
     const dispatch = useAppDispatch();
-    
+
     const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
 
     useEffect(() => {
@@ -36,13 +36,17 @@ const TenantForm = () => {
 
 
     useEffect(() => {
-       if(id) dispatch(fetchTenantDetailsAsync(id));
+        if (id) dispatch(fetchTenantDetailsAsync(id));
     }, [id])
-    
+
     useEffect(() => {
-        tenantData && setTenant(prev => { return {...prev, fullName: tenantData.firstName, companyName: tenantData.companyName, address: tenantData.address, contact: tenantData.phone,
-        slotId: !!tenantData.slotContract ? tenantData.slotContract.slot.id : routeSlotId }});
-     }, [tenantData])
+        tenantData && setTenant(prev => {
+            return {
+                ...prev, fullName: tenantData.firstName, companyName: tenantData.companyName, address: tenantData.address, contact: tenantData.phone,
+                slotId: !!tenantData.slotContract ? tenantData.slotContract.slot.id : routeSlotId
+            }
+        });
+    }, [tenantData])
 
 
     const validationSchema = Yup.object({
@@ -67,10 +71,10 @@ const TenantForm = () => {
                         ({ handleSubmit }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
                                 <FormSelectInput options={slots.map(s => ({ text: s.slotNumber, value: s.id }))} name="slotId" placeholder="Slot Number" />
-                                <FormTextInput name="fullName" placeholder="Full Name" />
-                                <FormTextInput name="companyName" placeholder="Business Name" />
-                                <FormTextInput name="address" placeholder="Address" />
-                                <FormTextInput name="contact" placeholder="Contact Number" />
+                                <FormTextInput label="Full Name" name="fullName" placeholder="Full Name" />
+                                <FormTextInput label="Business Name" name="companyName" placeholder="Business Name" />
+                                <FormTextInput label="Address" name="address" placeholder="Address" />
+                                <FormTextInput label="Contact Number" name="contact" placeholder="Contact Number" />
 
                                 <div>
                                     <Button type="submit" content="Submit" color="orange" />

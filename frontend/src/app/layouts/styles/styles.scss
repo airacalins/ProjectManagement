@@ -8,6 +8,10 @@
     }
   }
 
+  &.ui.form .field>label {
+    color: darkgray !important;
+  }
+
   &.margin {
     &.margin__m--0 {
       margin: 0;
@@ -41,6 +45,10 @@
     }
     &.margin__mb--5 {
       margin-bottom: 5em;
+    }
+    &.margin__mx--2 {
+      margin-top: 2em;
+      margin-bottom: 2em;
     }
   }
 
