@@ -8,10 +8,8 @@ namespace API.Services
 {
   public class RandomStringService
   {
-    public string GetRandomString()
+    public string GetRandomString(int length = 10)
     {
-      int length = 10;
-
       // creating a StringBuilder object()
       StringBuilder str_build = new StringBuilder();
       Random random = new Random();
@@ -26,7 +24,7 @@ namespace API.Services
         str_build.Append(letter);
       }
 
-      return str_build.ToString().ToLower();
+      return str_build.ToString();
     }
   }
 }

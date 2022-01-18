@@ -86,7 +86,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UnitDto>> DeleteSlot(Guid id)
+        public async Task<ActionResult> DeleteSlot(Guid id)
         {
             var unit = await _context.Units.Include(i => i.TenantContracts).FirstOrDefaultAsync(i => i.Id == id);
             if (unit == null)

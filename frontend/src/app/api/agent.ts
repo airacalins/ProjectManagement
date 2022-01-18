@@ -4,8 +4,8 @@ import { ICreateTenantInput } from '../models/tenant';
 import { store } from '../store/configureStore';
 import history from '../utils/history';
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-// axios.defaults.baseURL = 'https://fast-badlands-66183.herokuapp.com/api/';
+// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = 'https://fast-badlands-66183.herokuapp.com/api/';
 
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -63,6 +63,8 @@ const Tenant = {
 const Announcement = {
   list: () => request.get('announcements'),
   details: (id: string) => request.get(`announcements/${id}`),
+  create: (values: any) => request.post('announcements', values),
+  update: (values: any) => request.put('announcements', values)
 };
 
 const Slot = {
@@ -81,7 +83,9 @@ const Account = {
 
 const ModeOfPayment = {
   list: () => request.get('modeofpayments'),
-  details: (id: string) => request.get(`modeofpayments/${id}`)
+  details: (id: string) => request.get(`modeofpayments/${id}`),
+  create: (values: any) => request.post('modeofpayments', values),
+  update: (values: any) => request.put('modeofpayments', values)
 };
 
 const agent = {
