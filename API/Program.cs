@@ -151,7 +151,7 @@ app.UseEndpoints(opt =>
 });
 
 var startTimeSpan = TimeSpan.Zero;
-var periodTimeSpan = TimeSpan.FromMinutes(1);
+var periodTimeSpan = TimeSpan.FromHours(12);
 
 var timer = new System.Threading.Timer(async (e) =>
 {
