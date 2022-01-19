@@ -1,6 +1,6 @@
 export interface IAnnouncement {
   id: string;
-  subject: string;
+  title: string;
   message: string;
   dateCreated: string;
 }

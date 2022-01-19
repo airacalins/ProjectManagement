@@ -28,7 +28,7 @@ const AnnouncementTable = ({ announcements }: Props) => {
                     announcements.map(a => (
                         <Table.Row key={a.id}>
                             <TableBody content={dateFormatter(a.dateCreated)} />
-                            <TableBody content={a.subject} singleLine={true} />
+                            <TableBody content={a.title} singleLine={true} />
                             <TableBody content={a.message} />
                             <TableBody content=">" navigateTo={`/announcements/${a.id}/details`} />
                         </Table.Row>

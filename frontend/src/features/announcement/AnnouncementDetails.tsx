@@ -30,7 +30,7 @@ const AnnouncementDetails = () => {
                 detailsInput={
                     <>
                         <DetailsInput label="Date Created" input={dateFormatter(announcement?.dateCreated)} />
-                        <DetailsInput label="Subject" input={announcement?.subject} />
+                        <DetailsInput label="Subject" input={announcement?.title} />
                         <DetailsInput label="Message" input={announcement?.message} />
                     </>
                 }

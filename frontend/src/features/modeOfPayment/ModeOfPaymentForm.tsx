@@ -9,6 +9,7 @@ import { Button } from "semantic-ui-react";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
+import history from '../../app/utils/history';
 
 
 const ModeOfPaymentForm = () => {
@@ -36,8 +37,11 @@ const ModeOfPaymentForm = () => {
     })
 
     
-    const onSubmit = (values:any) => {
-        if(!!values.bankName) dispatch(createModeOfPaymentAsync(values));
+    const onSubmit = async (values:any) => {
+        if(!!values.bankName) {
+            await dispatch(createModeOfPaymentAsync(values));
+            history.push('/mode-of-payments')
+        };
     }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading mode of payments..." />)
