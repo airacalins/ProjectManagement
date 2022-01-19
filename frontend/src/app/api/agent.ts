@@ -88,12 +88,18 @@ const ModeOfPayment = {
   update: (values: any) => request.put('modeofpayments', values)
 };
 
+const Invoice = {
+  list: () => request.get('invoices'),
+  details: (id: string) => request.get(`invoices/${id}`),
+};
+
 const agent = {
   Tenant,
   Account,
   Slot,
   Announcement,
-  ModeOfPayment
+  ModeOfPayment,
+  Invoice
 };
 
 export default agent;

@@ -1,17 +1,24 @@
+import { useEffect } from "react";
 import ContainerPage from "../../app/layouts/components/container/ContainerPage";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import Tab from "../../app/layouts/components/tabs/Tab";
 import TabItem from "../../app/layouts/components/tabs/TabItem";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchInvoicessAsync } from "./invoiceSlice";
 import PaymentTable from "./PaymentTable";
 
 const Payment = () => {
 
-  // const { initialLoading, loadTenantPayments } = tenantPaymantStore;
+  
+  const { invoices, isFetching } = useAppSelecter(state => state.invoice);
+  const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //     loadTenantPayments()
-  // }, [loadTenantPayments])
+  useEffect(() => {
+    dispatch(fetchInvoicessAsync());
+  }, [])
 
-  // if (initialLoading) return <LoadingComponent content="Loading payments..." />
+
+  if (isFetching) return <LoadingComponent content="Loading invoices..." />
 
   return (
     <ContainerPage
@@ -23,7 +30,7 @@ const Payment = () => {
             <TabItem name="Delayed" navigateTo="./slot/delayed" />
           </Tab>
 
-          <PaymentTable />
+          <PaymentTable invoices={invoices} />
         </>
       } />
   );

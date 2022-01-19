@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { accountSlice } from "../../features/account/accountSlice";
 import { announcementSlice } from "../../features/announcement/announcementSlice";
 import { modeOfPaymentSlice } from "../../features/modeOfPayment/modeOfPaymentSlice";
+import { invoiceSlice } from "../../features/payment/invoiceSlice";
 import { slotSlice } from "../../features/slot/slotSlice";
 import { tenantSlice } from "../../features/tenant/tenantSlice";
 
@@ -12,7 +13,8 @@ export const store = configureStore({
     account: accountSlice.reducer,
     announcement: announcementSlice.reducer,
     slot: slotSlice.reducer,
-    modeOfPayment: modeOfPaymentSlice.reducer
+    modeOfPayment: modeOfPaymentSlice.reducer,
+    invoice: invoiceSlice.reducer
   }
 })
 

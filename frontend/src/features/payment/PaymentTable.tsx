@@ -1,9 +1,37 @@
+import moment from "moment";
+import { Table } from "semantic-ui-react";
 import SearchBar from "../../app/layouts/components/SearchBar";
 import TableBody from "../../app/layouts/components/table/TableBody";
 import TableComponent from "../../app/layouts/components/table/TableComponent";
 import TableHeader from "../../app/layouts/components/table/TableHeader";
+import { IInvoice, PaymentStatus } from "../../app/models/invoice";
+import { getPaymentStatusText } from "../../app/utils/common";
 
-const PaymentTable = () => {
+interface Props {
+    invoices: IInvoice[]
+}
+
+const PaymentTable = ({ invoices }: Props) => {
+    const renderPaymentDetails = (invoice: IInvoice) => {
+        if (invoice.payments != null && invoice.payments.length > 0 && invoice.payments.some(i => i.status === PaymentStatus.Approved)) {
+            const approvedPayment = invoice.payments.filter(i => i.status === PaymentStatus.Approved)[0];
+            return approvedPayment.bankName;
+        }
+
+        return "Not Paid"
+    };
+
+    
+    const renderPaymentStatusText = (invoice: IInvoice) => {
+        if (invoice.payments != null && invoice.payments.length > 0 && invoice.payments.some(i => i.status === PaymentStatus.Approved)) {
+            const approvedPayment = invoice.payments.filter(i => i.status === PaymentStatus.Approved)[0];
+            return getPaymentStatusText(approvedPayment.status);
+        }
+
+        return "-----"
+    };
+
+
     return (
         <>
             <SearchBar isLoading={false} value="" />
@@ -13,23 +41,29 @@ const PaymentTable = () => {
                     <>
                         <TableHeader name="Slot Number" />
                         <TableHeader name="Rental Fee" />
-                        <TableHeader name="Date of Payment" />
-                        <TableHeader name="Mode of Payment" />
+                        <TableHeader name="Due Date" />
                         <TableHeader name="Status" />
+                        <TableHeader name="Mode of Payment" />
                         <TableHeader name="" />
                     </>
                 }
 
                 tableBody={
-                    <>
-                        <TableBody content="A-001" />
-                        <TableBody content="P 12,000" />
-                        <TableBody content="July 14, 2021" />
-                        <TableBody content="BDO - Bank Transfer" />
-                        <TableBody content="Status" badgeColor="red" />
-                        <TableBody content=">" navigateTo="/payment/1/details" />
-                    </>
-                } />
+                    !invoices.length ?
+                        <TableBody colSpan="5" content="No invoices..." />
+                        :
+                        invoices.map(s => (
+                            <Table.Row key={s.id}>
+                                <TableBody content={s.slotNumber} />
+                                <TableBody content={s.amount} />
+                                <TableBody content={moment(s.dueDate).format("MMM Do YY")} />
+                                <TableBody content={renderPaymentStatusText(s)} badgeColor="red" />
+                                <TableBody content={renderPaymentDetails(s)} />
+                                <TableBody content=">" navigateTo="/payment/1/details" />
+                            </Table.Row>
+                        ))
+                }
+            />
         </>
     );
 }
