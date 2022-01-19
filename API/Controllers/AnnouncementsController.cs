@@ -35,7 +35,7 @@ namespace API.Controllers
         }
         
         [HttpPost]
-        public async Task<ActionResult<Announcement>> CreateModeOfPayment(CreateAnnouncementDto input)
+        public async Task<ActionResult<Announcement>> CreateAnnouncement(CreateAnnouncementDto input)
         {
             var announcement = new Announcement
             {
@@ -51,7 +51,7 @@ namespace API.Controllers
         }
         
         [HttpPut]
-        public async Task<ActionResult<Announcement>> UpdateSlot(UpdateAnnouncementDto input)
+        public async Task<ActionResult<Announcement>> UpdateAnnouncement(UpdateAnnouncementDto input)
         {
             var announcement = await _context.Announcements.FindAsync(input.Id);
             if (announcement == null)
@@ -67,7 +67,7 @@ namespace API.Controllers
 
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteSlot(Guid id)
+        public async Task<ActionResult> DeleteAnnouncement(Guid id)
         {
             var announcement = await _context.Announcements.FirstOrDefaultAsync(i => i.Id == id);
             if (announcement == null)

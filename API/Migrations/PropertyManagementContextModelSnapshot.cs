@@ -169,12 +169,11 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("TenantUniqueId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tenants");
                 });
@@ -363,15 +362,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f284c6b9-4b88-45a4-9f6b-556e73d20eed",
-                            ConcurrencyStamp = "c9a45590-218e-43bf-836a-17e4d9f6577e",
+                            Id = "a24634a0-84fd-4528-8353-409506c05767",
+                            ConcurrencyStamp = "eb08fb3c-9de9-4a5d-b23a-77cbc36d939e",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "c2919718-fe8b-4d59-a460-a98f42aa2828",
-                            ConcurrencyStamp = "44a5f1fd-ad6b-4744-bea8-e07b2576308b",
+                            Id = "b4e9f55e-5e4d-4c9a-a041-a617bc821874",
+                            ConcurrencyStamp = "86b77da8-8cd5-4e6e-948c-3a4c0ef78933",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -521,19 +520,10 @@ namespace API.Migrations
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("API.Entities.Tenant", b =>
-                {
-                    b.HasOne("API.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("API.Entities.TenantContract", b =>
                 {
                     b.HasOne("API.Entities.Tenant", "Tenant")
-                        .WithMany()
+                        .WithMany("TenantContracts")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -631,6 +621,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Invoice", b =>
                 {
                     b.Navigation("InvoiceItems");
+                });
+
+            modelBuilder.Entity("API.Entities.Tenant", b =>
+                {
+                    b.Navigation("TenantContracts");
                 });
 
             modelBuilder.Entity("API.Entities.Unit", b =>

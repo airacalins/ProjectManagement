@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Entities;
+using API.Services;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Data
 {
   public static class DbInitializer
   {
-    public static async Task Initialize(PropertyManagementContext context, UserManager<User> userManager)
+    public static async Task Initialize(PropertyManagementContext context, UserManager<User> userManager, RandomStringService randomStringService)
     {
       if (!userManager.Users.Any())
       {
@@ -51,7 +52,8 @@ namespace API.Data
                         LastName = "Eloise",
                         Phone = "09123456789",
                         BusinessName = "BN1",
-                        DateCreated = DateTimeOffset.UtcNow
+                        DateCreated = DateTimeOffset.UtcNow,
+                        TenantUniqueId = randomStringService.GetRandomString().ToUpper()
                     },
                     new Tenant
                     {
@@ -59,7 +61,8 @@ namespace API.Data
                         LastName = "Gals",
                         Phone = "09123456789",
                         BusinessName = "BN2",
-                        DateCreated = DateTimeOffset.UtcNow
+                        DateCreated = DateTimeOffset.UtcNow,
+                        TenantUniqueId = randomStringService.GetRandomString().ToUpper()
                     },
                     new Tenant
                     {
@@ -67,7 +70,8 @@ namespace API.Data
                         LastName = "Calin",
                         Phone = "09123456789",
                         BusinessName = "BN3",
-                        DateCreated = DateTimeOffset.UtcNow
+                        DateCreated = DateTimeOffset.UtcNow,
+                        TenantUniqueId = randomStringService.GetRandomString().ToUpper()
                     },
                 };
 

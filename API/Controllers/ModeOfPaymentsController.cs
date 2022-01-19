@@ -37,7 +37,7 @@ namespace API.Controllers
         
 
         [HttpPost]
-        public async Task<ActionResult<ModeOfPayment>> CreateModeOfPayment(CreateModeOfPaymentDto input)
+        public async Task<ActionResult<ModeOfPayment>> Create(CreateModeOfPaymentDto input)
         {
             var newModeOfPayment = new ModeOfPayment
             {
@@ -53,7 +53,7 @@ namespace API.Controllers
         }
         
         [HttpPut]
-        public async Task<ActionResult<ModeOfPayment>> UpdateSlot(UpdateModeOfPaymentDto input)
+        public async Task<ActionResult<ModeOfPayment>> Update(UpdateModeOfPaymentDto input)
         {
             var modeOfPayment = await _context.ModeOfPayments.FindAsync(input.Id);
             if (modeOfPayment == null)

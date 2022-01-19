@@ -26,7 +26,7 @@ const AnnouncementTable = ({ announcements }: Props) => {
                     <TableBody colSpan="5" content="No slots..." />
                     :
                     announcements.map(a => (
-                        <Table.Row>
+                        <Table.Row key={a.id}>
                             <TableBody content={dateFormatter(a.dateCreated)} />
                             <TableBody content={a.subject} singleLine={true} />
                             <TableBody content={a.message} />

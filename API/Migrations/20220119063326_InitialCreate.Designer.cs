@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    [Migration("20220117091900_AddBusinessName")]
-    partial class AddBusinessName
+    [Migration("20220119063326_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,6 +119,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.ToTable("ModeOfPayments");
@@ -168,12 +171,11 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("TenantUniqueId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tenants");
                 });
@@ -362,15 +364,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "73bb57a3-253a-4e64-be68-12cd156b1d88",
-                            ConcurrencyStamp = "3d7d39a0-5a49-44d6-8f3f-aee60743be2a",
+                            Id = "a24634a0-84fd-4528-8353-409506c05767",
+                            ConcurrencyStamp = "eb08fb3c-9de9-4a5d-b23a-77cbc36d939e",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "573d9b07-9417-40df-bab9-d167d7c6e98b",
-                            ConcurrencyStamp = "2a60e892-e458-45bf-a081-b53c6dcdc09a",
+                            Id = "b4e9f55e-5e4d-4c9a-a041-a617bc821874",
+                            ConcurrencyStamp = "86b77da8-8cd5-4e6e-948c-3a4c0ef78933",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -520,19 +522,10 @@ namespace API.Migrations
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("API.Entities.Tenant", b =>
-                {
-                    b.HasOne("API.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("API.Entities.TenantContract", b =>
                 {
                     b.HasOne("API.Entities.Tenant", "Tenant")
-                        .WithMany()
+                        .WithMany("TenantContracts")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -630,6 +623,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Invoice", b =>
                 {
                     b.Navigation("InvoiceItems");
+                });
+
+            modelBuilder.Entity("API.Entities.Tenant", b =>
+                {
+                    b.Navigation("TenantContracts");
                 });
 
             modelBuilder.Entity("API.Entities.Unit", b =>

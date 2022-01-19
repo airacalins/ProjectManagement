@@ -6,6 +6,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Enums;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +17,10 @@ namespace API.Controllers
   public class TenantsController : ControllerBase
   {
     private readonly PropertyManagementContext _context;
-    public TenantsController(PropertyManagementContext context)
+    private readonly RandomStringService _randomStringService;
+    public TenantsController(PropertyManagementContext context, RandomStringService randomStringService)
     {
+      _randomStringService = randomStringService;
       _context = context;
     }
 
@@ -45,13 +48,23 @@ namespace API.Controllers
       {
         return NotFound("Unit not found.");
       }
+
+      var isValidTenantUniqueId = false;
+      var tenantUniqueId = string.Empty;
+      while(!isValidTenantUniqueId)
+      {
+        tenantUniqueId = _randomStringService.GetRandomString().ToUpper();
+        isValidTenantUniqueId = !(await _context.Tenants.AnyAsync(i => i.TenantUniqueId == tenantUniqueId));
+      }
+
       var tenant = new Tenant
       {
         FirstName = input.FirstName,
         LastName = input.LastName,
         Phone = input.Contact,
         BusinessName = input.CompanyName ?? string.Empty,
-        DateCreated = DateTimeOffset.UtcNow
+        DateCreated = DateTimeOffset.UtcNow,
+        TenantUniqueId = tenantUniqueId
       };
       _context.Tenants.Add(tenant);
       await _context.SaveChangesAsync();

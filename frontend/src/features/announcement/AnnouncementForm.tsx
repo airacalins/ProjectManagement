@@ -25,11 +25,10 @@ const AnnouncementForm = () => {
 
     const validationSchema = Yup.object({
         subject: Yup.string().required("Subject is required."),
-        message: Yup.number().required("Message is required."),
     })
 
     const onSubmit = (values: any) => {
-        if (!!values.subject) dispatch(createAnnouncementAsync(values))
+        if (!!values.message) dispatch(createAnnouncementAsync(values))
     }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading announcements..." />)
@@ -42,10 +41,11 @@ const AnnouncementForm = () => {
                     validationSchema={validationSchema}
                     enableReinitialize
                     initialValues={announcement}
-                    onSubmit={values => console.log(values)}>
+                    onSubmit={values => onSubmit(values)}>
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                                {isValid.toString()}
                                 <FormTextInput label="Subject" name="subject" placeholder="Subject" />
                                 <FormTextArea label="Message" name="message" placeholder="Message" />
 
