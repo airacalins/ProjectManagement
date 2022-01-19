@@ -19,7 +19,7 @@ const initialState: IModeOfPaymentState = {
 }
 
 export const fetchModeOfPaymentsAsync = createAsyncThunk<IModeOfPayment[]>(
-  'tenants/fetchModeOfPaymentsAsync',
+  'modeOfPayments/fetchModeOfPaymentsAsync',
   async (_, thunkAPI) => {
     try {
       return await agent.ModeOfPayment.list();
@@ -30,7 +30,7 @@ export const fetchModeOfPaymentsAsync = createAsyncThunk<IModeOfPayment[]>(
 )
 
 export const fetchModeOfPaymentDetailsAsync = createAsyncThunk<IModeOfPayment, string>(
-  'announcements/fetchModeOfPaymentDetailsAsync',
+  'modeOfPayments/fetchModeOfPaymentDetailsAsync',
   async (id, thunkAPI) => {
     try {
       return await agent.ModeOfPayment.details(id);
@@ -40,9 +40,8 @@ export const fetchModeOfPaymentDetailsAsync = createAsyncThunk<IModeOfPayment, s
   }
 )
 
-
 export const createModeOfPaymentAsync = createAsyncThunk<IModeOfPayment, IModeOfPayment>(
-  'announcements/createModeOfPaymentAsync',
+  'modeOfPayments/createModeOfPaymentAsync',
   async (modeOfPayment, thunkAPI) => {
     try {
       return await agent.ModeOfPayment.create(modeOfPayment);

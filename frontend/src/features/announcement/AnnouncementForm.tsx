@@ -8,36 +8,29 @@ import * as Yup from 'yup';
 import { IAnnouncement } from "../../app/models/announcement";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchAnnouncementDetailsAsync } from "./announcementSlice";
-
-interface IAnnouncementInput {
-    id: string,
-    subject: string,
-    message: string,
-}
+import { createAnnouncementAsync, fetchAnnouncementDetailsAsync } from "./announcementSlice";
 
 const AnnouncementForm = () => {
 
-    const { id } = useParams<{ id: string }>();
-
-    const { announcement: announcementData, isFetchingDetails } = useAppSelecter(state => state.announcement);
-    const dispatch = useAppDispatch();
-
     const [announcement, setAnnouncement] = useState<IAnnouncement>({ id: "", subject: "", message: "", dateCreated: "" })
 
+    const { announcement: announcementData, isFetchingDetails, isSaving } = useAppSelecter(state => state.announcement);
+    const dispatch = useAppDispatch();
+
+    const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-        if (id) dispatch(fetchAnnouncementDetailsAsync(id));
-    }, [id])
-
-    useEffect(() => {
-        announcementData && setAnnouncement(announcementData);
-    }, [announcementData])
+        if (id && announcementData) setAnnouncement(announcementData)
+    }, [id, announcement])
 
     const validationSchema = Yup.object({
         subject: Yup.string().required("Subject is required."),
         message: Yup.number().required("Message is required."),
     })
+
+    const onSubmit = (values: any) => {
+        if (!!values.subject) dispatch(createAnnouncementAsync(values))
+    }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading announcements..." />)
 
@@ -51,13 +44,13 @@ const AnnouncementForm = () => {
                     initialValues={announcement}
                     onSubmit={values => console.log(values)}>
                     {
-                        ({ handleSubmit }) => (
+                        ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
                                 <FormTextInput label="Subject" name="subject" placeholder="Subject" />
                                 <FormTextArea label="Message" name="message" placeholder="Message" />
 
                                 <div>
-                                    <Button type="submit" content="Submit" color="orange" />
+                                    <Button type="submit" content="Submit" color="orange" loading={isSaving} disabled={!isValid} />
                                     <Button type="button" as={Link} to={id ? `/announcements/${announcementData?.id}/details` : "/announcements"} content="Cancel" />
                                 </div>
                             </Form>
