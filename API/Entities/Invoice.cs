@@ -18,5 +18,7 @@ namespace API.Entities
         public Unit Unit { get; set; }
         public ICollection<InvoiceItem> InvoiceItems { get; set; }
         public InvoiceStatus Status { get; set; }
+        public Guid? ModeOfPaymentId { get; set; }
+        public ModeOfPayment? ModeOfPayment { get; set; }
     }
 }

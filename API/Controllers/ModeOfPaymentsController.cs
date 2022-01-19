@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ModeOfPayment>>> GetModeOfPayments()
         {
-            var modeOfPayments = await _context.ModeOfPayments.ToListAsync();
+            var modeOfPayments = await _context.ModeOfPayments.Where(i => !i.IsArchived).ToListAsync();
             return Ok(modeOfPayments);
         }
 
@@ -44,7 +44,7 @@ namespace API.Controllers
                 AccountName = input.AccountName,
                 AccountNumber = input.AccountNumber,
                 BankName = input.BankName,
-                IsEnabled = true
+                IsArchived = false
             };
             
             _context.ModeOfPayments.Add(newModeOfPayment);
@@ -66,6 +66,19 @@ namespace API.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(modeOfPayment);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var modeOfPayment = await _context.ModeOfPayments.FirstOrDefaultAsync(i => i.Id == id);
+            if (modeOfPayment == null)
+                return NotFound("Mode of payment not found");      
+
+            modeOfPayment.IsArchived = true;
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
