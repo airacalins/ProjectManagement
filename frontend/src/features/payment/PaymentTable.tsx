@@ -18,7 +18,7 @@ const PaymentTable = ({ invoices }: Props) => {
             return approvedPayment.bankName;
         }
 
-        return "Not Paid"
+        return "-----"
     };
 
     
@@ -28,7 +28,7 @@ const PaymentTable = ({ invoices }: Props) => {
             return getPaymentStatusText(approvedPayment.status);
         }
 
-        return "-----"
+        return "Unpaid"
     };
 
 
