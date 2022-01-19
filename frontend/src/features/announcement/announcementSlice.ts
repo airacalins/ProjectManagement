@@ -7,13 +7,15 @@ export interface IAnnouncementState {
   isFetching: boolean;
   announcement?: IAnnouncement;
   isFetchingDetails: boolean;
+  isSaving: boolean;
 }
 
 const initialState: IAnnouncementState = {
   announcements: [],
   isFetching: false,
   announcement: undefined,
-  isFetchingDetails: false
+  isFetchingDetails: false,
+  isSaving: false
 }
 
 export const fetchAnnouncementsAsync = createAsyncThunk<IAnnouncement[]>(
@@ -32,6 +34,17 @@ export const fetchAnnouncementDetailsAsync = createAsyncThunk<IAnnouncement, str
   async (id, thunkAPI) => {
     try {
       return await agent.Announcement.details(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const createAnnouncementAsync = createAsyncThunk<IAnnouncement, IAnnouncement>(
+  "announcements/createAnnouncementAsync", 
+  async (announcement, thunkAPI) => {
+    try {
+      return await agent.Announcement.create(announcement);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})
     }
@@ -66,6 +79,17 @@ export const announcementSlice = createSlice({
     });
     builder.addCase(fetchAnnouncementDetailsAsync.rejected, (state, action) => {
       state.isFetchingDetails = false;
+    });
+
+
+    builder.addCase(createAnnouncementAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(createAnnouncementAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(createAnnouncementAsync.rejected, (state, action) => {
+      state.isSaving = false;
     });
   })
 })
