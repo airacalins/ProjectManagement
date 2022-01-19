@@ -45,7 +45,6 @@ const AnnouncementForm = () => {
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                {isValid.toString()}
                                 <FormTextInput label="Subject" name="subject" placeholder="Subject" />
                                 <FormTextArea label="Message" name="message" placeholder="Message" />
 
