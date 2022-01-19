@@ -115,6 +115,7 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PhotoAccessorService>();
 builder.Services.AddScoped<PhotoService>();
 builder.Services.AddScoped<RandomStringService>();
+builder.Services.AddScoped<InvoiceService>();
 
 var app = builder.Build();
 
@@ -149,7 +150,22 @@ app.UseEndpoints(opt =>
   opt.MapFallbackToController("Index", "Fallback");
 });
 
+var startTimeSpan = TimeSpan.Zero;
+var periodTimeSpan = TimeSpan.FromMinutes(1);
+
+var timer = new System.Threading.Timer(async (e) =>
+{
+    await InvoiceGenerator(app);   
+}, null, startTimeSpan, periodTimeSpan);
+
 app.Run();
+
+async Task InvoiceGenerator(WebApplication webApplication)
+{
+  using var scope = webApplication.Services.CreateScope();
+  var invoiceService = scope.ServiceProvider.GetRequiredService<InvoiceService>();
+  await invoiceService.GenerateInvoice();
+}
 
 async Task SeedData(WebApplication webApplication)
 {

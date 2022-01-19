@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    [Migration("20220119113853_AddModeOfPaymentInInvoice")]
-    partial class AddModeOfPaymentInInvoice
+    [Migration("20220119190934_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,11 +55,14 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DueDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid?>("ModeOfPaymentId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
 
                     b.Property<Guid>("TenantContractId")
                         .HasColumnType("uuid");
@@ -130,6 +133,40 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ModeOfPayments");
+                });
+
+            modelBuilder.Entity("API.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ModeOfPaymentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UnitId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ModeOfPaymentId");
+
+                    b.HasIndex("TenantId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>
@@ -369,15 +406,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "85d37848-4817-4637-8f6d-7a4bec2ab3a7",
-                            ConcurrencyStamp = "e6f7680b-7455-4e3a-a918-836a4b6b788d",
+                            Id = "08c4f7fc-f7ea-4bbf-b397-f71dc650e120",
+                            ConcurrencyStamp = "9484cb0e-c348-4d21-8929-521c3d43baad",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "158da936-3fcb-4d7e-ae0a-ca0443168d6d",
-                            ConcurrencyStamp = "cb6b9b87-f9de-4684-831c-d3fc7c606a49",
+                            Id = "a536e08c-fcd8-4fe1-affc-5562ae89fab4",
+                            ConcurrencyStamp = "f8902f18-de19-40b8-9956-456214c70329",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -491,7 +528,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Entities.Invoice", b =>
                 {
-                    b.HasOne("API.Entities.ModeOfPayment", "ModeOfPayment")
+                    b.HasOne("API.Entities.ModeOfPayment", null)
                         .WithMany("Invoices")
                         .HasForeignKey("ModeOfPaymentId");
 
@@ -513,8 +550,6 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ModeOfPayment");
-
                     b.Navigation("Tenant");
 
                     b.Navigation("TenantContract");
@@ -531,6 +566,39 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("API.Entities.Payment", b =>
+                {
+                    b.HasOne("API.Entities.Invoice", "Invoice")
+                        .WithMany("Payments")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.ModeOfPayment", "ModeOfPayment")
+                        .WithMany()
+                        .HasForeignKey("ModeOfPaymentId");
+
+                    b.HasOne("API.Entities.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Unit", "Unit")
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("ModeOfPayment");
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("API.Entities.TenantContract", b =>
@@ -634,6 +702,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Invoice", b =>
                 {
                     b.Navigation("InvoiceItems");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("API.Entities.ModeOfPayment", b =>

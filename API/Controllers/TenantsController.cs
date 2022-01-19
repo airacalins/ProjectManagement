@@ -84,6 +84,36 @@ namespace API.Controllers
       _context.TenantContracts.Add(newContract);
       await _context.SaveChangesAsync();
 
+      var invoice = new Invoice
+        {
+          TenantId = newContract.TenantId,
+          TenantContractId = newContract.Id,
+          UnitId = newContract.UnitId,
+          DateCreated = DateTimeOffset.UtcNow,
+          DueDate = newContract.NextPaymentDate
+        };
+
+        _context.Invoices.Add(invoice);
+        await _context.SaveChangesAsync();
+
+        var invoiceItem = new InvoiceItem
+        {
+          InvoiceId = invoice.Id,
+          Description = "Rental Fee",
+          Amount = newContract.Price
+        };
+
+        var depositInvoiceItem = new InvoiceItem
+        {
+          InvoiceId = invoice.Id,
+          Description = "Deposit Fee",
+          Amount = newContract.Price
+        };
+
+        _context.InvoiceItems.Add(invoiceItem);
+        _context.InvoiceItems.Add(depositInvoiceItem);
+        await _context.SaveChangesAsync();
+
       return Ok(tenant);
     }
   }

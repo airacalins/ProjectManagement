@@ -42,42 +42,42 @@ namespace API.Data
         await userManager.AddToRoleAsync(user2, "User");
       }
 
-      if (!context.Tenants.Any())
-      {
-        var tenants = new List<Tenant>
-                {
-                    new Tenant
-                    {
-                        FirstName = "Ayah",
-                        LastName = "Eloise",
-                        Phone = "09123456789",
-                        BusinessName = "BN1",
-                        DateCreated = DateTimeOffset.UtcNow,
-                        TenantUniqueId = randomStringService.GetRandomString().ToUpper()
-                    },
-                    new Tenant
-                    {
-                        FirstName = "Aira",
-                        LastName = "Gals",
-                        Phone = "09123456789",
-                        BusinessName = "BN2",
-                        DateCreated = DateTimeOffset.UtcNow,
-                        TenantUniqueId = randomStringService.GetRandomString().ToUpper()
-                    },
-                    new Tenant
-                    {
-                        FirstName = "Lex",
-                        LastName = "Calin",
-                        Phone = "09123456789",
-                        BusinessName = "BN3",
-                        DateCreated = DateTimeOffset.UtcNow,
-                        TenantUniqueId = randomStringService.GetRandomString().ToUpper()
-                    },
-                };
+      // if (!context.Tenants.Any())
+      // {
+      //   var tenants = new List<Tenant>
+      //           {
+      //               new Tenant
+      //               {
+      //                   FirstName = "Ayah",
+      //                   LastName = "Eloise",
+      //                   Phone = "09123456789",
+      //                   BusinessName = "BN1",
+      //                   DateCreated = DateTimeOffset.UtcNow,
+      //                   TenantUniqueId = randomStringService.GetRandomString().ToUpper()
+      //               },
+      //               new Tenant
+      //               {
+      //                   FirstName = "Aira",
+      //                   LastName = "Gals",
+      //                   Phone = "09123456789",
+      //                   BusinessName = "BN2",
+      //                   DateCreated = DateTimeOffset.UtcNow,
+      //                   TenantUniqueId = randomStringService.GetRandomString().ToUpper()
+      //               },
+      //               new Tenant
+      //               {
+      //                   FirstName = "Lex",
+      //                   LastName = "Calin",
+      //                   Phone = "09123456789",
+      //                   BusinessName = "BN3",
+      //                   DateCreated = DateTimeOffset.UtcNow,
+      //                   TenantUniqueId = randomStringService.GetRandomString().ToUpper()
+      //               },
+      //           };
 
-        context.Tenants.AddRange(tenants);
-        context.SaveChanges();
-      }
+      //   context.Tenants.AddRange(tenants);
+      //   context.SaveChanges();
+      // }
 
       if (!context.Units.Any())
       {

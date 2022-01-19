@@ -1,8 +1,8 @@
 namespace API.Enums
 {
-    public enum InvoiceStatus
+    public enum PaymentStatus
     {        
-        Sent,
+        Unpaid,
         Pending,
         Approved,
         Declined
