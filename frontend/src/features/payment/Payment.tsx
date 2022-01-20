@@ -24,12 +24,6 @@ const Payment = () => {
     <ContainerPage
       children={
         <>
-          <Tab>
-            <TabItem name="All" navigateTo="./tenant" />
-            <TabItem name="Updated" navigateTo="./slot/updated" />
-            <TabItem name="Delayed" navigateTo="./slot/delayed" />
-          </Tab>
-
           <PaymentTable invoices={invoices} />
         </>
       } />

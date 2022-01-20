@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Table } from "semantic-ui-react";
+import { Icon, Menu, Table } from "semantic-ui-react";
 import SearchBar from "../../app/layouts/components/SearchBar";
 import TableBody from "../../app/layouts/components/table/TableBody";
 import TableComponent from "../../app/layouts/components/table/TableComponent";
@@ -21,7 +21,7 @@ const PaymentTable = ({ invoices }: Props) => {
         return "-----"
     };
 
-    
+
     const renderPaymentStatusText = (invoice: IInvoice) => {
         if (invoice.payments != null && invoice.payments.length > 0 && invoice.payments.some(i => i.status === PaymentStatus.Approved)) {
             const approvedPayment = invoice.payments.filter(i => i.status === PaymentStatus.Approved)[0];
@@ -39,11 +39,11 @@ const PaymentTable = ({ invoices }: Props) => {
             <TableComponent
                 tableHeader={
                     <>
+                        <TableHeader name="Tenant" />
                         <TableHeader name="Slot Number" />
                         <TableHeader name="Rental Fee" />
                         <TableHeader name="Due Date" />
                         <TableHeader name="Status" />
-                        <TableHeader name="Mode of Payment" />
                         <TableHeader name="" />
                     </>
                 }
@@ -54,11 +54,11 @@ const PaymentTable = ({ invoices }: Props) => {
                         :
                         invoices.map(s => (
                             <Table.Row key={s.id}>
+                                <TableBody content={`${s.firstName} ${s.lastName}`} />
                                 <TableBody content={s.slotNumber} />
                                 <TableBody content={s.amount} />
                                 <TableBody content={moment(s.dueDate).format("MMM Do YY")} />
                                 <TableBody content={renderPaymentStatusText(s)} badgeColor="red" />
-                                <TableBody content={renderPaymentDetails(s)} />
                                 <TableBody content=">" navigateTo="/payment/1/details" />
                             </Table.Row>
                         ))

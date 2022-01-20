@@ -2,10 +2,11 @@ import { Table } from "semantic-ui-react";
 
 interface Props {
     tableHeader: any,
-    tableBody: any
+    tableBody: any,
+    tableFooter?: any
 }
 
-const TableComponent = ({ tableHeader, tableBody }: Props) => {
+const TableComponent = ({ tableHeader, tableBody, tableFooter }: Props) => {
     return (
         <Table color="black" padded="very" style={{ marginTop: 0 }}>
             <Table.Header>
@@ -17,6 +18,10 @@ const TableComponent = ({ tableHeader, tableBody }: Props) => {
             <Table.Body>
                 {tableBody}
             </Table.Body>
+
+            {tableFooter && <Table.Footer>
+                {tableFooter}
+                </Table.Footer>}
         </Table>
     );
 }
