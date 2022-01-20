@@ -31,7 +31,7 @@ export const fetchInvoiceDetailsAsync = createAsyncThunk<IInvoice, string>(
   'invoice/fetchInvoiceDetailsAsync',
   async (id, thunkAPI) => {
     try {
-      return await agent.Slot.details(id);
+      return await agent.Invoice.details(id);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})
     }

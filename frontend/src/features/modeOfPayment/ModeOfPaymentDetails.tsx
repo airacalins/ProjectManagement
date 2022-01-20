@@ -10,16 +10,18 @@ import { fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 
 const ModeOfPaymentDetails = () => {
 
-    const {modeOfPayment, isFetchingDetails } = useAppSelecter(state => state.modeOfPayment);
+    const { modeOfPayment, isFetchingDetails } = useAppSelecter(state => state.modeOfPayment);
     const dispatch = useAppDispatch();
 
     const { id } = useParams<{ id: string }>();
-  
+
     useEffect(() => {
-      dispatch(fetchModeOfPaymentDetailsAsync(id));
+        dispatch(fetchModeOfPaymentDetailsAsync(id));
     }, [])
-    
+
     if (isFetchingDetails || !modeOfPayment) return (<LoadingComponent content="Loading mode of payment details..." />)
+
+    const { bankName, accountName, accountNumber } = modeOfPayment
 
     return (
         <ContainerDetails>
@@ -28,9 +30,9 @@ const ModeOfPaymentDetails = () => {
                 title="Payment Details"
                 detailsInput={
                     <>
-                        <DetailsInput label="Bank Name" input={modeOfPayment.bankName} />
-                        <DetailsInput label="Account Name" input={modeOfPayment.accountName} />
-                        <DetailsInput label="Account Number" input={modeOfPayment.accountNumber} />
+                        <DetailsInput label="Bank Name" input={bankName} />
+                        <DetailsInput label="Account Name" input={accountName} />
+                        <DetailsInput label="Account Number" input={accountNumber} />
                     </>
                 }
                 detailsButton={
