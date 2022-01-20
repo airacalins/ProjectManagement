@@ -10,17 +10,19 @@ import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore"
 import { fetchAnnouncementDetailsAsync } from "./announcementSlice"
 
 const AnnouncementDetails = () => {
-    
-    const {announcement, isFetchingDetails} = useAppSelecter(state => state.announcement);
+
+    const { announcement, isFetchingDetails } = useAppSelecter(state => state.announcement);
     const dispatch = useAppDispatch();
 
     const { id } = useParams<{ id: string }>();
-  
+
     useEffect(() => {
-      dispatch(fetchAnnouncementDetailsAsync(id));
+        dispatch(fetchAnnouncementDetailsAsync(id));
     }, [])
 
     if (isFetchingDetails || !announcement) return (<LoadingComponent content="Loading announcement details..." />)
+
+    const { dateCreated, title, message } = announcement
 
     return (
         <ContainerDetails goBackTo={"/announcements"} >
@@ -29,9 +31,9 @@ const AnnouncementDetails = () => {
                 title="Announcement Details"
                 detailsInput={
                     <>
-                        <DetailsInput label="Date Created" input={dateFormatter(announcement?.dateCreated)} />
-                        <DetailsInput label="Subject" input={announcement?.title} />
-                        <DetailsInput label="Message" input={announcement?.message} />
+                        <DetailsInput label="Date Created" input={dateFormatter(dateCreated)} />
+                        <DetailsInput label="Subject" input={title} />
+                        <DetailsInput label="Message" input={message} />
                     </>
                 }
                 detailsButton={

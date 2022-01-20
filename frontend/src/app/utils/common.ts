@@ -20,3 +20,13 @@ export const getPaymentStatusText = (paymentStatus: PaymentStatus) => {
     default: return "NA";
   }
 }
+
+export const getPaymentStatusColor = (paymentStatus: PaymentStatus) => {
+  switch (paymentStatus) {
+    case PaymentStatus.Unpaid: return "orange";
+    case PaymentStatus.Pending: return "yellow";
+    case PaymentStatus.Approved: return "blue";
+    case PaymentStatus.Declined: return "red";
+    default: return "red";
+  }
+}

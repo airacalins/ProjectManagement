@@ -59,7 +59,7 @@ const PaymentTable = ({ invoices }: Props) => {
                                 <TableBody content={s.amount} />
                                 <TableBody content={moment(s.dueDate).format("MMM Do YY")} />
                                 <TableBody content={renderPaymentStatusText(s)} badgeColor="red" />
-                                <TableBody content=">" navigateTo="/payment/1/details" />
+                                <TableBody content=">" navigateTo={`/payments/${s.id}/details`} />
                             </Table.Row>
                         ))
                 }
