@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    partial class PropertyManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20220120054200_AddDateCreatedInPayment")]
+    partial class AddDateCreatedInPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,7 +147,7 @@ namespace API.Migrations
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ModeOfPaymentId")
+                    b.Property<Guid?>("ModeOfPaymentId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Status")
@@ -407,15 +409,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "04363806-5864-44cd-a479-c081cba3f77c",
-                            ConcurrencyStamp = "d995700a-7c9d-4398-a037-10efc8a7557a",
+                            Id = "1c6d8ae8-7e16-43f9-a1cf-845a6ca68b5b",
+                            ConcurrencyStamp = "a446a1ce-1314-455e-aa11-30b0c6095301",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "f4085a9a-5e8b-4d33-b43b-51aa7423f53e",
-                            ConcurrencyStamp = "041dc8f5-1a86-4a0e-a954-cbafd733a26a",
+                            Id = "90689457-bf83-4a03-af49-ccfb0b2569e8",
+                            ConcurrencyStamp = "bb5f35a6-d39e-4a3b-9c29-97bffd74c5f3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -579,9 +581,7 @@ namespace API.Migrations
 
                     b.HasOne("API.Entities.ModeOfPayment", "ModeOfPayment")
                         .WithMany()
-                        .HasForeignKey("ModeOfPaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ModeOfPaymentId");
 
                     b.HasOne("API.Entities.Tenant", "Tenant")
                         .WithMany()

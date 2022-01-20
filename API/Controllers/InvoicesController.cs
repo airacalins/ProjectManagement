@@ -45,7 +45,8 @@ namespace API.Controllers
                     Status = p.Status,
                     BankName = p.ModeOfPayment != null ? p.ModeOfPayment.BankName : string.Empty,
                     AccountName = p.ModeOfPayment != null ? p.ModeOfPayment.AccountName : string.Empty,
-                    AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty
+                    AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
+                    DateCreated = p.DateCreated
                 }),
                 DateCreated = i.DateCreated,
                 DueDate = i.DueDate
@@ -82,7 +83,8 @@ namespace API.Controllers
                     Status = p.Status,
                     BankName = p.ModeOfPayment != null ? p.ModeOfPayment.BankName : string.Empty,
                     AccountName = p.ModeOfPayment != null ? p.ModeOfPayment.AccountName : string.Empty,
-                    AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty
+                    AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
+                    DateCreated = p.DateCreated
                 }),
                 DateCreated = i.DateCreated,
                 DueDate = i.DueDate

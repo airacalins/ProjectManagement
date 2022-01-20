@@ -16,7 +16,8 @@ namespace API.Entities
         public Guid UnitId { get; set; }
         public Unit Unit { get; set; }
         public PaymentStatus Status { get; set; }
-        public Guid? ModeOfPaymentId { get; set; }
-        public ModeOfPayment? ModeOfPayment { get; set; }
+        public Guid ModeOfPaymentId { get; set; }
+        public ModeOfPayment ModeOfPayment { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
     }
 }
