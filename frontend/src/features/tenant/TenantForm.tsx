@@ -14,6 +14,7 @@ import FormDateInput from "../../app/layouts/components/form/FormDateInput";
 import { ICreateTenantInput } from "../../app/models/tenant";
 import { format } from "date-fns";
 import history from '../../app/utils/history';
+import { SlotStatus } from "../../app/models/slot";
 
 interface ITenantInput {
     id: string;
@@ -89,7 +90,7 @@ const TenantForm = () => {
                         ({ handleSubmit, touched, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
                             
-                                <FormSelectInput options={slots.map(s => ({ text: s.slotNumber, value: s.id }))} name="slotId" placeholder="Slot Number" label="Slot Number" />
+                                <FormSelectInput options={slots.filter(i => i.status === SlotStatus.Available).map(s => ({ text: s.slotNumber, value: s.id }))} name="slotId" placeholder="Slot Number" label="Slot Number" />
                                 
                                 <FormTextInput name="firstName" placeholder="First Name" label="First Name" />
                                 <FormTextInput name="lastName" placeholder="Last Name" label="Last Name" />
