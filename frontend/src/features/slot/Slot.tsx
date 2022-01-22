@@ -28,20 +28,6 @@ const Slot = () => {
     <ContainerPage
       children={
         <>
-          {/* <Tab>
-            <TabItem name="All" navigateTo="/slots" />
-            <TabItem name="Rented" navigateTo="/slots/rented" />
-            <TabItem name="Available" navigateTo="/slots/available" />
-            <TabButton name="Add Slot" navigateTo="/slots/create" />
-          </Tab> */}
-
-          <DashboardHeader>
-            <DashboardHeaderCard title="Slot" subtitle={`10 available slots`} icon="location arrow" iconColor="pink" />
-            <DashboardHeaderCard title="Tenant" subtitle={`10 tenants`} icon="users" iconColor="green" />
-            <DashboardHeaderCard title="Payment" subtitle="1 new payment" icon="credit card" iconColor="olive" />
-            <DashboardHeaderCard title="Late Payment" subtitle="1 late payment" icon="times" iconColor="purple" />
-          </DashboardHeader>
-
           <SlotTable slots={slots} />
         </>
       } />
