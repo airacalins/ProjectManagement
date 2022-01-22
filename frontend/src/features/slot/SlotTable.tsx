@@ -16,42 +16,6 @@ interface Props {
   slots: ISlot[]
 }
 
-// const SlotTable = ({ slots }: Props) => {
-
-//     return (
-//         <>
-//             <SearchBar isLoading={false} value="" />
-
-//             <TableComponent
-//                 tableHeader={
-//                     <>
-//                         <TableHeader name="Slot Number" />
-//                         <TableHeader name="Size" />
-//                         <TableHeader name="Rental Fee" />
-//                         <TableHeader name="Status" />
-//                         <TableHeader name="" />
-//                     </>
-//                 }
-
-//                 tableBody={
-//                     !slots.length ?
-//                         <TableBody colSpan="5" content="No slots..." />
-//                         :
-//                         slots.map(s => (
-//                             <Table.Row key={s.id}>
-//                                 <TableBody content={s.slotNumber} />
-//                                 <TableBody content={`${s.size} sqm.`} />
-//                                 <TableBody content={!!s.price ? `${currencyFormatter(s.price)} / monthly` : 'Not Configured'} />
-//                                 <TableBody content={s.tenantContract ? "Rented" : "Available"} badgeColor={s.tenantContract ? "blue" : "green"} />
-//                                 <TableBody content=">" navigateTo={`/slots/${s.id}/details`} />
-//                             </Table.Row>
-//                         ))
-//                 }
-//             />
-//         </>
-//     );
-// }
-
 const SlotTable = ({ slots }: Props) => {
   const columns = [
     { field: 'slotNumber', headerName: 'Slot Number', minWidth: 130 },
@@ -61,8 +25,7 @@ const SlotTable = ({ slots }: Props) => {
       field: 'status',
       headerName: 'Status',
       minWidth: 130,
-      renderCell: (params: GridValueGetterParams) => <Label content={params.row.tenantContract ? "Rented" : "Available"} color={params.row.tenantContract ? "blue" : "green"}></Label>,
-      // valueGetter: (params: GridValueGetterParams) => `${params.row.tenantContract ? "Rented" : "Available"}`
+      renderCell: (params: GridValueGetterParams) => <Label content={params.row.tenantContract ? "Rented" : "Available"} color={params.row.tenantContract ? "blue" : "green"}></Label>
     },
     {
       field: 'id',
