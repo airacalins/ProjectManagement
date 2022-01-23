@@ -29,6 +29,8 @@ export const fetchAnnouncementsAsync = createAsyncThunk<IAnnouncement[]>(
   }
 )
 
+
+
 export const fetchAnnouncementDetailsAsync = createAsyncThunk<IAnnouncement, string>(
   'announcements/fetchAnnouncementDetailsAsync',
   async (id, thunkAPI) => {
@@ -45,6 +47,28 @@ export const createAnnouncementAsync = createAsyncThunk<IAnnouncement, IAnnounce
   async (announcement, thunkAPI) => {
     try {
       return await agent.Announcement.create(announcement);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const updateAnnouncementDetailsAsync = createAsyncThunk<IAnnouncement, IAnnouncement>(
+  'announcements/updateAnnouncementDetailsAsync',
+  async (announcement, thunkAPI) => {
+    try {
+      return await agent.Announcement.update(announcement);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const deleteAnnouncementDetailsAsync = createAsyncThunk<IAnnouncement, string>(
+  'announcements/deleteAnnouncementDetailsAsync',
+  async (id, thunkAPI) => {
+    try {
+      return await agent.Announcement.delete(id);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})
     }

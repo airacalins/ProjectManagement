@@ -4,8 +4,8 @@ import { ISlot } from "../../app/models/slot";
 
 export interface ISlotState {
   slots: ISlot[];
-  isFetching: boolean;
   slot?: ISlot;
+  isFetching: boolean;
   isFetchingDetails: boolean;
   isSaving: boolean;
 }
@@ -19,7 +19,7 @@ const initialState: ISlotState = {
 }
 
 export const fetchSlotsAsync = createAsyncThunk<ISlot[]>(
-  'tenants/fetchSlotsAsync',
+  'slots/fetchSlotsAsync',
   async (_, thunkAPI) => {
     try {
       return await agent.Slot.list();
@@ -30,7 +30,7 @@ export const fetchSlotsAsync = createAsyncThunk<ISlot[]>(
 )
 
 export const fetchSlotDetailsAsync = createAsyncThunk<ISlot, string>(
-  'announcements/fetchSlotDetailsAsync',
+  'slots/fetchSlotDetailsAsync',
   async (id, thunkAPI) => {
     try {
       return await agent.Slot.details(id);
