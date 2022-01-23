@@ -40,6 +40,17 @@ export const fetchSlotDetailsAsync = createAsyncThunk<ISlot, string>(
   }
 )
 
+export const createSlotAsync = createAsyncThunk<ISlot, ISlot>(
+  "slots/createSlotAsync", 
+  async (slot, thunkAPI) => {
+    try {
+      return await agent.Slot.create(slot);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
 export const updateSlotDetailsAsync = createAsyncThunk<ISlot, ISlot>(
   'announcements/updateSlotDetailsAsync',
   async (slot, thunkAPI) => {
@@ -65,8 +76,8 @@ export const deleteSlotDetailsAsync = createAsyncThunk<ISlot, string>(
 export const slotSlice = createSlice({
   name: 'slot',
   initialState,
-  reducers: {
-  },
+  reducers: {},
+
   extraReducers: (builder => {
     builder.addCase(fetchSlotsAsync.pending, (state, action) => {
       state.isFetching = true;
@@ -90,6 +101,17 @@ export const slotSlice = createSlice({
     builder.addCase(fetchSlotDetailsAsync.rejected, (state, action) => {
       state.isFetchingDetails = false;
     });
+
+
+    builder.addCase(createSlotAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(createSlotAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(createSlotAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
     
     
     builder.addCase(updateSlotDetailsAsync.pending, (state, action) => {
@@ -103,8 +125,7 @@ export const slotSlice = createSlice({
       state.isSaving = false;
     });
 
-    
-    
+  
     builder.addCase(deleteSlotDetailsAsync.pending, (state, action) => {
       state.isSaving = true;
     });

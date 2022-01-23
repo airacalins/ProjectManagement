@@ -29,8 +29,6 @@ export const fetchAnnouncementsAsync = createAsyncThunk<IAnnouncement[]>(
   }
 )
 
-
-
 export const fetchAnnouncementDetailsAsync = createAsyncThunk<IAnnouncement, string>(
   'announcements/fetchAnnouncementDetailsAsync',
   async (id, thunkAPI) => {
@@ -78,9 +76,8 @@ export const deleteAnnouncementDetailsAsync = createAsyncThunk<IAnnouncement, st
 export const announcementSlice = createSlice({
   name: 'announcement',
   initialState,
-  reducers: {
-    
-  },
+  reducers: {},
+
   extraReducers: (builder => {
     builder.addCase(fetchAnnouncementsAsync.pending, (state, action) => {
       state.isFetching = true;
@@ -113,6 +110,29 @@ export const announcementSlice = createSlice({
       state.isSaving = false;
     });
     builder.addCase(createAnnouncementAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
+
+    builder.addCase(updateAnnouncementDetailsAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(updateAnnouncementDetailsAsync.fulfilled, (state, action) => {
+      state.announcement = action.payload;
+      state.isSaving = false;
+    });
+    builder.addCase(updateAnnouncementDetailsAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
+
+    builder.addCase(deleteAnnouncementDetailsAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(deleteAnnouncementDetailsAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(deleteAnnouncementDetailsAsync.rejected, (state, action) => {
       state.isSaving = false;
     });
   })
