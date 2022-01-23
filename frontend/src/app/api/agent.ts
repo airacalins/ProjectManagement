@@ -54,17 +54,33 @@ const request = {
   delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
-const Tenant = {
-  list: () => request.get('tenants'),
-  details: (id: string) => request.get(`tenants/${id}`),
-  create: (values: ICreateTenantInput) => request.post('tenants', values)
+const Account = {
+  login: (values: any) => request.post('account/login', values),
+  register: (values: any) => request.post('account/register', values),
+  currentUser: () => request.get('account/currentUser'),
 };
 
 const Announcement = {
   list: () => request.get('announcements'),
   details: (id: string) => request.get(`announcements/${id}`),
   create: (values: any) => request.post('announcements', values),
-  update: (values: any) => request.put('announcements', values)
+  update: (values: any) => request.put('announcements', values),
+  delete: (id: string) => request.delete(`announcements/${id}`),
+};
+
+const Invoice = {
+  list: () => request.get('invoices'),
+  details: (id: string) => request.get(`invoices/${id}`),
+  create: (values: any) => request.post('invoices', values),
+  update: (values: any) => request.put('invoices', values),
+};
+
+const ModeOfPayment = {
+  list: () => request.get('modeofpayments'),
+  details: (id: string) => request.get(`modeofpayments/${id}`),
+  create: (values: any) => request.post('modeofpayments', values),
+  update: (values: any) => request.put('modeofpayments', values),
+  delete: (id: string) => request.delete(`modeofpayments/${id}`),
 };
 
 const Slot = {
@@ -75,31 +91,19 @@ const Slot = {
   delete: (id: string) => request.delete(`slots/${id}`),
 };
 
-const Account = {
-  login: (values: any) => request.post('account/login', values),
-  register: (values: any) => request.post('account/register', values),
-  currentUser: () => request.get('account/currentUser'),
-};
-
-const ModeOfPayment = {
-  list: () => request.get('modeofpayments'),
-  details: (id: string) => request.get(`modeofpayments/${id}`),
-  create: (values: any) => request.post('modeofpayments', values),
-  update: (values: any) => request.put('modeofpayments', values)
-};
-
-const Invoice = {
-  list: () => request.get('invoices'),
-  details: (id: string) => request.get(`invoices/${id}`),
+const Tenant = {
+  list: () => request.get('tenants'),
+  details: (id: string) => request.get(`tenants/${id}`),
+  create: (values: ICreateTenantInput) => request.post('tenants', values)
 };
 
 const agent = {
-  Tenant,
   Account,
-  Slot,
   Announcement,
   ModeOfPayment,
-  Invoice
+  Invoice,
+  Slot,
+  Tenant,
 };
 
 export default agent;

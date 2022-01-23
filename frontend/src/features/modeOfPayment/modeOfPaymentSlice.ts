@@ -4,8 +4,8 @@ import { IModeOfPayment } from "../../app/models/modeOfPayment";
 
 export interface IModeOfPaymentState {
   modeOfPayments: IModeOfPayment[];
-  isFetching: boolean;
   modeOfPayment?: IModeOfPayment;
+  isFetching: boolean;
   isFetchingDetails: boolean;
   isSaving: boolean;
 }
@@ -51,12 +51,33 @@ export const createModeOfPaymentAsync = createAsyncThunk<IModeOfPayment, IModeOf
   }
 )
 
+export const updateModeOfPaymentDetailsAsync = createAsyncThunk<IModeOfPayment, IModeOfPayment>(
+  'modeOfPayments/updateModeOfPaymentDetailsAsync',
+  async (modeOfPayment, thunkAPI) => {
+    try {
+      return await agent.ModeOfPayment.update(modeOfPayment);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const deleteModeOfPaymentDetailsAsync = createAsyncThunk<IModeOfPayment, string>(
+  'modeOfPayments/deleteModeOfPaymentDetailsAsync',
+  async (id, thunkAPI) => {
+    try {
+      return await agent.ModeOfPayment.delete(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
 
 export const modeOfPaymentSlice = createSlice({
   name: 'modeOfPayment',
   initialState,
-  reducers: {
-  },
+  reducers: {},
+
   extraReducers: (builder => {
     builder.addCase(fetchModeOfPaymentsAsync.pending, (state, action) => {
       state.isFetching = true;
@@ -89,6 +110,29 @@ export const modeOfPaymentSlice = createSlice({
       state.isSaving = false;
     });
     builder.addCase(createModeOfPaymentAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
+
+    builder.addCase(updateModeOfPaymentDetailsAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(updateModeOfPaymentDetailsAsync.fulfilled, (state, action) => {
+      state.modeOfPayment = action.payload;
+      state.isSaving = false;
+    });
+    builder.addCase(updateModeOfPaymentDetailsAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
+
+    builder.addCase(deleteModeOfPaymentDetailsAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(deleteModeOfPaymentDetailsAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(deleteModeOfPaymentDetailsAsync.rejected, (state, action) => {
       state.isSaving = false;
     });
   })
