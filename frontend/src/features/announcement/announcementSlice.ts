@@ -4,8 +4,8 @@ import { IAnnouncement } from "../../app/models/announcement";
 
 export interface IAnnouncementState {
   announcements: IAnnouncement[];
-  isFetching: boolean;
   announcement?: IAnnouncement;
+  isFetching: boolean;
   isFetchingDetails: boolean;
   isSaving: boolean;
 }
