@@ -4,8 +4,8 @@ import { ISlot } from "../../app/models/slot";
 
 export interface ISlotState {
   slots: ISlot[];
-  isFetching: boolean;
   slot?: ISlot;
+  isFetching: boolean;
   isFetchingDetails: boolean;
   isSaving: boolean;
 }
@@ -19,7 +19,7 @@ const initialState: ISlotState = {
 }
 
 export const fetchSlotsAsync = createAsyncThunk<ISlot[]>(
-  'tenants/fetchSlotsAsync',
+  'slots/fetchSlotsAsync',
   async (_, thunkAPI) => {
     try {
       return await agent.Slot.list();
@@ -30,10 +30,21 @@ export const fetchSlotsAsync = createAsyncThunk<ISlot[]>(
 )
 
 export const fetchSlotDetailsAsync = createAsyncThunk<ISlot, string>(
-  'announcements/fetchSlotDetailsAsync',
+  'slots/fetchSlotDetailsAsync',
   async (id, thunkAPI) => {
     try {
       return await agent.Slot.details(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const createSlotAsync = createAsyncThunk<ISlot, ISlot>(
+  "slots/createSlotAsync", 
+  async (slot, thunkAPI) => {
+    try {
+      return await agent.Slot.create(slot);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})
     }
@@ -65,8 +76,8 @@ export const deleteSlotDetailsAsync = createAsyncThunk<ISlot, string>(
 export const slotSlice = createSlice({
   name: 'slot',
   initialState,
-  reducers: {
-  },
+  reducers: {},
+
   extraReducers: (builder => {
     builder.addCase(fetchSlotsAsync.pending, (state, action) => {
       state.isFetching = true;
@@ -90,6 +101,17 @@ export const slotSlice = createSlice({
     builder.addCase(fetchSlotDetailsAsync.rejected, (state, action) => {
       state.isFetchingDetails = false;
     });
+
+
+    builder.addCase(createSlotAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(createSlotAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(createSlotAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
     
     
     builder.addCase(updateSlotDetailsAsync.pending, (state, action) => {
@@ -103,8 +125,7 @@ export const slotSlice = createSlice({
       state.isSaving = false;
     });
 
-    
-    
+  
     builder.addCase(deleteSlotDetailsAsync.pending, (state, action) => {
       state.isSaving = true;
     });

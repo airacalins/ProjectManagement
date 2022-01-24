@@ -4,16 +4,18 @@ import { IInvoice } from "../../app/models/invoice";
 
 export interface IInvoiceState {
   invoices: IInvoice[];
-  isFetching: boolean;
   invoice?: IInvoice;
+  isFetching: boolean;
   isFetchingDetails: boolean;
+  isSaving: boolean;
 }
 
 const initialState: IInvoiceState = {
   invoices: [],
   isFetching: false,
   invoice: undefined,
-  isFetchingDetails: false
+  isFetchingDetails: false,
+  isSaving: false
 }
 
 export const fetchInvoicessAsync = createAsyncThunk<IInvoice[]>(
@@ -38,11 +40,34 @@ export const fetchInvoiceDetailsAsync = createAsyncThunk<IInvoice, string>(
   }
 )
 
+
+export const createInvoiceAsync = createAsyncThunk<IInvoice, IInvoice>(
+  "invoice/createInvoiceAsync", 
+  async (invoice, thunkAPI) => {
+    try {
+      return await agent.Invoice.create(invoice);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const updateInvoiceDetailsAsync = createAsyncThunk<IInvoice, IInvoice>(
+  'invoice/updateInvoiceDetailsAsync',
+  async (invoice, thunkAPI) => {
+    try {
+      return await agent.Invoice.update(invoice);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
 export const invoiceSlice = createSlice({
   name: 'invoice',
   initialState,
-  reducers: {
-  },
+  reducers: {},
+
   extraReducers: (builder => {
     builder.addCase(fetchInvoicessAsync.pending, (state, action) => {
       state.isFetching = true;
@@ -66,6 +91,30 @@ export const invoiceSlice = createSlice({
     builder.addCase(fetchInvoiceDetailsAsync.rejected, (state, action) => {
       state.isFetchingDetails = false;
     });
+
+
+    builder.addCase(createInvoiceAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(createInvoiceAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(createInvoiceAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
+
+    builder.addCase(updateInvoiceDetailsAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(updateInvoiceDetailsAsync.fulfilled, (state, action) => {
+      state.invoice = action.payload;
+      state.isSaving = false;
+    });
+    builder.addCase(updateInvoiceDetailsAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
   })
 })
 

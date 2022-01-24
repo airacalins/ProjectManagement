@@ -18,9 +18,9 @@ const SlotForm = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if(id) dispatch(fetchSlotDetailsAsync(id));
+        if (id) dispatch(fetchSlotDetailsAsync(id));
     }, [id])
-    
+
     useEffect(() => {
         slotDetails && setSlot(slotDetails);
     }, [slotDetails])
@@ -33,8 +33,8 @@ const SlotForm = () => {
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading slot..." />)
 
-    const onSubmit = (values:any) => {
-        if(id) dispatch(updateSlotDetailsAsync(values));
+    const onSubmit = (values: any) => {
+        if (id) dispatch(updateSlotDetailsAsync(values));
     }
 
     return (
