@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
+using API.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -90,6 +91,19 @@ namespace API.Controllers
                 DueDate = i.DueDate
             }).FirstOrDefaultAsync();
             return Ok(invoice);
+        }
+
+        [HttpPut("update-payment-status")]
+        public async Task<ActionResult> UpdatePaymentStatus(UpdateInvoicePaymentDto input)
+        {
+            var payment = await _context.Payments.FindAsync(input.Id);
+            if (payment == null)
+                return NotFound("Payment not found");
+
+            payment.Status = input.IsApproved ? PaymentStatus.Approved : PaymentStatus.Declined;
+            
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }
