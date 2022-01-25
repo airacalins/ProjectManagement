@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableHead } from '@mui/material';
 
-import CustomTablePagination from '../tablePagination/CustomTablePagination';
+import CustomTablePagination from './CustomTablePagination';
 
 function createData(name: string, calories: number, fat: number) {
   return { name, calories, fat };
@@ -23,7 +23,7 @@ interface CustomTableProps {
 
 const CustomTable = ({ columns, rows }: CustomTableProps) => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -45,8 +45,11 @@ const CustomTable = ({ columns, rows }: CustomTableProps) => {
 
   return (
     <TableContainer component={Paper}>
+
       <Table sx={{ minWidth: 500 }}>
+
         <TableHead>
+
           <TableRow>
             {columns.map((column, index) => (
               <TableCell align="center" key={index} style={{ ...column.style, fontSize: 14 }} >
@@ -54,7 +57,9 @@ const CustomTable = ({ columns, rows }: CustomTableProps) => {
               </TableCell>
             ))}
           </TableRow>
+
         </TableHead>
+
         <TableBody>
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -66,10 +71,11 @@ const CustomTable = ({ columns, rows }: CustomTableProps) => {
             </TableRow>
           )}
         </TableBody>
+
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+              rowsPerPageOptions={[10, 15, 25, { label: 'All', value: -1 }]}
               colSpan={columns.length}
               count={rows.length}
               rowsPerPage={rowsPerPage}
@@ -86,6 +92,7 @@ const CustomTable = ({ columns, rows }: CustomTableProps) => {
             />
           </TableRow>
         </TableFooter>
+
       </Table>
     </TableContainer>
   );

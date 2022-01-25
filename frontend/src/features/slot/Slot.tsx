@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchSlotsAsync } from "./slotSlice";
 
@@ -13,9 +13,17 @@ import MainPage from "../../app/layouts/components/pages/MainPage";
 
 
 const Slot = () => {
-
+  const [searchKey, setSearchKey] = useState('');
   const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
   const dispatch = useAppDispatch();
+
+  const data = useMemo(() => {
+    if (!!searchKey) {
+      return slots.filter(i => i.slotNumber.toLowerCase().includes(searchKey.toLowerCase()));
+    }
+
+    return slots;
+  }, [slots, searchKey])
 
   useEffect(() => {
     dispatch(fetchSlotsAsync());
@@ -25,7 +33,13 @@ const Slot = () => {
   if (isFetchingSlots) return <LoadingComponent content="Loading Slots..." />
 
   return (
-    <MainPage title="Slots" buttonTitle="Add Slot" />
+    <MainPage
+      searchValue={searchKey}
+      onSearch={(value: string) => setSearchKey(value)}
+      title="Slots"
+      buttonTitle="Add Slot"
+      content={<SlotTable slots={data} />}
+    />
 
     // <ContainerPage
     //   children={
