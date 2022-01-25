@@ -8,6 +8,9 @@ import SearchBar from "../../app/layouts/components/SearchBar";
 import SlotTable from "./SlotTable";
 import TabButton from "../../app/layouts/components/tabs/TabButton";
 import { Grid } from "semantic-ui-react";
+import MainPage from "../../app/layouts/components/pages/MainPage";
+
+
 
 const Slot = () => {
 
@@ -22,24 +25,26 @@ const Slot = () => {
   if (isFetchingSlots) return <LoadingComponent content="Loading Slots..." />
 
   return (
-    <ContainerPage
-      children={
-        <>
+    <MainPage title="Slots" buttonTitle="Add Slot" />
+
+    // <ContainerPage
+    //   children={
+    //     <>
 
 
-          <Grid>
-            <Grid.Column floated='left' width={5}>
-              <SearchBar />
-            </Grid.Column>
+    //       <Grid>
+    //         <Grid.Column floated='left' width={5}>
+    //           <SearchBar />
+    //         </Grid.Column>
 
-            <Grid.Column floated='right' width={5}>
-              <TabButton name="Add Slot" navigateTo="/slots/create" />
-            </Grid.Column>
-          </Grid>
+    //         <Grid.Column floated='right' width={5}>
+    //           <TabButton name="Add Slot" navigateTo="/slots/create" />
+    //         </Grid.Column>
+    //       </Grid>
 
-          <SlotTable slots={slots} />
-        </>
-      } />
+    //       <SlotTable slots={slots} />
+    //     </>
+    //   } />
   );
 }
 
