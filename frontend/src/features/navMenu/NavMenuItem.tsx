@@ -8,7 +8,7 @@ interface Props {
 
 const NavMenuItem = ({ name, icon, navigateTo }: Props) => {
     return (
-        <Nav.Link className="navMenu__text navMenu__text--hover d-flex text-light align-items-center px-4 w-100" href={navigateTo}>
+        <Nav.Link className="navMenu__text navMenu__text--hover d-flex text-light align-items-center px-4 w-100 my-1" href={navigateTo}>
             {icon}
             {name}
         </Nav.Link>

@@ -1,4 +1,5 @@
 import { Nav } from "react-bootstrap";
+
 import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -28,7 +29,7 @@ const NavMenu = () => {
             <NavMenuItem
                 name="Users"
                 icon={<PersonOutlinedIcon className="me-2" />}
-                navigateTo="/"
+                navigateTo="/users"
             />
 
             <NavMenuItem

@@ -1,0 +1,17 @@
+@import "../../app/layouts/styles/variables.scss";
+
+.page {
+    &__title {
+        background-color: white;
+        height: 80px
+    }
+
+    &__search {
+        background-color: white;
+    }
+
+    &__form {
+        height: 40px
+    }
+}
+

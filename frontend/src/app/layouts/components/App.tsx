@@ -1,4 +1,7 @@
 import { Route, useLocation } from "react-router-dom";
+
+import Dashboard from "../../../features/dashboard/Dashboard";
+
 import LoginForm from "../../../features/account/LoginForm";
 import SlotDetails from "../../../features/slot/SlotDetails";
 import Slot from "../../../features/slot/Slot";
@@ -12,7 +15,6 @@ import Announcement from "../../../features/announcement/Announcement";
 import SlotForm from "../../../features/slot/SlotForm";
 import TenantForm from "../../../features/tenant/TenantForm";
 import Payment from "../../../features/payment/Payment";
-import Dashboard from "../../../features/dashboard/Dashboard";
 import Map from "../../../features/map/Map";
 import TenantDetails from "../../../features/tenant/TenantDetails";
 import AnnouncementDetails from "../../../features/announcement/AnnouncementDetails";
@@ -35,7 +37,7 @@ function App() {
               <NavMenu />
             </Col>
 
-            <Col className="app__content">
+            <Col className="app__content p-0">
               <Route path='/login' exact component={LoginForm} />
               <Route path='/dashboard' exact component={Dashboard} />
               <Route path='/map' exact component={Map} />
