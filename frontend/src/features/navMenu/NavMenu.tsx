@@ -1,33 +1,79 @@
-import { Link } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
-import NavbarItem from "./NavMenuItem";
+import { Nav } from "react-bootstrap";
+import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
+import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
+import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+
+import NavMenuItem from "./NavMenuItem";
+import "./navMenu.scss"
 
 const NavMenu = () => {
 
     return (
-        <Menu vertical fluid borderless size="massive">
+        <Nav className="navMenu flex-column" defaultActiveKey="/home">
 
-            <Menu.Item as={Link} to="/" className="navbar navbar__bg--primary">
-                MaxiMarket
-            </Menu.Item>
+            <Nav.Link className="navMenu__title text-light p-3 pb-5" href="/">MaxiMarket</Nav.Link>
 
-            <NavbarItem name="Dashboard" icon="dashboard" navigateTo="/dashboard" />
+            <NavMenuItem
+                name="Dashboard"
+                icon={<DashboardCustomizeOutlinedIcon className="me-2" />}
+                navigateTo="/dashboard"
+            />
 
-            <NavbarItem name="Locator" icon="map" navigateTo="/map" />
+            <NavMenuItem
+                name="Users"
+                icon={<PersonOutlinedIcon className="me-2" />}
+                navigateTo="/"
+            />
 
-            <NavbarItem name="Slots" icon="location arrow" navigateTo="/slots" />
+            <NavMenuItem
+                name="Locator"
+                icon={<LocationOnOutlinedIcon className="me-2" />}
+                navigateTo="/map"
+            />
 
-            <NavbarItem name="Tenants" icon="user" navigateTo="/tenants" />
+            <NavMenuItem
+                name="Slots"
+                icon={<StorefrontOutlinedIcon className="me-2" />}
+                navigateTo="/slots"
+            />
 
-            <NavbarItem name="Payments" icon="money" navigateTo="/payments" />
+            <NavMenuItem
+                name="Tenants"
+                icon={<AccessibilityNewOutlinedIcon className="me-2" />}
+                navigateTo="/tenants"
+            />
 
-            <NavbarItem name="Mode of Payments" icon="credit card" navigateTo="/mode-of-payments" />
+            <NavMenuItem
+                name="Payments"
+                icon={<PointOfSaleOutlinedIcon className="me-2" />}
+                navigateTo="/payments"
+            />
 
-            <NavbarItem name="Announcements" icon="bullhorn" navigateTo="/announcements" />
+            <NavMenuItem
+                name="Mode of Payments"
+                icon={<PaymentOutlinedIcon className="me-2" />}
+                navigateTo="/mode-of-payments"
+            />
 
-            <NavbarItem name="Reports" icon="chart bar" navigateTo="/reports" />
+            <NavMenuItem
+                name="Announcements"
+                icon={<CampaignOutlinedIcon className="me-2" />}
+                navigateTo="/announcements"
+            />
 
-        </Menu>
+            <NavMenuItem
+                name="Reports"
+                icon={<AssessmentOutlinedIcon className="me-2" />}
+                navigateTo="/reports"
+            />
+
+        </Nav>
     );
 }
 

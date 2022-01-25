@@ -1,26 +1,25 @@
 import { useEffect } from "react"
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore"
 import { fetchSlotsAsync } from "../slot/slotSlice"
 import { fetchTenantsAsync } from "../tenant/tenantSlice"
-import DashboardBodyItem from "./DashbboardBodyItem"
+
 import DashboardBody from "./DashboardBody"
+import DashboardBodyItem from "./DashbboardBodyItem"
 import DashboardHeader from "./DashboardHeader"
 import DashboardHeaderCard from "./DashboardHeaderCard"
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
 
 const Dashboard = () => {
-
-    const {tenants, isFetching: isFetchingTenants} = useAppSelecter(state => state.tenant);
-    const {slots, isFetching: isFetchingSlots} = useAppSelecter(state => state.slot);
+    const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
+    const { tenants, isFetching: isFetchingTenants } = useAppSelecter(state => state.tenant);
     const dispatch = useAppDispatch();
-  
+
     useEffect(() => {
-      dispatch(fetchTenantsAsync());
-      dispatch(fetchSlotsAsync());
+        dispatch(fetchTenantsAsync());
+        dispatch(fetchSlotsAsync());
     }, [])
 
     if (isFetchingTenants || isFetchingSlots) return (<LoadingComponent content="Loading dashboard..." />)
-
 
     return (
         <>

@@ -1,0 +1,19 @@
+@import "../../app/layouts/styles/variables.scss";
+
+.navMenu {
+    background-color: $secondary;
+
+    &__title {
+        font-size: 2em;
+    }
+
+    &__text {
+        color: white;
+        font-size: 1.5em;
+    }
+
+    &__text--hover:hover {
+        background-color: white;
+        color: $secondary !important;
+    }
+}
