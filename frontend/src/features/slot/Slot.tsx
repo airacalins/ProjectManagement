@@ -6,7 +6,7 @@ import history from '../../app/utils/history';
 import { Label } from 'semantic-ui-react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
@@ -67,7 +67,7 @@ const Slot = () => {
                 </TableCell>
 
                 <TableCell align="right">
-                  <VisibilityIcon onClick={() => history.push(`/slots/${slot.id}/details`)} />
+                  <NavigateNextOutlinedIcon onClick={() => history.push(`/slots/${slot.id}/details`)} />
                 </TableCell>
 
               </TableRow>
@@ -75,7 +75,7 @@ const Slot = () => {
           }
           searchValue={searchKey}
           onSearch={(value: string) => setSearchKey(value)}
-          buttonTitle="Create Slot"
+          buttonTitle="Slot"
           navigateTo="/slots/create"
         />
       }

@@ -5,11 +5,12 @@ import history from '../../app/utils/history';
 
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import CustomTable from "../../app/layouts/components/table/CustomTable";
+import { Label } from "semantic-ui-react";
 
 const Tenant = () => {
     const [searchKey, setSearchKey] = useState('');
@@ -61,11 +62,11 @@ const Tenant = () => {
                             </TableCell>
 
                             <TableCell align="center">
-                                {/* <Label content={tenant.slot}></Label> */}
+                                <Label content={tenant.slotContract?.slot}></Label>
                             </TableCell>
 
                             <TableCell align="right">
-                                <VisibilityIcon onClick={() => history.push(`/tenants/${tenant.id}/details`)} />
+                                <NavigateNextOutlinedIcon onClick={() => history.push(`/tenants/${tenant.id}/details`)} />
                             </TableCell>
 
                         </TableRow>
@@ -73,7 +74,7 @@ const Tenant = () => {
                     }
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Add Tenant"
+                    buttonTitle="Tenant"
                     navigateTo="/tenants/create"
                 />
             }

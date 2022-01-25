@@ -1,38 +1,81 @@
-import { useEffect } from "react";
-import ContainerPage from "../../app/layouts/components/container/ContainerPage";
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import Tab from "../../app/layouts/components/tabs/Tab";
-import TabButton from "../../app/layouts/components/tabs/TabButton";
-import TabItem from "../../app/layouts/components/tabs/TabItem";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchTenantsAsync } from "../tenant/tenantSlice";
 import { fetchAnnouncementsAsync } from "./announcementSlice";
-import AnnouncementTable from "./AnnouncementTable";
+import moment from "moment";
+import history from '../../app/utils/history';
+
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
+
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import MainPage from "../../app/layouts/components/pages/MainPage";
+import CustomTable from "../../app/layouts/components/table/CustomTable";
 
 const Announcement = () => {
+    const [searchKey, setSearchKey] = useState('');
+    const { announcements, isFetching: isFetchingAnnouncements } = useAppSelecter(state => state.announcement);
 
-    const {announcements, isFetching} = useAppSelecter(state => state.announcement);
     const dispatch = useAppDispatch();
-  
-    useEffect(() => {
-      dispatch(fetchAnnouncementsAsync());
-    }, [])
-  
 
-    if (isFetching) return <LoadingComponent content="Loading Announcements..." />
+    const data = useMemo(() => {
+        if (!!searchKey) {
+            return announcements.filter(i => i.title.toLowerCase().includes(searchKey.toLowerCase()));
+        }
+        return announcements;
+    }, [announcements, searchKey])
+
+    useEffect(() => {
+        dispatch(fetchAnnouncementsAsync());
+    }, [])
+
+    if (isFetchingAnnouncements) return <LoadingComponent content="Loading Announcements..." />
+
+    const columns = [
+        { title: 'Date Created' },
+        { title: 'Subject' },
+        { title: 'Message' },
+        { title: '' },
+    ]
 
     return (
-        <ContainerPage
-            children={
-                <>
-                    <Tab>
-                        <TabItem name="All" navigateTo="./announcements" />
-                        <TabButton name="Add Announcement" navigateTo="/announcements/create" />
-                    </Tab>
+        <MainPage
+            title="Announcements"
+            content={
+                <CustomTable
+                    columns={columns}
+                    rows=
+                    {
+                        announcements.map(announcement =>
+                            <TableRow key={announcement.id}>
 
-                    <AnnouncementTable announcements={announcements} />
-                </>
-            } />);
+                                <TableCell align="center">
+                                    {moment(announcement.dateCreated).format("MMM DD, YYYY")}
+                                </TableCell>
+
+                                <TableCell align="center">
+                                    {announcement.title}
+                                </TableCell>
+
+                                <TableCell align="center">
+                                    {announcement.message}
+                                </TableCell>
+
+                                <TableCell align="right">
+                                    <NavigateNextOutlinedIcon onClick={() => history.push(`/announcements/${announcement.id}/details`)} />
+                                </TableCell>
+
+                            </TableRow>
+                        )
+                    }
+                    searchValue={searchKey}
+                    onSearch={(value: string) => setSearchKey(value)}
+                    buttonTitle="Announcement"
+                    navigateTo="/slots/create"
+                />
+            }
+        />
+    );
 }
 
 export default Announcement;

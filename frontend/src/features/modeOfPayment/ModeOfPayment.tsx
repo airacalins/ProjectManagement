@@ -33,7 +33,7 @@ const ModeOfPayment = () => {
         { title: 'Bank Name' },
         { title: 'Account Name' },
         { title: 'Account Number' },
-        { title: 'Show' },
+        { title: 'Show/Hide' },
         { title: '' },
     ]
 
@@ -75,7 +75,7 @@ const ModeOfPayment = () => {
                     }
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Create Slot"
+                    buttonTitle="Mode of Payment"
                     navigateTo="/slots/create"
                 />
             }

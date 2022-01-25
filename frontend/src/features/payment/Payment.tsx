@@ -5,7 +5,7 @@ import history from '../../app/utils/history';
 
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
@@ -93,7 +93,7 @@ const Payment = () => {
               </TableCell>
 
               <TableCell align="right">
-                <VisibilityIcon onClick={() => history.push(`/payments/${i.id}/details`)} />
+                <NavigateNextOutlinedIcon onClick={() => history.push(`/payments/${i.id}/details`)} />
               </TableCell>
 
             </TableRow>
