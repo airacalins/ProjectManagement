@@ -1,15 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchTenantsAsync } from "./tenantSlice";
+import history from '../../app/utils/history';
+
+import { Label } from 'semantic-ui-react';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
-import TenantTable from "./TenantTable";
+import CustomTable from "../../app/layouts/components/table/CustomTable";
 
 const Tenant = () => {
-
     const [searchKey, setSearchKey] = useState('');
     const { tenants, isFetching: isFetchingTenants } = useAppSelecter(state => state.tenant);
+
     const dispatch = useAppDispatch();
 
     const data = useMemo(() => {
@@ -23,16 +29,54 @@ const Tenant = () => {
         dispatch(fetchTenantsAsync());
     }, [])
 
+    const columns = [
+        { title: 'Full Name' },
+        { title: 'Business Name' },
+        { title: 'Contact Number' },
+        { title: 'Slot' },
+        { title: '' },
+    ]
+
     if (isFetchingTenants) return <LoadingComponent content="Loading Tenants..." />
 
     return (
         <MainPage
             title="Tenants"
-            content={<TenantTable tenants={data} />}
-        // searchValue={searchKey}
-        // onSearch={(value: string) => setSearchKey(value)}
-        // buttonTitle="Add Tenant"
-        // navigateTo="/tenants/create"
+            content={
+                <CustomTable
+                    columns={columns}
+                    rows=
+                    {
+                        tenants.map(tenant => <TableRow key={tenant.id}>
+
+                            <TableCell align="center">
+                                {`${tenant.firstName} ${tenant.lastName}`}
+                            </TableCell>
+
+                            <TableCell align="center">
+                                {tenant.companyName}
+                            </TableCell>
+
+                            <TableCell align="center">
+                                {tenant.phone}
+                            </TableCell>
+
+                            <TableCell align="center">
+                                {/* <Label content={tenant.slot}></Label> */}
+                            </TableCell>
+
+                            <TableCell align="right">
+                                <VisibilityIcon onClick={() => history.push(`/tenants/${tenant.id}/details`)} />
+                            </TableCell>
+
+                        </TableRow>
+                        )
+                    }
+                    searchValue={searchKey}
+                    onSearch={(value: string) => setSearchKey(value)}
+                    buttonTitle="Add Tenant"
+                    navigateTo="/tenants/create" />
+            }
         />
     );
 }

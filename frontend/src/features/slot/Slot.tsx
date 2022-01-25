@@ -2,18 +2,20 @@ import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchSlotsAsync } from "./slotSlice";
 import history from '../../app/utils/history';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow'; import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { Label } from 'semantic-ui-react';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 
-
 const Slot = () => {
   const [searchKey, setSearchKey] = useState('');
   const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
+
   const dispatch = useAppDispatch();
 
   const data = useMemo(() => {

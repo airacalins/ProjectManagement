@@ -20,23 +20,23 @@ const NavMenu = () => {
 
             <Nav.Link className="navMenu__title text-light px-4 d-flex align-items-center" href="/">MaxiMarket</Nav.Link>
 
-            <NavMenuItem
+            {/* <NavMenuItem
                 name="Dashboard"
                 icon={<DashboardCustomizeOutlinedIcon className="me-2" />}
                 navigateTo="/dashboard"
-            />
+            /> */}
 
-            <NavMenuItem
+            {/* <NavMenuItem
                 name="Users"
                 icon={<PersonOutlinedIcon className="me-2" />}
                 navigateTo="/users"
-            />
+            /> */}
 
-            <NavMenuItem
+            {/* <NavMenuItem
                 name="Locator"
                 icon={<LocationOnOutlinedIcon className="me-2" />}
                 navigateTo="/map"
-            />
+            /> */}
 
             <NavMenuItem
                 name="Slots"
@@ -68,11 +68,11 @@ const NavMenu = () => {
                 navigateTo="/announcements"
             />
 
-            <NavMenuItem
+            {/* <NavMenuItem
                 name="Reports"
                 icon={<AssessmentOutlinedIcon className="me-2" />}
                 navigateTo="/reports"
-            />
+            /> */}
 
         </Nav>
     );

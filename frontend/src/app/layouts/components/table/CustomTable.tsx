@@ -53,7 +53,7 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
       <Row className="d-flex align-items-center justify-content-between py-4 ms-1" md={5}>
         <Col className="d-flex align-items-center p-0" >
           <Form.Control type="email" placeholder="Search..." value={searchValue}
-          // onChange={evt => onSearch(evt.target.value)} 
+          // onChange={evt => onSearch(evt.target.value)}
           />
         </Col>
 
