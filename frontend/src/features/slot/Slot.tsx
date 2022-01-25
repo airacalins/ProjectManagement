@@ -1,16 +1,13 @@
 import { useEffect } from "react";
-import Tab from "../../app/layouts/components/tabs/Tab";
-import TabButton from "../../app/layouts/components/tabs/TabButton";
-import TabItem from "../../app/layouts/components/tabs/TabItem";
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import ContainerPage from "../../app/layouts/components/container/ContainerPage";
-import SlotTable from "./SlotTable";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchSlotsAsync } from "./slotSlice";
-import { Card } from "semantic-ui-react";
-import DashboardHeader from "../dashboard/DashboardHeader";
-import DashboardHeaderCard from "../dashboard/DashboardHeaderCard";
+
+import ContainerPage from "../../app/layouts/components/container/ContainerPage";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import SearchBar from "../../app/layouts/components/SearchBar";
+import SlotTable from "./SlotTable";
+import TabButton from "../../app/layouts/components/tabs/TabButton";
+import { Grid } from "semantic-ui-react";
 
 const Slot = () => {
 
@@ -28,6 +25,18 @@ const Slot = () => {
     <ContainerPage
       children={
         <>
+
+
+          <Grid>
+            <Grid.Column floated='left' width={5}>
+              <SearchBar />
+            </Grid.Column>
+
+            <Grid.Column floated='right' width={5}>
+              <TabButton name="Add Slot" navigateTo="/slots/create" />
+            </Grid.Column>
+          </Grid>
+
           <SlotTable slots={slots} />
         </>
       } />

@@ -48,6 +48,7 @@ const CustomTablePagination = (props: CustomTablePaginationProps) => {
       >
         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
+
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
@@ -55,6 +56,7 @@ const CustomTablePagination = (props: CustomTablePaginationProps) => {
       >
         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
+
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
@@ -62,6 +64,7 @@ const CustomTablePagination = (props: CustomTablePaginationProps) => {
       >
         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
+
       <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
@@ -69,6 +72,7 @@ const CustomTablePagination = (props: CustomTablePaginationProps) => {
       >
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
+
     </Box>
   );
 }

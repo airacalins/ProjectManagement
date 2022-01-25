@@ -1,42 +1,23 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { TableCellProps } from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import CustomTablePagination from '../tablePagination/CustomTablePagination';
 import { TableHead } from '@mui/material';
-import { CSSProperties } from '@mui/styled-engine';
+
+import CustomTablePagination from '../tablePagination/CustomTablePagination';
 
 function createData(name: string, calories: number, fat: number) {
   return { name, calories, fat };
 }
 
-const rows = [
-  createData('Cupcake', 305, 3.7),
-  createData('Donut', 452, 25.0),
-  createData('Eclair', 262, 16.0),
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Gingerbread', 356, 16.0),
-  createData('Honeycomb', 408, 3.2),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Jelly Bean', 375, 0.0),
-  createData('KitKat', 518, 26.0),
-  createData('Lollipop', 392, 0.2),
-  createData('Marshmallow', 318, 0),
-  createData('Nougat', 360, 19.0),
-  createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
-
 
 interface CustomTableProps {
-  columns: Array<{title: string; style?: any}>;
+  columns: Array<{ title: string; style?: any }>;
   rows: JSX.Element[];
 }
 
@@ -68,7 +49,7 @@ const CustomTable = ({ columns, rows }: CustomTableProps) => {
         <TableHead>
           <TableRow>
             {columns.map((column, index) => (
-              <TableCell key={index} style={{...column.style, fontSize: 14}} >
+              <TableCell align="center" key={index} style={{ ...column.style, fontSize: 14 }} >
                 {column.title}
               </TableCell>
             ))}

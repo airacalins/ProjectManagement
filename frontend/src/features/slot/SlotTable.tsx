@@ -1,26 +1,11 @@
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
 import { ISlot } from '../../app/models/slot';
-import CustomTablePagination from '../../app/layouts/ui/tablePagination/CustomTablePagination';
-import CustomTable from '../../app/layouts/ui/table/CustomTable';
-import { GridActionsCellItem, GridValueGetterParams } from '@mui/x-data-grid';
 import { Label } from 'semantic-ui-react';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import history from '../../app/utils/history';
+import CustomTable from '../../app/layouts/ui/table/CustomTable';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
 import './slot.scss';
 
 interface Props {
@@ -48,9 +33,9 @@ const rows = [
 ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
 const SlotTable = ({ slots }: Props) => {
-    const columns = [
-    { title: 'Slot Number'},
-    { title: 'Size'},
+  const columns = [
+    { title: 'Slot Number' },
+    { title: 'Size' },
     { title: 'Rental Fee' },
     { title: 'Status' },
     { title: '' },
@@ -60,21 +45,27 @@ const SlotTable = ({ slots }: Props) => {
     <CustomTable
       columns={columns}
       rows={slots.map(slot => <TableRow key={slot.id}>
-        <TableCell component="td" scope="row">
+
+        <TableCell align="center">
           {slot.slotNumber}
         </TableCell>
-        <TableCell style={{ width: 50 }} align="right">
+
+        <TableCell align="center">
           {slot.size}
         </TableCell>
-        <TableCell style={{ width: 100 }} align="right">
+
+        <TableCell align="center">
           {slot.price}
         </TableCell>
-        <TableCell style={{ width: 160 }} align="left">
+
+        <TableCell align="center">
           <Label content={slot.tenantContract ? "Rented" : "Available"} color={slot.tenantContract ? "blue" : "green"}></Label>
         </TableCell>
-        <TableCell style={{ width: 50 }} align="right">
+
+        <TableCell align="right">
           <VisibilityIcon onClick={() => history.push(`/slots/${slot.id}/details`)} />
         </TableCell>
+
       </TableRow>)}
     />
   );

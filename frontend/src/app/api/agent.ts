@@ -1,10 +1,9 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { ICreateTenantInput } from '../models/tenant';
 import { store } from '../store/configureStore';
 import history from '../utils/history';
 
-// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.baseURL = 'https://fast-badlands-66183.herokuapp.com/api/';
 
 const responseBody = (response: AxiosResponse) => response.data;

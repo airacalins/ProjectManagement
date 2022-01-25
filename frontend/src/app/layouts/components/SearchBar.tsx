@@ -2,15 +2,14 @@ import React from 'react';
 import { Grid, Header, Search, Segment } from 'semantic-ui-react';
 
 interface Props {
-    isLoading: boolean,
-    value: string
+    isLoading?: boolean,
+    value?: string
 }
 
 const SearchBar: React.FC<Props> = ({ isLoading, value }) => {
     return (
-
-        <Grid padded>
-            <Grid.Column width={3}>
+        <Grid>
+            <Grid.Column>
                 <Search
                     input={{ icon: 'search', iconPosition: 'left' }}
                     loading={isLoading}
