@@ -7,7 +7,11 @@ import CustomTable from '../../app/layouts/components/table/CustomTable';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface Props {
-  slots: ISlot[]
+  slots: ISlot[],
+  searchValue?: string,
+  onSearch?: (value: string) => void
+  buttonTitle?: string,
+  navigateTo?: string,
 }
 
 const SlotTable = ({ slots }: Props) => {
@@ -48,6 +52,7 @@ const SlotTable = ({ slots }: Props) => {
       </TableRow>
       )}
     />
+
   );
 }
 

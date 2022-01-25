@@ -29,10 +29,10 @@ const Tenant = () => {
         <MainPage
             title="Tenants"
             content={<TenantTable tenants={data} />}
-            searchValue={searchKey}
-            onSearch={(value: string) => setSearchKey(value)}
-            buttonTitle="Add Tenant"
-            navigateTo="/tenants/create"
+        // searchValue={searchKey}
+        // onSearch={(value: string) => setSearchKey(value)}
+        // buttonTitle="Add Tenant"
+        // navigateTo="/tenants/create"
         />
     );
 }
