@@ -76,7 +76,8 @@ const Slot = () => {
           searchValue={searchKey}
           onSearch={(value: string) => setSearchKey(value)}
           buttonTitle="Create Slot"
-          navigateTo="/slots/create" />
+          navigateTo="/slots/create"
+        />
       }
     />
   )

@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchTenantsAsync } from "./tenantSlice";
 import history from '../../app/utils/history';
 
-import { Label } from 'semantic-ui-react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -75,7 +74,8 @@ const Tenant = () => {
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
                     buttonTitle="Add Tenant"
-                    navigateTo="/tenants/create" />
+                    navigateTo="/tenants/create"
+                />
             }
         />
     );
