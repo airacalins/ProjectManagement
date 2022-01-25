@@ -7,7 +7,6 @@ export interface ITenant {
   phone: string;
   email: string;
   dateCreated: Date;
-  
   companyName: string;
   address: string;
   slotContract?: SlotContract;

@@ -1,41 +1,53 @@
-import { Table } from "semantic-ui-react";
-import TableBody from "../../app/layouts/components/table/TableBody";
-import TableComponent from "../../app/layouts/components/table/TableComponent";
-import TableHeader from "../../app/layouts/components/table/TableHeader";
 import { ITenant } from "../../app/models/tenant";
+import { Label } from 'semantic-ui-react';
+import history from '../../app/utils/history';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import CustomTable from '../../app/layouts/components/table/CustomTable';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface Props {
     tenants: ITenant[]
 }
 
 const TenantTable = ({ tenants }: Props) => {
+
+    const columns = [
+        { title: 'Full Name' },
+        { title: 'Business Name' },
+        { title: 'Contact Number' },
+        { title: 'Slot' },
+        { title: '' },
+    ]
+
     return (
-        <TableComponent
-            tableHeader={
-                <>
-                    <TableHeader name="Full Name" />
-                    <TableHeader name="Business Name" />
-                    <TableHeader name="Contact Number" />
-                    <TableHeader name="Rented Slot" />
-                    <TableHeader name="" />
-                </>
-            }
+        <CustomTable
+            columns={columns}
+            rows={tenants.map(tenant => <TableRow key={tenant.id}>
 
-            tableBody={
-                !tenants.length ?
-                    <TableBody colSpan="5" content="No tenants..." />
-                    :
-                    tenants.map(t => (
-                        <Table.Row key={t.id}>
-                            <TableBody content={`${t.firstName} ${t.lastName}`} />
-                            <TableBody content={t.companyName} />
-                            <TableBody content={t.phone} />
-                            <TableBody content={t.slotContract?.slot.slotNumber} />
-                            <TableBody content=">" navigateTo={`/tenants/${t.id}/details`} />
-                        </Table.Row>
-                    ))
+                <TableCell align="center">
+                    {`${tenant.firstName} ${tenant.lastName}`}
+                </TableCell>
 
-            } />
+                <TableCell align="center">
+                    {tenant.companyName}
+                </TableCell>
+
+                <TableCell align="center">
+                    {tenant.phone}
+                </TableCell>
+
+                <TableCell align="center">
+                    {/* <Label content={tenant.slot}></Label> */}
+                </TableCell>
+
+                <TableCell align="right">
+                    <VisibilityIcon onClick={() => history.push(`/tenants/${tenant.id}/details`)} />
+                </TableCell>
+
+            </TableRow>
+            )}
+        />
     )
 }
 

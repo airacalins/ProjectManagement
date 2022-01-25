@@ -1,18 +1,17 @@
 import { ISlot } from '../../app/models/slot';
 import { Label } from 'semantic-ui-react';
 import history from '../../app/utils/history';
-import CustomTable from '../../app/layouts/components/table/CustomTable';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import CustomTable from '../../app/layouts/components/table/CustomTable';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
-import './slot.scss';
 
 interface Props {
   slots: ISlot[]
 }
 
 const SlotTable = ({ slots }: Props) => {
+
   const columns = [
     { title: 'Slot Number' },
     { title: 'Size' },
@@ -46,7 +45,8 @@ const SlotTable = ({ slots }: Props) => {
           <VisibilityIcon onClick={() => history.push(`/slots/${slot.id}/details`)} />
         </TableCell>
 
-      </TableRow>)}
+      </TableRow>
+      )}
     />
   );
 }

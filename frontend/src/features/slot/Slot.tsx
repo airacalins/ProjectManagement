@@ -2,15 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchSlotsAsync } from "./slotSlice";
 
-import ContainerPage from "../../app/layouts/components/container/ContainerPage";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import SearchBar from "../../app/layouts/components/SearchBar";
 import SlotTable from "./SlotTable";
-import TabButton from "../../app/layouts/components/tabs/TabButton";
-import { Grid } from "semantic-ui-react";
 import MainPage from "../../app/layouts/components/pages/MainPage";
-
-
 
 const Slot = () => {
   const [searchKey, setSearchKey] = useState('');
@@ -29,36 +23,17 @@ const Slot = () => {
     dispatch(fetchSlotsAsync());
   }, [])
 
-
   if (isFetchingSlots) return <LoadingComponent content="Loading Slots..." />
 
   return (
     <MainPage
+      title="Slots"
+      content={<SlotTable slots={data} />}
       searchValue={searchKey}
       onSearch={(value: string) => setSearchKey(value)}
-      title="Slots"
       buttonTitle="Add Slot"
-      content={<SlotTable slots={data} />}
+      navigateTo="/slots/create"
     />
-
-    // <ContainerPage
-    //   children={
-    //     <>
-
-
-    //       <Grid>
-    //         <Grid.Column floated='left' width={5}>
-    //           <SearchBar />
-    //         </Grid.Column>
-
-    //         <Grid.Column floated='right' width={5}>
-    //           <TabButton name="Add Slot" navigateTo="/slots/create" />
-    //         </Grid.Column>
-    //       </Grid>
-
-    //       <SlotTable slots={slots} />
-    //     </>
-    //   } />
   );
 }
 

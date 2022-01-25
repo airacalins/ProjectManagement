@@ -49,7 +49,6 @@ const CustomTable = ({ columns, rows }: CustomTableProps) => {
       <Table sx={{ minWidth: 500 }}>
 
         <TableHead>
-
           <TableRow>
             {columns.map((column, index) => (
               <TableCell align="center" key={index} style={{ ...column.style, fontSize: 14 }} >
@@ -57,7 +56,6 @@ const CustomTable = ({ columns, rows }: CustomTableProps) => {
               </TableCell>
             ))}
           </TableRow>
-
         </TableHead>
 
         <TableBody>
