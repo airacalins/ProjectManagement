@@ -17,7 +17,7 @@ const NavMenu = () => {
     return (
         <Nav className="navMenu flex-column" defaultActiveKey="/home">
 
-            <Nav.Link className="navMenu__title text-light p-3 pb-5" href="/">MaxiMarket</Nav.Link>
+            <Nav.Link className="navMenu__title text-light px-4 d-flex align-items-center" href="/">MaxiMarket</Nav.Link>
 
             <NavMenuItem
                 name="Dashboard"
