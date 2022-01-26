@@ -1,15 +1,16 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button } from 'semantic-ui-react';
 
 import "./button.scss"
 
 interface Props {
     onClick: () => void
+    loading: boolean
 }
 
-const DeleteButton: React.FC<Props> = ({ onClick }) => {
+const DeleteButton: React.FC<Props> = ({ onClick, loading }) => {
     return (
-        <Button className="btn-danger me-2" onClick={onClick}>
+        <Button className="btn-danger me-2" color='red' onClick={onClick} isLoading={loading} disabled={loading}>
             Delete
         </Button>
     );

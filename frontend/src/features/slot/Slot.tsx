@@ -11,6 +11,7 @@ import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import CustomTable from "../../app/layouts/components/table/CustomTable";
+import { currencyFormatter } from "../../app/layouts/formatter/common";
 
 const Slot = () => {
   const [searchKey, setSearchKey] = useState('');
@@ -63,7 +64,7 @@ const Slot = () => {
                 </TableCell>
 
                 <TableCell align="center">
-                  {slot.price}
+                  {currencyFormatter(slot.price!)}
                 </TableCell>
 
                 <TableCell align="center">

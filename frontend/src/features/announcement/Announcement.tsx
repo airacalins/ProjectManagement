@@ -49,18 +49,18 @@ const Announcement = () => {
                     navigateTo="/announcements/create"
                     columns={columns}
                     rows={
-                        announcements.map(announcement =>
+                        data.map(announcement =>
                             <TableRow key={announcement.id}>
 
                                 <TableCell align="center">
                                     {moment(announcement.dateCreated).format("MMM DD, YYYY")}
                                 </TableCell>
 
-                                <TableCell align="center">
+                                <TableCell className="w-25" align="center">
                                     {announcement.title}
                                 </TableCell>
 
-                                <TableCell align="center">
+                                <TableCell className="w-50" align="center">
                                     {announcement.message}
                                 </TableCell>
 

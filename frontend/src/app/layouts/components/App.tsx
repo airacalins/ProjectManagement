@@ -21,6 +21,7 @@ import Tenant from "../../../features/tenant/Tenant";
 import TenantForm from "../../../features/tenant/TenantForm";
 import TenantDetails from "../../../features/tenant/TenantDetails";
 import User from "../../../features/user/User";
+import UserDetails from "../../../features/user/UserDetails";
 
 function App() {
   const location = useLocation();
@@ -62,6 +63,7 @@ function App() {
               <Route path='/tenants/:id/details' exact component={TenantDetails} />
 
               <Route path="/users" exact component={User} />
+              <Route path="/users/:id/details" exact component={UserDetails} />
             </Col>
           </Row>
         )}
