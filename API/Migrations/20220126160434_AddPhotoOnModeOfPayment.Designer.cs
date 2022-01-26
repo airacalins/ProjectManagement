@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    partial class PropertyManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20220126160434_AddPhotoOnModeOfPayment")]
+    partial class AddPhotoOnModeOfPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,7 +133,12 @@ namespace API.Migrations
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("ModeOfPayments");
                 });
@@ -142,9 +149,6 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("double precision");
-
                     b.Property<DateTimeOffset>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
@@ -152,9 +156,6 @@ namespace API.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ModeOfPaymentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("PhotoId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Status")
@@ -171,8 +172,6 @@ namespace API.Migrations
                     b.HasIndex("InvoiceId");
 
                     b.HasIndex("ModeOfPaymentId");
-
-                    b.HasIndex("PhotoId");
 
                     b.HasIndex("TenantId");
 
@@ -438,15 +437,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81bd4a65-3c4e-409b-b551-943f897d3479",
-                            ConcurrencyStamp = "b33cb981-2dce-4d3e-8f4b-670582864dec",
+                            Id = "de9b3cd0-c315-4974-9205-86f829fe1b1d",
+                            ConcurrencyStamp = "32cfba73-57a4-4827-a945-ad9ecf60dd45",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "f843b118-0205-4d11-ba6f-dfca258dbd41",
-                            ConcurrencyStamp = "b752988a-93bb-4612-a70e-7a997a3c6532",
+                            Id = "ccd6aff3-69c6-4dd6-bc1f-709359ceed5c",
+                            ConcurrencyStamp = "a04f30c0-5afe-42cb-a0a0-10b27150ae52",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -600,6 +599,15 @@ namespace API.Migrations
                     b.Navigation("Invoice");
                 });
 
+            modelBuilder.Entity("API.Entities.ModeOfPayment", b =>
+                {
+                    b.HasOne("API.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
+
+                    b.Navigation("Photo");
+                });
+
             modelBuilder.Entity("API.Entities.Payment", b =>
                 {
                     b.HasOne("API.Entities.Invoice", "Invoice")
@@ -613,10 +621,6 @@ namespace API.Migrations
                         .HasForeignKey("ModeOfPaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("API.Entities.Photo", "Photo")
-                        .WithMany()
-                        .HasForeignKey("PhotoId");
 
                     b.HasOne("API.Entities.Tenant", "Tenant")
                         .WithMany()
@@ -633,8 +637,6 @@ namespace API.Migrations
                     b.Navigation("Invoice");
 
                     b.Navigation("ModeOfPayment");
-
-                    b.Navigation("Photo");
 
                     b.Navigation("Tenant");
 

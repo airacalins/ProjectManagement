@@ -15,5 +15,6 @@ namespace API.DTOs
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
         public DateTimeOffset DateCreated { get; set; }
+        public double Amount { get; set; }
     }
 }
