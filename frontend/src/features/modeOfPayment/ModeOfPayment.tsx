@@ -6,6 +6,8 @@ import { Icon } from 'semantic-ui-react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
+import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
+import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
@@ -14,12 +16,13 @@ import CustomTable from "../../app/layouts/components/table/CustomTable";
 const ModeOfPayment = () => {
     const [searchKey, setSearchKey] = useState('');
     const { modeOfPayments, isFetching: isFetchingModeOfPayments } = useAppSelecter(state => state.modeOfPayment);
-
     const dispatch = useAppDispatch();
 
     const data = useMemo(() => {
         if (!!searchKey) {
-            return modeOfPayments.filter(i => i.bankName.toLowerCase().includes(searchKey.toLowerCase()));
+            return modeOfPayments.filter(i =>
+                i.bankName.toLowerCase().includes(searchKey.toLowerCase()) || i.accountName.toLowerCase().includes(searchKey.toLowerCase())
+            );
         }
         return modeOfPayments;
     }, [modeOfPayments, searchKey])
@@ -43,10 +46,14 @@ const ModeOfPayment = () => {
             title="Mode of Payments"
             content={
                 <CustomTable
+                    searchValue={searchKey}
+                    onSearch={(value: string) => setSearchKey(value)}
+                    buttonTitle="Mode of Payment"
+                    navigateTo="/mode-of-payments/create"
                     columns={columns}
                     rows=
                     {
-                        modeOfPayments.map(mop =>
+                        data.map(mop =>
                             <TableRow key={mop.id}>
 
                                 <TableCell align="center">
@@ -62,7 +69,9 @@ const ModeOfPayment = () => {
                                 </TableCell>
 
                                 <TableCell align="center">
-                                    <Icon name="toggle on" color="blue" size="large"></Icon>
+                                    <div>
+                                        {mop.isEnabled ? <ToggleOnOutlinedIcon fontSize="medium" /> : <ToggleOffOutlinedIcon fontSize="medium" />}
+                                    </div>
                                 </TableCell>
 
                                 <TableCell align="right">
@@ -72,10 +81,6 @@ const ModeOfPayment = () => {
                             </TableRow>
                         )
                     }
-                    searchValue={searchKey}
-                    onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Mode of Payment"
-                    navigateTo="/mode-of-payments/create"
                 />
             }
         />

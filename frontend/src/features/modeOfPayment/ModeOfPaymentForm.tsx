@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { IModeOfPayment } from "../../app/models/modeOfPayment";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
+import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync, updateModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 import history from '../../app/utils/history';
 
 import AddButton from "../../app/layouts/components/buttons/AddButton";
@@ -34,7 +34,7 @@ const ModeOfPaymentForm = () => {
 
     useEffect(() => {
         if (id && modeOfPaymentData) setModefPayment(modeOfPaymentData)
-    }, [id, modeOfPayment])
+    }, [id, modeOfPaymentData])
 
     const validationSchema = Yup.object({
         bankName: Yup.string().required("Bank name is required."),
@@ -43,7 +43,8 @@ const ModeOfPaymentForm = () => {
     })
 
     const onSubmit = async (values: any) => {
-        await dispatch(createModeOfPaymentAsync(values));
+        if (id) await dispatch(updateModeOfPaymentDetailsAsync(values));
+        else await dispatch(createModeOfPaymentAsync(values));
         history.push('/mode-of-payments')
     }
 

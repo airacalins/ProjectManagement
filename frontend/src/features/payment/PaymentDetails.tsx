@@ -82,7 +82,6 @@ const PaymentDetails = () => {
                     <CustomTable
                         // searchValue={searchKey}
                         // onSearch={(value: string) => setSearchKey(value)}
-                        buttonTitle="Payments"
                         navigateTo="/payments/create"
                         columns={columns}
                         rows=
