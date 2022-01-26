@@ -97,7 +97,7 @@ namespace API.Controllers
         }
 
         [HttpPut("update-payment-status")]
-        public async Task<ActionResult> UpdatePaymentStatus(UpdateInvoicePaymentDto input)
+        public async Task<ActionResult<InvoiceDto>> UpdatePaymentStatus(UpdateInvoicePaymentDto input)
         {
             var payment = await _context.Payments.FindAsync(input.Id);
             if (payment == null)
@@ -106,7 +106,38 @@ namespace API.Controllers
             payment.Status = input.IsApproved ? PaymentStatus.Approved : PaymentStatus.Declined;
             
             await _context.SaveChangesAsync();
-            return Ok();
+            
+            var invoice = await _context.Invoices
+            .Include(i => i.InvoiceItems)
+            .Include(i => i.Tenant)
+            .Include(i => i.TenantContract)
+            .Include(i => i.Unit)
+            .Include(i => i.Payments)
+            .Where(i => i.Id == payment.InvoiceId)
+            .Select(i => new InvoiceDto
+            {
+                Id = i.Id,
+                SlotNumber = i.Unit.SlotNumber,
+                TenantId = i.TenantId,
+                FirstName = i.Tenant.FirstName,
+                LastName = i.Tenant.LastName,
+                Phone = i.Tenant.Phone,
+                BusinessName = i.Tenant.BusinessName,
+                Amount = i.InvoiceItems.Sum(s => s.Amount),
+                Payments = i.Payments.Select(p => new InvoicePaymentDto
+                {
+                    Id = p.Id,
+                    Status = p.Status,
+                    BankName = p.ModeOfPayment != null ? p.ModeOfPayment.BankName : string.Empty,
+                    AccountName = p.ModeOfPayment != null ? p.ModeOfPayment.AccountName : string.Empty,
+                    AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
+                    DateCreated = p.DateCreated,
+                    Amount = p.Amount
+                }),
+                DateCreated = i.DateCreated,
+                DueDate = i.DueDate
+            }).FirstOrDefaultAsync();
+            return Ok(invoice);
         }
 
         [HttpPost("payment")]
@@ -132,6 +163,7 @@ namespace API.Controllers
 
             _context.Payments.Add(payment);
             await _context.SaveChangesAsync();
+            
             return Ok();
         }
     }
