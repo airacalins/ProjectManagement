@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 
-import EditButton from "../../app/layouts/components/buttons/EditButton";
 import DeleteButton from "../../app/layouts/components/buttons/DeleteButton";
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
+import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
 
 const ModeOfPaymentDetails = () => {
 
@@ -34,8 +34,8 @@ const ModeOfPaymentDetails = () => {
                     <DetailItem title="Account Name" value={accountName} />
                     <DetailItem title="Account Number" value={accountNumber} />
                     <FormButtonContainer>
-                        <EditButton navigateTo={`/mode-of-payments/${id}/manage`} />
-                        <DeleteButton navigateTo="" />
+                        <NavigationButton title="Edit" navigateTo={`/mode-of-payments/${id}/manage`} />
+                        {/* <DeleteButton navigateTo="" /> */}
                     </FormButtonContainer>
                 </>
             }

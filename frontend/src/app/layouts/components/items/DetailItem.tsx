@@ -4,7 +4,7 @@ import './item.scss'
 
 interface Props {
     title: string,
-    value: string
+    value: any
 }
 
 const DetailItem: React.FC<Props> = ({ title, value }) => {

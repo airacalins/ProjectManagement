@@ -44,6 +44,10 @@ const Slot = () => {
       title="Slots"
       content={
         <CustomTable
+          searchValue={searchKey}
+          onSearch={(value: string) => setSearchKey(value)}
+          buttonTitle="Add Slot"
+          navigateTo="/slots/create"
           columns={columns}
           rows=
           {
@@ -73,10 +77,6 @@ const Slot = () => {
               </TableRow>
             )
           }
-          searchValue={searchKey}
-          onSearch={(value: string) => setSearchKey(value)}
-          buttonTitle="Slot"
-          navigateTo="/slots/create"
         />
       }
     />

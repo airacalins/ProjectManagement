@@ -8,16 +8,12 @@ import { Formik } from "formik";
 import * as Yup from 'yup';
 import { Form } from "semantic-ui-react";
 
-import FormButton from "../../app/layouts/components/buttons/AddButton";
-import FormContainer from "../../app/layouts/components/form/FormContainer";
 import FormPage from "../../app/layouts/components/pages/FormPage";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import FormTextArea from "../../app/layouts/components/form/FormTextArea";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import FormAddButton from "../../app/layouts/components/buttons/AddButton";
 import AddButton from "../../app/layouts/components/buttons/AddButton";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
-import DeleteButton from "../../app/layouts/components/buttons/DeleteButton";
 
 const AnnouncementForm = () => {
 
@@ -34,9 +30,7 @@ const AnnouncementForm = () => {
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-        if (!!id) {
-            dispatch(fetchAnnouncementDetailsAsync(id));
-        }
+        if (!!id) dispatch(fetchAnnouncementDetailsAsync(id));
     }, [])
 
     useEffect(() => {
@@ -49,10 +43,8 @@ const AnnouncementForm = () => {
     })
 
     const onSubmit = async (values: any) => {
-        if (!!values.message) {
-            await dispatch(createAnnouncementAsync(values));
-            history.push('/announcements')
-        }
+        await dispatch(createAnnouncementAsync(values));
+        history.push('/announcements')
     }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading announcements..." />)

@@ -1,18 +1,18 @@
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import "./button.scss"
 
 interface Props {
-
+    title: string
     navigateTo: string
 }
 
-const EditButton: React.FC<Props> = ({ navigateTo }) => {
+const NavigationButton: React.FC<Props> = ({ title, navigateTo }) => {
     return (
         <Button className="button__primary me-2" href={navigateTo}>
-            Edit
+            {title}
         </Button>
     );
 }
 
-export default EditButton;
+export default NavigationButton;

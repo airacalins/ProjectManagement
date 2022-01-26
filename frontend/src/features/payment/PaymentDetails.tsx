@@ -4,7 +4,10 @@ import { Button, Image } from "semantic-ui-react";
 import Details from "../../app/layouts/components/common/Details";
 import DetailsInput from "../../app/layouts/components/common/DetailsInput";
 import ContainerDetails from "../../app/layouts/components/container/ContainerDetails";
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
+import DetailItem from "../../app/layouts/components/items/DetailItem";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
 import { fetchInvoiceDetailsAsync } from "./invoiceSlice";
@@ -22,7 +25,18 @@ const PaymentDetails = () => {
 
     if (isFetchingDetails || !invoice) return (<LoadingComponent content="Loading invoice details..." />)
 
-    const { amount, businessName, dateCreated, dueDate, firstName, lastName, payments, phone, slotNumber, tenantId } = invoice
+    const {
+        amount,
+        businessName,
+        dateCreated,
+        dueDate,
+        firstName,
+        lastName,
+        payments,
+        phone,
+        slotNumber,
+        tenantId
+    } = invoice
 
     const status = () => {
         if (!payments || !payments.length) {
@@ -34,44 +48,39 @@ const PaymentDetails = () => {
 
     return (
         <>
-            <ContainerDetails>
-                <Details
-                    title="Invoice Details"
-                    detailsInput={
-                        <>
-                            <DetailsInput label="Status" input={status()} />
-                            <DetailsInput label="Slot Number" input={slotNumber} />
-                            <DetailsInput label="Name" input={`${firstName} ${lastName}`} />
-                            <DetailsInput label="Contact Number" input={phone} />
-                            <DetailsInput label="Business Name" input={businessName} />
-                            <DetailsInput label="Rental Fee" input={amount} />
-                            <DetailsInput label="Due Date" input={dueDate} />
-                        </>
-                    }
-                />
-            </ContainerDetails >
 
-            <ContainerDetails>
-                <Details
-                    title="Payment Details"
-                    detailsInput={
-                        <>
-                            <DetailsInput label="Date of Payment" input="" />
-                            <DetailsInput label="Amount Paid" input="" />
-                            <DetailsInput label="Mode of Payment" input="" />
-                            <DetailsInput label="Reference Number" input="" />
-                            <DetailsInput label="Proof of Payment" input={<Image className="ui medium rounded image" src='https://images.pexels.com/photos/9461290/pexels-photo-9461290.jpeg?cs=srgb&dl=pexels-mike-jones-9461290.jpg&fm=jpg' fluid />} />
+            <DetailsPage
+                title="Invoice Details"
+                backNavigationLink="/payments"
+                content={
+                    <>
+                        <DetailItem title="Status" value={status()} />
+                        <DetailItem title="Slot Number" value={slotNumber} />
+                        <DetailItem title="Name" value={`${firstName} ${lastName}`} />
+                        <DetailItem title="Contact Number" value={phone} />
+                        <DetailItem title="Business Name" value={businessName} />
+                        <DetailItem title="Rental Fee" value={amount} />
+                        <DetailItem title="Due Date" value={dueDate} />
+                    </>
+                }
+            />
 
-                        </>
-                    }
-                    detailsButton={
-                        <Button.Group vertical >
-                            <Button content="Approved" color="green" />
-                            <Button content="Declined" color="red" />
-                        </Button.Group>
-                    }
-                />
-            </ContainerDetails>
+            <DetailsPage
+                title="Payment Details"
+                content={
+                    <>
+                        <DetailItem title="Date of Payment" value="" />
+                        <DetailItem title="Amount Paid" value="" />
+                        <DetailItem title="Mode of Payment" value="" />
+                        <DetailItem title="Reference Number" value="" />
+                        <DetailItem title="Proof of Payment" value="" />
+                        <FormButtonContainer>
+
+                        </FormButtonContainer>
+
+                    </>
+                }
+            />
         </>
     );
 }

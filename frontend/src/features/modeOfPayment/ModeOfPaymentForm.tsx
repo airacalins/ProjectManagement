@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { IModeOfPayment } from "../../app/models/modeOfPayment";
-import * as Yup from 'yup';
-import FormContainer from "../../app/layouts/components/form/FormContainer";
+import { useParams } from "react-router-dom";
 import { Form, Formik } from "formik";
-import FormTextInput from "../../app/layouts/components/form/FormTextInput";
-import { Button } from "semantic-ui-react";
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import * as Yup from 'yup';
+import { IModeOfPayment } from "../../app/models/modeOfPayment";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 import history from '../../app/utils/history';
-import FormPage from "../../app/layouts/components/pages/FormPage";
-import FormButton from "../../app/layouts/components/buttons/AddButton";
-import FormAddButton from "../../app/layouts/components/buttons/AddButton";
+
 import AddButton from "../../app/layouts/components/buttons/AddButton";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
-
+import FormPage from "../../app/layouts/components/pages/FormPage";
+import FormTextInput from "../../app/layouts/components/form/FormTextInput";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 
 const ModeOfPaymentForm = () => {
 
@@ -33,8 +29,8 @@ const ModeOfPaymentForm = () => {
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-        if (id) dispatch(fetchModeOfPaymentDetailsAsync(id));
-    }, [id])
+        if (!!id) dispatch(fetchModeOfPaymentDetailsAsync(id));
+    }, [])
 
     useEffect(() => {
         if (id && modeOfPaymentData) setModefPayment(modeOfPaymentData)
@@ -46,12 +42,9 @@ const ModeOfPaymentForm = () => {
         accountNumber: Yup.string().required("Account number is required."),
     })
 
-
     const onSubmit = async (values: any) => {
-        if (!!values.bankName) {
-            await dispatch(createModeOfPaymentAsync(values));
-            history.push('/mode-of-payments')
-        };
+        await dispatch(createModeOfPaymentAsync(values));
+        history.push('/mode-of-payments')
     }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading mode of payments..." />)

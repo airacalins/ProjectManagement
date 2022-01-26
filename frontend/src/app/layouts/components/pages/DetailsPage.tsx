@@ -7,16 +7,20 @@ import './page.scss'
 
 interface Props {
     title: string,
-    backNavigationLink: string
+    backNavigationLink?: string
     content: React.ReactNode
 }
 
 const DetailsPage: React.FC<Props> = ({ title, backNavigationLink, content }) => {
     return (
         <div>
-            <Button className="page d-flex align-items-center px-4 mb-1" as={Link} to={backNavigationLink}>
-                <MenuOpenOutlinedIcon />
-            </Button>
+            {
+                backNavigationLink &&
+                <Button className="page d-flex align-items-center px-4 mb-1" as={Link} to={backNavigationLink}>
+                    <MenuOpenOutlinedIcon />
+                </Button>
+            }
+
 
             <h4 className="page__title d-flex align-items-center px-4 mb-3">{title}</h4>
 
