@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { dateFormatter } from "../../app/layouts/formatter/common"
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore"
 import { deleteAnnouncementDetailsAsync, fetchAnnouncementDetailsAsync, updateAnnouncementDetailsAsync } from "./announcementSlice"
+import history from "../../app/utils/history"
 
 import DetailItem from "../../app/layouts/components/items/DetailItem"
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage"
@@ -10,7 +11,6 @@ import FormButtonContainer from "../../app/layouts/components/form/FormButtonCon
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton"
 import DeleteButton from "../../app/layouts/components/buttons/DeleteButton"
-import history from "../../app/utils/history"
 
 const AnnouncementDetails = () => {
 
@@ -23,12 +23,12 @@ const AnnouncementDetails = () => {
         dispatch(fetchAnnouncementDetailsAsync(id));
     }, [])
 
-    if (isFetchingDetails || !announcement) return (<LoadingComponent content="Loading announcement details..." />)
-
     const handleDelete = async () => {
         await dispatch(deleteAnnouncementDetailsAsync(id));
         history.push('/announcements')
     }
+
+    if (isFetchingDetails || !announcement) return (<LoadingComponent content="Loading announcement details..." />)
 
     const { id: announcementId, dateCreated, title, message } = announcement;
 

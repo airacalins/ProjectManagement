@@ -29,14 +29,14 @@ const Announcement = () => {
         dispatch(fetchAnnouncementsAsync());
     }, [])
 
-    if (isFetchingAnnouncements) return <LoadingComponent content="Loading Announcements..." />
-
     const columns = [
         { title: 'Date Created' },
         { title: 'Subject' },
         { title: 'Message' },
         { title: '' },
     ]
+
+    if (isFetchingAnnouncements) return <LoadingComponent content="Loading Announcements..." />
 
     return (
         <MainPage

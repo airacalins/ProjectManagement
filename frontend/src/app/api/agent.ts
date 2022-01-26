@@ -97,6 +97,14 @@ const Tenant = {
   update: (values: any) => request.put('tenants', values),
 };
 
+const Users = {
+  list: () => request.get('users'),
+  details: (id: string) => request.get(`users/${id}`),
+  create: (values: any) => request.post('users', values),
+  update: (values: any) => request.put('users', values),
+  delete: (id: string) => request.delete(`users/${id}`),
+}
+
 const agent = {
   Account,
   Announcement,
@@ -104,6 +112,7 @@ const agent = {
   Invoice,
   Slot,
   Tenant,
+  Users
 };
 
 export default agent;
