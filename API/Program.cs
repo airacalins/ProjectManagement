@@ -56,7 +56,7 @@ builder.Services.AddDbContext<PropertyManagementContext>(opt =>
 
 builder.Services.AddIdentityCore<User>(opt =>
 {
-  opt.User.RequireUniqueEmail = false;
+  opt.User.RequireUniqueEmail = true;
 
 }).AddRoles<IdentityRole>().AddEntityFrameworkStores<PropertyManagementContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

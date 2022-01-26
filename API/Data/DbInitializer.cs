@@ -16,7 +16,7 @@ namespace API.Data
       {
         var admin = new User
         {
-          UserName = "airagals",
+          UserName = "airagals@sample.com",
           Email = "airagals@sample.com",
         };
 
@@ -25,7 +25,7 @@ namespace API.Data
 
         var user1 = new User
         {
-          UserName = "lexcalin",
+          UserName = "lexcalin@sample.com",
           Email = "lexcalin@sample.com",
         };
 
@@ -34,7 +34,7 @@ namespace API.Data
 
         var user2 = new User
         {
-          UserName = "ayaheloise",
+          UserName = "ayaheloise@sample.com",
           Email = "ayaheloise@sample.com",
         };
 

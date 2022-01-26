@@ -34,7 +34,6 @@ namespace API.Controllers
             return Ok(modeOfPayment);
         }
         
-        
 
         [HttpPost]
         public async Task<ActionResult<ModeOfPayment>> Create(CreateModeOfPaymentDto input)
@@ -61,7 +60,8 @@ namespace API.Controllers
 
             modeOfPayment.BankName = input.BankName;
             modeOfPayment.AccountName = input.AccountName;
-            modeOfPayment.AccountNumber = input.AccountName;
+            modeOfPayment.AccountNumber = input.AccountNumber;
+            modeOfPayment.IsEnabled = input.IsEnabled;
 
             await _context.SaveChangesAsync();
 
