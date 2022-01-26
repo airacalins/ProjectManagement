@@ -4,26 +4,28 @@ import { Button } from 'semantic-ui-react';
 import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
 import './page.scss'
 
+
 interface Props {
+    title: string,
     backNavigationLink: string
-    title: string
-    form: React.ReactNode,
+    content: React.ReactNode
 }
 
-const FormPage: React.FC<Props> = ({ backNavigationLink, title, form }) => {
+const DetailsPage: React.FC<Props> = ({ title, backNavigationLink, content }) => {
     return (
         <div>
             <Button className="page d-flex align-items-center px-4 mb-1" as={Link} to={backNavigationLink}>
                 <MenuOpenOutlinedIcon />
             </Button>
 
-            <h3 className="page__title w-100 d-flex align-items-center px-4">{title}</h3>
+            <h4 className="page__title d-flex align-items-center px-4 mb-3">{title}</h4>
 
             <div className="page__container px-5 py-4 mx-5 my-4">
-                {form}
+                {content}
             </div>
+
         </div >
     );
 }
 
-export default FormPage;
+export default DetailsPage;

@@ -1,5 +1,3 @@
-import { Button, Col, Row } from "react-bootstrap";
-import { Segment, Header, Grid } from "semantic-ui-react";
 import './form.scss'
 
 interface Props {
@@ -14,9 +12,7 @@ const FormContainer = ({ title, children }: Props) => {
 
             <div className="form__container px-5 py-4 mx-5 my-4">
                 {children}
-
             </div>
-
         </>
     )
 }

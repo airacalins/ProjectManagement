@@ -1,13 +1,15 @@
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
-import Details from "../../app/layouts/components/common/Details"
-import DetailsAction from "../../app/layouts/components/common/DetailsAction"
-import DetailsInput from "../../app/layouts/components/common/DetailsInput"
-import ContainerDetails from "../../app/layouts/components/container/ContainerDetails"
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
 import { dateFormatter } from "../../app/layouts/formatter/common"
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore"
 import { fetchAnnouncementDetailsAsync } from "./announcementSlice"
+
+import DeleteButton from "../../app/layouts/components/buttons/DeleteButton"
+import DetailItem from "../../app/layouts/components/items/DetailItem"
+import DetailsPage from "../../app/layouts/components/pages/DetailsPage"
+import EditButton from "../../app/layouts/components/buttons/EditButton"
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer"
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
 
 const AnnouncementDetails = () => {
 
@@ -25,26 +27,23 @@ const AnnouncementDetails = () => {
     const { dateCreated, title, message } = announcement
 
     return (
-        <ContainerDetails goBackTo={"/announcements"} >
 
-            <Details
-                title="Announcement Details"
-                detailsInput={
-                    <>
-                        <DetailsInput label="Date Created" input={dateFormatter(dateCreated)} />
-                        <DetailsInput label="Subject" input={title} />
-                        <DetailsInput label="Message" input={message} />
-                    </>
-                }
-                detailsButton={
-                    <>
-                        <DetailsAction name="Edit" icon="pencil" color="yellow" />
-                        <DetailsAction name="Delete" icon="trash" color="red" />
-                    </>
-                }
-            />
+        <DetailsPage
+            title="Announcement Details"
+            backNavigationLink={`/announcements`}
+            content={
+                <>
+                    <DetailItem title="Date Created" value={dateFormatter(dateCreated)} />
+                    <DetailItem title="Subject" value={title} />
+                    <DetailItem title="Message" value={message} />
+                    <FormButtonContainer>
+                        <EditButton navigateTo={`/announcements/${id}/manage`} />
+                        <DeleteButton navigateTo="" />
+                    </FormButtonContainer>
+                </>
+            }
+        />
 
-        </ContainerDetails >
     )
 }
 

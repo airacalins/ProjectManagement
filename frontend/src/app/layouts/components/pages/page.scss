@@ -1,6 +1,6 @@
 @import "../../styles/variables.scss";
 
-.main-page {
+.page {
     background-color: white !important;
     height: 80px;
 
@@ -8,4 +8,16 @@
         background-color: $primary !important;
         border-color: transparent !important;
     }
+    &__title {
+        background-color: white;
+        color: $primary;
+        font-weight: bold;
+        height: 80px;
+    }
+
+    &__container {
+        background-color: white;
+    }
 }
+
+

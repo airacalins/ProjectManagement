@@ -8,11 +8,11 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableHead } from '@mui/material';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 
 import CustomTablePagination from './CustomTablePagination';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
+import CreateButton from '../buttons/CreateButton';
 
 
 interface CustomTableProps {
@@ -25,7 +25,6 @@ interface CustomTableProps {
 }
 
 const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, navigateTo }: CustomTableProps) => {
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -50,22 +49,17 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
   return (
 
     <div className='px-5'>
-      <Row className="d-flex align-items-center justify-content-between py-4 ms-1" md={5}>
+      <Row className="d-flex align-items-center justify-content-between py-3 ms-1" md={5}>
         <Col className="d-flex align-items-center p-0" >
           <Form.Control type="email" placeholder="Search..." value={searchValue}
           // onChange={evt => onSearch(evt.target.value)}
           />
         </Col>
 
-        {buttonTitle ?
+        {buttonTitle &&
           <Col className="d-flex justify-content-end">
-            <Button className="d-flex align-item-center main-page__button" href={navigateTo}>
-              <AddOutlinedIcon className='me-2' />
-              {buttonTitle}
-            </Button>
+            <CreateButton title={buttonTitle} navigateTo={navigateTo!} />
           </Col>
-          :
-          <></>
         }
       </Row>
 

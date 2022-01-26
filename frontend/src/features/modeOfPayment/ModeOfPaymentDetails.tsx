@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Details from "../../app/layouts/components/common/Details";
-import DetailsAction from "../../app/layouts/components/common/DetailsAction";
-import DetailsInput from "../../app/layouts/components/common/DetailsInput";
-import ContainerDetails from "../../app/layouts/components/container/ContainerDetails";
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
+
+import EditButton from "../../app/layouts/components/buttons/EditButton";
+import DeleteButton from "../../app/layouts/components/buttons/DeleteButton";
+import DetailItem from "../../app/layouts/components/items/DetailItem";
+import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 
 const ModeOfPaymentDetails = () => {
 
     const { modeOfPayment, isFetchingDetails } = useAppSelecter(state => state.modeOfPayment);
-    const dispatch = useAppDispatch();
-
     const { id } = useParams<{ id: string }>();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(fetchModeOfPaymentDetailsAsync(id));
@@ -24,26 +25,21 @@ const ModeOfPaymentDetails = () => {
     const { bankName, accountName, accountNumber } = modeOfPayment
 
     return (
-        <ContainerDetails>
-
-            <Details
-                title="Payment Details"
-                detailsInput={
-                    <>
-                        <DetailsInput label="Bank Name" input={bankName} />
-                        <DetailsInput label="Account Name" input={accountName} />
-                        <DetailsInput label="Account Number" input={accountNumber} />
-                    </>
-                }
-                detailsButton={
-                    <>
-                        <DetailsAction name="Edit" icon="pencil" color="yellow" />
-                        <DetailsAction name="Delete" icon="trash" color="red" />
-                    </>
-                }
-            />
-
-        </ContainerDetails >
+        <DetailsPage
+            title="Mode of Payment Details"
+            backNavigationLink={`/mode-of-payments`}
+            content={
+                <>
+                    <DetailItem title="Bank Name" value={bankName} />
+                    <DetailItem title="Account Name" value={accountName} />
+                    <DetailItem title="Account Number" value={accountNumber} />
+                    <FormButtonContainer>
+                        <EditButton navigateTo={`/mode-of-payments/${id}/manage`} />
+                        <DeleteButton navigateTo="" />
+                    </FormButtonContainer>
+                </>
+            }
+        />
     );
 }
 

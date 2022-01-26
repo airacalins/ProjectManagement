@@ -3,17 +3,21 @@ import { useParams } from "react-router-dom";
 import history from '../../app/utils/history';
 import { IAnnouncement } from "../../app/models/announcement";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { createAnnouncementAsync } from "./announcementSlice";
+import { createAnnouncementAsync, fetchAnnouncementDetailsAsync } from "./announcementSlice";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { Form } from "semantic-ui-react";
 
-import FormButton from "../../app/layouts/components/form/FormButton";
+import FormButton from "../../app/layouts/components/buttons/AddButton";
 import FormContainer from "../../app/layouts/components/form/FormContainer";
 import FormPage from "../../app/layouts/components/pages/FormPage";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import FormTextArea from "../../app/layouts/components/form/FormTextArea";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import FormAddButton from "../../app/layouts/components/buttons/AddButton";
+import AddButton from "../../app/layouts/components/buttons/AddButton";
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
+import DeleteButton from "../../app/layouts/components/buttons/DeleteButton";
 
 const AnnouncementForm = () => {
 
@@ -30,8 +34,14 @@ const AnnouncementForm = () => {
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
+        if (!!id) {
+            dispatch(fetchAnnouncementDetailsAsync(id));
+        }
+    }, [])
+
+    useEffect(() => {
         if (id && announcementData) setAnnouncement(announcementData)
-    }, [id, announcement])
+    }, [id, announcementData])
 
     const validationSchema = Yup.object({
         title: Yup.string().required("Subject is required."),
@@ -49,30 +59,28 @@ const AnnouncementForm = () => {
 
     return (
         <FormPage
-            backNavigationLink="/announcements"
+            title={id ? "Update Announcement" : "Add Announcement"}
+            backNavigationLink={id ? `/announcements/${id}/details` : "/announcements"}
             form={
-                <FormContainer
-                    title="Announcement"
-                    children={
-                        <Formik
-                            validationSchema={validationSchema}
-                            enableReinitialize
-                            initialValues={announcement}
-                            onSubmit={values => onSubmit(values)}>
-                            {
-                                ({ handleSubmit, isValid }) => (
-                                    <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                        <FormTextInput label="Subject" name="title" placeholder="Subject" />
-                                        <FormTextArea label="Message" name="message" placeholder="Message" rows={3} />
-                                        <FormButton loading={isSaving} disabled={!isValid} />
-                                    </Form>
-                                )
-                            }
-                        </Formik>
+                <Formik
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                    initialValues={announcement}
+                    onSubmit={values => onSubmit(values)}>
+                    {
+                        ({ handleSubmit, isValid }) => (
+                            <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                                <FormTextInput label="Subject" name="title" placeholder="Subject" />
+                                <FormTextArea label="Message" name="message" placeholder="Message" rows={3} />
+                                <FormButtonContainer>
+                                    <AddButton loading={isSaving} disabled={!isValid} />
+                                </FormButtonContainer>
+                            </Form>
+                        )
                     }
-                />
-            } >
-        </FormPage>
+                </Formik>
+            }
+        />
     )
 }
 

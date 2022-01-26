@@ -1,22 +1,24 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Button } from 'semantic-ui-react';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 
 interface Props {
-    loading: boolean
-    disabled: boolean,
+    children: React.ReactNode
 }
 
-const FormButton: React.FC<Props> = ({ loading, disabled }) => {
+const FormButtonContainer: React.FC<Props> = ({ children }) => {
     return (
         <Row className='py-3'>
             <Col lg={2}></Col>
 
             <Col>
-                <Button type="submit" content="Submit" color="orange" loading={loading} disabled={disabled} />
+                {children}
             </Col>
         </Row>
+
+
     );
 }
 
-export default FormButton;
+export default FormButtonContainer;

@@ -11,7 +11,10 @@ import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 import history from '../../app/utils/history';
 import FormPage from "../../app/layouts/components/pages/FormPage";
-import FormButton from "../../app/layouts/components/form/FormButton";
+import FormButton from "../../app/layouts/components/buttons/AddButton";
+import FormAddButton from "../../app/layouts/components/buttons/AddButton";
+import AddButton from "../../app/layouts/components/buttons/AddButton";
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 
 
 const ModeOfPaymentForm = () => {
@@ -55,34 +58,29 @@ const ModeOfPaymentForm = () => {
 
     return (
         <FormPage
-            backNavigationLink="/mode-of-payments"
+            title={id ? "Update Mode of Payment" : "Add Mode of Payment"}
+            backNavigationLink={id ? `/mode-of-payments/${id}/details` : "/mode-of-payments"}
             form={
-                <FormContainer
-                    title="Mode of Payment"
-                    children={
-                        <Formik
-                            validationSchema={validationSchema}
-                            enableReinitialize
-                            initialValues={modeOfPayment}
-                            onSubmit={values => onSubmit(values)}>
-                            {
-                                ({ handleSubmit, isValid }) => (
-                                    <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                        <FormTextInput label="Bank Name" name="bankName" placeholder="Bank Name" />
-                                        <FormTextInput label="Account Name" name="accountName" placeholder="Accounnt Name" />
-                                        <FormTextInput label="Account Number" name="accountNumber" placeholder="Account Number" />
-                                        <FormButton loading={isSaving} disabled={!isValid} />
-                                    </Form>
-                                )
-                            }
-                        </Formik>
+                <Formik
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                    initialValues={modeOfPayment}
+                    onSubmit={values => onSubmit(values)}>
+                    {
+                        ({ handleSubmit, isValid }) => (
+                            <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                                <FormTextInput label="Bank Name" name="bankName" placeholder="Bank Name" />
+                                <FormTextInput label="Account Name" name="accountName" placeholder="Accounnt Name" />
+                                <FormTextInput label="Account Number" name="accountNumber" placeholder="Account Number" />
+                                <FormButtonContainer>
+                                    <AddButton loading={isSaving} disabled={!isValid} />
+                                </FormButtonContainer>
+                            </Form>
+                        )
                     }
-                />
+                </Formik>
             }
-        >
-
-        </FormPage>
-
+        />
     )
 }
 

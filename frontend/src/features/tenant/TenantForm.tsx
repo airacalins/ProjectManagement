@@ -108,7 +108,7 @@ const TenantForm = () => {
 
     return (
         <FormPage
-            // title={id ? "Update Tenant" : "New Tenant"}
+            title={id ? "Update Tenant" : "New Tenant"}
             backNavigationLink={!id ? "/tenants" : `/tenants/${id}/details`}
             form={<></>}
         // children={

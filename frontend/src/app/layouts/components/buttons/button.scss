@@ -1,0 +1,9 @@
+@import "../../styles/variables.scss";
+
+.button {
+    &__primary {
+        background-color: $primary !important;
+        border-color: transparent !important;
+        color: white !important;
+    }
+}

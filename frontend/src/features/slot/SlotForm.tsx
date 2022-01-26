@@ -55,44 +55,76 @@ const SlotForm = () => {
 
     return (
         <FormPage
+            title={id ? "Update Slot" : "New Slot"}
             backNavigationLink={!id ? "/slots" : `/slots/${slotDetails?.id}/details`}
             form={
-                <FormContainer
-                    title={id ? "Update Slot" : "New Slot"}
-                    children={
-                        <Formik
-                            validationSchema={validationSchema}
-                            enableReinitialize
-                            initialValues={slot}
-                            onSubmit={values => onSubmit(values)}>
-                            {
-                                ({ handleSubmit }) => (
-                                    <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                <Formik
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                    initialValues={slot}
+                    onSubmit={values => onSubmit(values)}>
+                    {
+                        ({ handleSubmit }) => (
+                            <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
 
-                                        {id && <Message
-                                            content='Change in price will not affect any on going contract for this slot.'
-                                        />}
+                                {id && <Message
+                                    content='Change in price will not affect any on going contract for this slot.'
+                                />}
 
-                                        <FormTextInput label="Slot Number" name="slotNumber" placeholder="Slot Number" />
-                                        <FormTextInput label="Size" name="size" placeholder="Size" />
-                                        <FormTextInput label="Rental Fee" name="price" placeholder="Rental Fee" />
+                                <FormTextInput label="Slot Number" name="slotNumber" placeholder="Slot Number" />
+                                <FormTextInput label="Size" name="size" placeholder="Size" />
+                                <FormTextInput label="Rental Fee" name="price" placeholder="Rental Fee" />
 
-                                        <div className="form__button-container py-3">
-                                            <Button
-                                                className="form__button"
-                                                type="submit"
-                                                content="Submit"
-                                                color="orange"
-                                                loading={isSaving}
-                                            />
-                                        </div>
+                                <div className="form__button-container py-3">
+                                    <Button
+                                        className="form__button"
+                                        type="submit"
+                                        content="Submit"
+                                        color="orange"
+                                        loading={isSaving}
+                                    />
+                                </div>
 
-                                    </Form>
-                                )
-                            }
-                        </Formik>
+                            </Form>
+                        )
                     }
-                />
+                </Formik>
+                // <FormContainer
+                //     title={id ? "Update Slot" : "New Slot"}
+                //     children={
+                //         <Formik
+                //             validationSchema={validationSchema}
+                //             enableReinitialize
+                //             initialValues={slot}
+                //             onSubmit={values => onSubmit(values)}>
+                //             {
+                //                 ({ handleSubmit }) => (
+                //                     <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+
+                //                         {id && <Message
+                //                             content='Change in price will not affect any on going contract for this slot.'
+                //                         />}
+
+                //                         <FormTextInput label="Slot Number" name="slotNumber" placeholder="Slot Number" />
+                //                         <FormTextInput label="Size" name="size" placeholder="Size" />
+                //                         <FormTextInput label="Rental Fee" name="price" placeholder="Rental Fee" />
+
+                //                         <div className="form__button-container py-3">
+                //                             <Button
+                //                                 className="form__button"
+                //                                 type="submit"
+                //                                 content="Submit"
+                //                                 color="orange"
+                //                                 loading={isSaving}
+                //                             />
+                //                         </div>
+
+                //                     </Form>
+                //                 )
+                //             }
+                //         </Formik>
+                //     }
+                // />
             }
         />
     )
