@@ -19,5 +19,7 @@ namespace API.Entities
         public Guid ModeOfPaymentId { get; set; }
         public ModeOfPayment ModeOfPayment { get; set; }
         public DateTimeOffset DateCreated { get; set; }
+        public Guid? PhotoId { get; set; }
+        public Photo? Photo { get; set; }
     }
 }
