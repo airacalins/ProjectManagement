@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import history from '../../app/utils/history';
 import { IAnnouncement } from "../../app/models/announcement";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { createAnnouncementAsync, fetchAnnouncementDetailsAsync } from "./announcementSlice";
+import { createAnnouncementAsync, fetchAnnouncementDetailsAsync, updateAnnouncementDetailsAsync } from "./announcementSlice";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { Form } from "semantic-ui-react";
@@ -43,7 +43,8 @@ const AnnouncementForm = () => {
     })
 
     const onSubmit = async (values: any) => {
-        await dispatch(createAnnouncementAsync(values));
+        if (id) await dispatch(updateAnnouncementDetailsAsync(values));
+        else await dispatch(createAnnouncementAsync(values));
         history.push('/announcements')
     }
 

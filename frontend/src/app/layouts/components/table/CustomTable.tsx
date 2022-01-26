@@ -9,11 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableHead } from '@mui/material';
 
-
 import CustomTablePagination from './CustomTablePagination';
 import { Col, Form, Row } from 'react-bootstrap';
 import CreateButton from '../buttons/CreateButton';
-
 
 interface CustomTableProps {
   columns: Array<{ title: string; style?: any }>,
@@ -50,12 +48,18 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
 
     <div className='px-5'>
       {
-        !buttonTitle || !searchValue || !onSearch &&
+        buttonTitle &&
         <Row className="d-flex align-items-center justify-content-between py-3 ms-1" md={5}>
           <Col className="d-flex align-items-center p-0" >
-            <Form.Control type="email" placeholder="Search..." value={searchValue}
-            // onChange={evt => onSearch(evt.target.value)}
-            />
+            {
+              !!onSearch &&
+              <Form.Control
+                type="text"
+                placeholder="Search..."
+                value={searchValue ?? ''}
+                onChange={evt => onSearch(evt.target.value)}
+              />
+            }
           </Col>
 
           {buttonTitle &&
