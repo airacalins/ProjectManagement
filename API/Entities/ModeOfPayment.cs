@@ -11,6 +11,7 @@ namespace API.Entities
         public string BankName { get; set; }
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
+        public bool IsEnabled { get; set; }
         public bool IsArchived { get; set; }
         public ICollection<Invoice> Invoices { get; set; }
     }
