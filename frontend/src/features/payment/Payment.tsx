@@ -57,7 +57,7 @@ const Payment = () => {
 
   return (
     <MainPage
-      title="Payments"
+      title="Invoices"
       content={
         <CustomTable
           searchValue={searchKey}
