@@ -26,17 +26,17 @@ const NavMenu = () => {
                 navigateTo="/dashboard"
             />
 
-            {/* <NavMenuItem
+            <NavMenuItem
                 name="Users"
                 icon={<PersonOutlinedIcon className="me-2" />}
                 navigateTo="/users"
-            /> */}
+            />
 
-            {/* <NavMenuItem
+            <NavMenuItem
                 name="Locator"
                 icon={<LocationOnOutlinedIcon className="me-2" />}
                 navigateTo="/map"
-            /> */}
+            />
 
             <NavMenuItem
                 name="Slots"

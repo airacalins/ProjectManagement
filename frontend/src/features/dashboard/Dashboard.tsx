@@ -2,16 +2,16 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore"
 import { fetchSlotsAsync } from "../slot/slotSlice"
 import { fetchTenantsAsync } from "../tenant/tenantSlice"
-import "./dashboard.scss"
+import { Col, Row } from "react-bootstrap"
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 import AssignmentLateOutlinedIcon from '@mui/icons-material/AssignmentLateOutlined';
+import "./dashboard.scss"
 
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent"
 import MainPage from "../../app/layouts/components/pages/MainPage"
 import DashboardCard from "../../app/layouts/components/cards/DashboardCard"
-import { Col, Row } from "react-bootstrap"
 
 
 const Dashboard = () => {
@@ -37,6 +37,7 @@ const Dashboard = () => {
                                 title={`${slots.filter(s => !s.tenantContract).length} / ${slots.length}`}
                                 subtitle="SLOTS"
                                 icon={<StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
+                                navigateTo="/slots"
                             />
                         </Col>
 
@@ -45,6 +46,7 @@ const Dashboard = () => {
                                 title={tenants.length}
                                 subtitle="TENANTS"
                                 icon={<GroupOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
+                                navigateTo="/tenants"
                             />
                         </Col>
 
@@ -53,6 +55,7 @@ const Dashboard = () => {
                                 title="-"
                                 subtitle="PENDING PAYMENTS"
                                 icon={<PendingActionsOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
+                                navigateTo="/payments"
                             />
                         </Col>
 
@@ -61,6 +64,7 @@ const Dashboard = () => {
                                 title="-"
                                 subtitle="LATE PAYMENTS"
                                 icon={<AssignmentLateOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
+                                navigateTo="/payments"
                             />
                         </Col>
                     </Row>

@@ -48,8 +48,7 @@ const Announcement = () => {
                     buttonTitle="Announcement"
                     navigateTo="/announcements/create"
                     columns={columns}
-                    rows=
-                    {
+                    rows={
                         announcements.map(announcement =>
                             <TableRow key={announcement.id}>
 
@@ -68,7 +67,6 @@ const Announcement = () => {
                                 <TableCell align="right">
                                     <NavigateNextOutlinedIcon onClick={() => history.push(`/announcements/${announcement.id}/details`)} />
                                 </TableCell>
-
                             </TableRow>
                         )
                     }

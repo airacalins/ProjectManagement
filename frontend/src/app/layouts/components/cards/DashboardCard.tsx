@@ -1,17 +1,18 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Nav, NavLink, Row } from 'react-bootstrap';
 import './cards.scss'
 
 interface Props {
     title: any
     subtitle: string
     icon: React.ReactNode
+    navigateTo: string
 }
 
-const DashboardCard: React.FC<Props> = ({ title, subtitle, icon }) => {
+const DashboardCard: React.FC<Props> = ({ title, subtitle, icon, navigateTo }) => {
     return (
-        <div className='dashboard-card__component d-flex align-items-center justify-content-between py-3 px-5 my-2' >
-            <div>
+        <NavLink href={navigateTo} className='dashboard-card__component d-flex align-items-center justify-content-between py-3 px-5 my-2' >
+            <div className="dashboard-card__text">
                 <h1>{title}</h1>
                 <p>{subtitle}</p>
             </div>
@@ -19,7 +20,7 @@ const DashboardCard: React.FC<Props> = ({ title, subtitle, icon }) => {
             <div>
                 {icon}
             </div>
-        </div >
+        </NavLink >
     );
 }
 
