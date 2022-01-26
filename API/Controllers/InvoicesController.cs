@@ -48,7 +48,8 @@ namespace API.Controllers
                     BankName = p.ModeOfPayment != null ? p.ModeOfPayment.BankName : string.Empty,
                     AccountName = p.ModeOfPayment != null ? p.ModeOfPayment.AccountName : string.Empty,
                     AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
-                    DateCreated = p.DateCreated
+                    DateCreated = p.DateCreated,
+                    Amount = p.Amount
                 }),
                 DateCreated = i.DateCreated,
                 DueDate = i.DueDate
@@ -86,7 +87,8 @@ namespace API.Controllers
                     BankName = p.ModeOfPayment != null ? p.ModeOfPayment.BankName : string.Empty,
                     AccountName = p.ModeOfPayment != null ? p.ModeOfPayment.AccountName : string.Empty,
                     AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
-                    DateCreated = p.DateCreated
+                    DateCreated = p.DateCreated,
+                    Amount = p.Amount
                 }),
                 DateCreated = i.DateCreated,
                 DueDate = i.DueDate
@@ -124,7 +126,8 @@ namespace API.Controllers
                 Status = PaymentStatus.Pending,
                 ModeOfPaymentId = input.ModeOfPaymentId,
                 DateCreated = DateTimeOffset.UtcNow,
-                PhotoId = input.PhotoId
+                PhotoId = input.PhotoId,
+                Amount = input.Amount
             };
 
             _context.Payments.Add(payment);
