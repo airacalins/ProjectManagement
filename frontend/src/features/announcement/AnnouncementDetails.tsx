@@ -31,7 +31,6 @@ const AnnouncementDetails = () => {
     const { id: announcementId, dateCreated, title, message } = announcement;
 
     return (
-
         <DetailsPage
             title="Announcement Details"
             backNavigationLink="/announcements"
@@ -47,7 +46,6 @@ const AnnouncementDetails = () => {
                 </>
             }
         />
-
     )
 }
 
