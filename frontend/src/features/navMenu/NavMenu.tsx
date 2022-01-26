@@ -20,11 +20,11 @@ const NavMenu = () => {
 
             <Nav.Link className="navMenu__title text-light px-4 d-flex align-items-center" href="/">MaxiMarket</Nav.Link>
 
-            {/* <NavMenuItem
+            <NavMenuItem
                 name="Dashboard"
                 icon={<DashboardCustomizeOutlinedIcon className="me-2" />}
                 navigateTo="/dashboard"
-            /> */}
+            />
 
             {/* <NavMenuItem
                 name="Users"

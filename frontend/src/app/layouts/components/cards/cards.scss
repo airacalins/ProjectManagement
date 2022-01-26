@@ -1,0 +1,8 @@
+@import "../../styles/variables.scss";
+
+.dashboard-card {
+    &__component {
+        background-color: white;
+        border-radius: 5px;
+    }
+}
