@@ -1,4 +1,6 @@
+import { Button, Col, Row } from "react-bootstrap";
 import { Segment, Header, Grid } from "semantic-ui-react";
+import './form.scss'
 
 interface Props {
     title: string
@@ -7,19 +9,16 @@ interface Props {
 
 const FormContainer = ({ title, children }: Props) => {
     return (
-        <Grid centered >
-            <Grid.Column width="8" style={{ marginTop: "100px" }} >
-                <Segment stacked padded>
+        <>
+            <h3 className="form__title w-100 d-flex align-items-center px-4">{title}</h3>
 
-                    <Header as='h2' color='orange'>
-                        {title}
-                    </Header>
+            <div className="form__container px-5 py-4 mx-5 my-4">
+                {children}
 
-                    {children}
+            </div>
 
-                </Segment>
-            </Grid.Column>
-        </Grid>)
+        </>
+    )
 }
 
 export default FormContainer;

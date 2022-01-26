@@ -1,0 +1,47 @@
+@import "../../styles/variables.scss";
+
+.form {
+    &__title {
+        background-color: white;
+        color: $primary;
+        font-weight: bold;
+        height: 80px;
+    }
+
+    &__container {
+        background-color: white;
+    }
+
+    &__label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    &__input {
+        width:300px;
+    }
+}
+
+// .select-input {
+//     &__label {
+//         font-weight: bold;
+//         margin-top: 10px;
+//         width: 150px;
+//     }
+
+//     &__select {
+//         width:300px !important;
+//     }
+// }
+
+// .date-input {
+//     &__label {
+//         font-weight: bold;
+//         margin-top: 10px;
+//         width: 150px;
+//     }
+
+//     &__date {
+//         width:300px !important;
+//     }
+// }

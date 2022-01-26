@@ -9,3 +9,15 @@
     background-color: $light-gray;
   }
 }
+
+.form {
+  &__button-container {
+    margin-left: 150px;
+  }
+
+  &__button {
+    background-color: $primary !important;
+    border-color: transparent !important;
+    color: white !important;
+  }
+}

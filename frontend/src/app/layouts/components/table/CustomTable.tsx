@@ -49,7 +49,7 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
 
   return (
 
-    <div>
+    <div className='px-5'>
       <Row className="d-flex align-items-center justify-content-between py-4 ms-1" md={5}>
         <Col className="d-flex align-items-center p-0" >
           <Form.Control type="email" placeholder="Search..." value={searchValue}

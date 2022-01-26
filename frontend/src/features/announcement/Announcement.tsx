@@ -71,7 +71,7 @@ const Announcement = () => {
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
                     buttonTitle="Announcement"
-                    navigateTo="/slots/create"
+                    navigateTo="/announcements/create"
                 />
             }
         />

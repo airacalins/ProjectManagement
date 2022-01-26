@@ -93,7 +93,8 @@ const Slot = {
 const Tenant = {
   list: () => request.get('tenants'),
   details: (id: string) => request.get(`tenants/${id}`),
-  create: (values: ICreateTenantInput) => request.post('tenants', values)
+  create: (values: ICreateTenantInput) => request.post('tenants', values),
+  update: (values: any) => request.put('tenants', values),
 };
 
 const agent = {

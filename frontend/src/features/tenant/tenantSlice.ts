@@ -30,7 +30,7 @@ export const fetchTenantsAsync = createAsyncThunk<ITenant[]>(
 )
 
 export const fetchTenantDetailsAsync = createAsyncThunk<ITenant, string>(
-  'announcements/fetchTenantDetailsAsync',
+  'tenants/fetchTenantDetailsAsync',
   async (id, thunkAPI) => {
     try {
       return await agent.Tenant.details(id);
@@ -42,7 +42,7 @@ export const fetchTenantDetailsAsync = createAsyncThunk<ITenant, string>(
 
 
 export const createTenantsAsync = createAsyncThunk<ITenant, ICreateTenantInput>(
-  'announcements/createTenantsAsync',
+  'tenants/createTenantsAsync',
   async (tenant, thunkAPI) => {
     try {
       return await agent.Tenant.create(tenant);
@@ -52,6 +52,16 @@ export const createTenantsAsync = createAsyncThunk<ITenant, ICreateTenantInput>(
   }
 )
 
+export const updateTenantDetailsAsync = createAsyncThunk<ITenant, ITenant>(
+  'tenants/updateTenantDetailsAsync',
+  async (tenant, thunkAPI) => {
+    try {
+      return await agent.Tenant.update(tenant);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
 
 export const tenantSlice = createSlice({
   name: 'tenant',

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { Link } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 
-import './mainPage.scss'
+import './page.scss'
 
 interface Props {
     title: string,
@@ -12,13 +12,14 @@ interface Props {
 const MainPage: React.FC<Props> = ({ title, content }) => {
     return (
         <div>
-            <h4 className="main-page d-flex align-items-center px-4">{title}</h4>
-
-            <div className="px-5 pb-5">
+            {
+                <h4 className="main-page d-flex align-items-center px-4 mb-3">{title}</h4>
+            }
+            <div className="pb-5">
                 {content}
             </div>
 
-        </div>
+        </div >
     );
 }
 

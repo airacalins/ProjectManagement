@@ -10,13 +10,21 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { createModeOfPaymentAsync, fetchModeOfPaymentDetailsAsync } from "./modeOfPaymentSlice";
 import history from '../../app/utils/history';
+import FormPage from "../../app/layouts/components/pages/FormPage";
+import FormButton from "../../app/layouts/components/form/FormButton";
 
 
 const ModeOfPaymentForm = () => {
-  
-    const [modeOfPayment, setModefPayment] = useState<IModeOfPayment>({ id: "", bankName: "", accountName: "", accountNumber: "", isEnabled: true })    
-    
-    const {modeOfPayment: modeOfPaymentData, isFetchingDetails, isSaving } = useAppSelecter(state => state.modeOfPayment);
+
+    const [modeOfPayment, setModefPayment] = useState<IModeOfPayment>({
+        id: "",
+        bankName: "",
+        accountName: "",
+        accountNumber: "",
+        isEnabled: true
+    })
+
+    const { modeOfPayment: modeOfPaymentData, isFetchingDetails, isSaving } = useAppSelecter(state => state.modeOfPayment);
     const dispatch = useAppDispatch();
 
     const { id } = useParams<{ id: string }>();
@@ -25,10 +33,9 @@ const ModeOfPaymentForm = () => {
         if (id) dispatch(fetchModeOfPaymentDetailsAsync(id));
     }, [id])
 
-
     useEffect(() => {
-        if(id && modeOfPaymentData) setModefPayment(modeOfPaymentData)
-      }, [id, modeOfPayment])
+        if (id && modeOfPaymentData) setModefPayment(modeOfPaymentData)
+    }, [id, modeOfPayment])
 
     const validationSchema = Yup.object({
         bankName: Yup.string().required("Bank name is required."),
@@ -36,9 +43,9 @@ const ModeOfPaymentForm = () => {
         accountNumber: Yup.string().required("Account number is required."),
     })
 
-    
-    const onSubmit = async (values:any) => {
-        if(!!values.bankName) {
+
+    const onSubmit = async (values: any) => {
+        if (!!values.bankName) {
             await dispatch(createModeOfPaymentAsync(values));
             history.push('/mode-of-payments')
         };
@@ -47,31 +54,35 @@ const ModeOfPaymentForm = () => {
     if (isFetchingDetails) return (<LoadingComponent content="Loading mode of payments..." />)
 
     return (
-        <FormContainer
-            title="Mode of Payment"
-            children={
-                <Formik
-                    validationSchema={validationSchema}
-                    enableReinitialize
-                    initialValues={modeOfPayment}
-                    onSubmit={values => onSubmit(values)}>
-                    {
-                        ({ handleSubmit, isValid }) => (
-                            <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                <FormTextInput label="Bank Name" name="bankName" placeholder="Bank Name" />
-                                <FormTextInput label="Account Name" name="accountName" placeholder="Accounnt Name" />
-                                <FormTextInput label="Account Number" name="accountNumber" placeholder="Account Number" />
-
-                                <div>
-                                    <Button type="submit" content="Submit" color="orange" loading={isSaving} disabled={!isValid} />
-                                    <Button type="button" as={Link} to={id ? `/mode-of-payment/${modeOfPayment?.id}/details` : "/mode-of-payments"} content="Cancel" />
-                                </div>
-                            </Form>
-                        )
+        <FormPage
+            backNavigationLink="/mode-of-payments"
+            form={
+                <FormContainer
+                    title="Mode of Payment"
+                    children={
+                        <Formik
+                            validationSchema={validationSchema}
+                            enableReinitialize
+                            initialValues={modeOfPayment}
+                            onSubmit={values => onSubmit(values)}>
+                            {
+                                ({ handleSubmit, isValid }) => (
+                                    <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                                        <FormTextInput label="Bank Name" name="bankName" placeholder="Bank Name" />
+                                        <FormTextInput label="Account Name" name="accountName" placeholder="Accounnt Name" />
+                                        <FormTextInput label="Account Number" name="accountNumber" placeholder="Account Number" />
+                                        <FormButton loading={isSaving} disabled={!isValid} />
+                                    </Form>
+                                )
+                            }
+                        </Formik>
                     }
-                </Formik>
+                />
             }
-        />
+        >
+
+        </FormPage>
+
     )
 }
 

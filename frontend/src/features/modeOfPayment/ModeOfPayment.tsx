@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchModeOfPaymentsAsync } from "./modeOfPaymentSlice";
 import history from '../../app/utils/history';
-
-import { Icon, Label } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
@@ -76,7 +75,7 @@ const ModeOfPayment = () => {
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
                     buttonTitle="Mode of Payment"
-                    navigateTo="/slots/create"
+                    navigateTo="/mode-of-payments/create"
                 />
             }
         />
