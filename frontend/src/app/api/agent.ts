@@ -72,6 +72,7 @@ const Invoice = {
   details: (id: string) => request.get(`invoices/${id}`),
   create: (values: any) => request.post('invoices', values),
   update: (values: any) => request.put('invoices', values),
+  updatePaymentStatus: (values: any) => request.put('invoices/update-payment-status', values)
 };
 
 const ModeOfPayment = {

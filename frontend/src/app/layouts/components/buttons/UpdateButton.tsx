@@ -1,16 +1,28 @@
 import React from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+import { Button, SemanticCOLORS } from 'semantic-ui-react';
 import "./button.scss"
 
 interface Props {
-    navigateTo: string
+    title: string,
+    loading?: boolean
+    disabled?: boolean,
+    color: SemanticCOLORS,
+    onClick: () => void,
 }
 
-const UpdateButton: React.FC<Props> = ({ navigateTo }) => {
+const UpdateButton: React.FC<Props> = ({ title, loading, disabled, color, onClick }) => {
     return (
-        <Button className="button__primary me-2" href={navigateTo}>
-            Update
-        </Button>
+
+        <Button
+            className="button__primary"
+            content={title}
+            loading={loading}
+            disabled={disabled}
+            color={color}
+            onClick={onClick}
+        />
+
     );
 }
 

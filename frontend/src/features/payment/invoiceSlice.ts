@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
-import { IInvoice } from "../../app/models/invoice";
+import { IInvoice, IUpdatePaymentStatusModel } from "../../app/models/invoice";
 
 export interface IInvoiceState {
   invoices: IInvoice[];
@@ -63,6 +63,18 @@ export const updateInvoiceDetailsAsync = createAsyncThunk<IInvoice, IInvoice>(
   }
 )
 
+
+export const updateInvoicePaymentStatusAsync = createAsyncThunk<any, IUpdatePaymentStatusModel>(
+  'invoice/updateInvoicePaymentStatusAsync',
+  async (model, thunkAPI) => {
+    try {
+      return await agent.Invoice.updatePaymentStatus(model);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
 export const invoiceSlice = createSlice({
   name: 'invoice',
   initialState,
@@ -112,6 +124,18 @@ export const invoiceSlice = createSlice({
       state.isSaving = false;
     });
     builder.addCase(updateInvoiceDetailsAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
+
+    builder.addCase(updateInvoicePaymentStatusAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(updateInvoicePaymentStatusAsync.fulfilled, (state, action) => {
+      state.invoice = action.payload;
+      state.isSaving = false;
+    });
+    builder.addCase(updateInvoicePaymentStatusAsync.rejected, (state, action) => {
       state.isSaving = false;
     });
 

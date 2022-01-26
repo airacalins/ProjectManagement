@@ -76,7 +76,16 @@ export const deleteModeOfPaymentDetailsAsync = createAsyncThunk<IModeOfPayment, 
 export const modeOfPaymentSlice = createSlice({
   name: 'modeOfPayment',
   initialState,
-  reducers: {},
+  reducers: {
+    updateStatus: (state, action) => {
+      state.modeOfPayments = [...state.modeOfPayments].map(i => {
+        if (i.id === action.payload.id) {
+          i.isEnabled = !i.isEnabled;
+        }
+        return i;
+      })
+    }
+  },
 
   extraReducers: (builder => {
     builder.addCase(fetchModeOfPaymentsAsync.pending, (state, action) => {
@@ -138,4 +147,4 @@ export const modeOfPaymentSlice = createSlice({
   })
 })
 
-export const {  } = modeOfPaymentSlice.actions;
+export const { updateStatus } = modeOfPaymentSlice.actions;

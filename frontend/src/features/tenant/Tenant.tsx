@@ -47,6 +47,15 @@ const Tenant = () => {
                     columns={columns}
                     rows=
                     {
+                        // !data.length ?
+                        //     [
+                        //         <TableRow>
+                        //             <TableCell align="center" colSpan={8}>
+                        //                 No data
+                        //             </TableCell>
+                        //         </TableRow>
+                        //     ]
+                        //     :
                         tenants.map(tenant => <TableRow key={tenant.id}>
 
                             <TableCell align="center">

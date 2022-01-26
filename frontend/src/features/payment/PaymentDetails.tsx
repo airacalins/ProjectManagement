@@ -1,23 +1,26 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import history from "../../app/utils/history";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchInvoiceDetailsAsync } from "./invoiceSlice";
+import { fetchInvoiceDetailsAsync, updateInvoicePaymentStatusAsync } from "./invoiceSlice";
 import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
 import { currencyFormatter } from "../../app/layouts/formatter/common";
-import { TableCell, TableRow } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import moment from "moment";
 
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
-import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
-
+import UpdateButton from "../../app/layouts/components/buttons/UpdateButton";
+import { PaymentStatus } from "../../app/models/invoice";
 
 const PaymentDetails = () => {
 
-    const { invoice, isFetchingDetails } = useAppSelecter(state => state.invoice);
+    const { invoice, isFetchingDetails, isSaving } = useAppSelecter(state => state.invoice);
     const dispatch = useAppDispatch();
 
     const { id } = useParams<{ id: string }>();
@@ -43,23 +46,29 @@ const PaymentDetails = () => {
 
     const status = () => {
         if (!payments || !payments.length) {
-            return <a className="ui orange circular label" >Unpaid</a>
+            return <Label content="Unpaid" color="red" />
         }
         else
-            return <a className={`ui ${getPaymentStatusColor(payments[0].status)} circular label`} >{getPaymentStatusText(payments[0].status)}</a>
+            return <Label content={getPaymentStatusText(payments[0].status)} color={getPaymentStatusColor(payments[0].status)} />
+    }
+
+    const updateStatus = async (id: string, isApproved: boolean) => {
+        await dispatch(updateInvoicePaymentStatusAsync({ id, isApproved }))
     }
 
     const columns = [
         { title: 'Date' },
-        { title: 'Amount Paid' },
         { title: 'Mode of Payment' },
+        { title: 'Account Name' },
+        { title: 'Account Number' },
+        { title: 'Amount Paid' },
+        { title: 'Proof of Payment' },
         { title: 'Status' },
         { title: '' },
     ]
 
     return (
         <>
-
             <DetailsPage
                 title="Invoice Details"
                 backNavigationLink="/payments"
@@ -84,28 +93,65 @@ const PaymentDetails = () => {
                         // onSearch={(value: string) => setSearchKey(value)}
                         navigateTo="/payments/create"
                         columns={columns}
-                        rows=
-                        {
+                        rows={
+                            // !payments.length ?
+                            //     [
+                            //         <TableRow>
+                            //             <TableCell align="center" colSpan={8}>
+                            //                 No payments...
+                            //             </TableCell>
+                            //         </TableRow>
+                            //     ]
+                            //     :
                             payments.map(payment =>
-                                <TableRow key={payment.id}>
+                                <>
+                                    <TableRow key={payment.id}>
 
-                                    <TableCell align="center">
-                                        {payment.bankName}
-                                    </TableCell>
+                                        <TableCell align="center">
+                                            {moment(payment.dateCreated).format("MMM DD, YYYY")}
+                                        </TableCell>
 
-                                    <TableCell align="center">
+                                        <TableCell align="center">
+                                            {payment.bankName}
+                                        </TableCell>
 
-                                    </TableCell>
+                                        <TableCell align="center">
+                                            {payment.accountName}
+                                        </TableCell>
 
-                                    <TableCell align="center">
+                                        <TableCell align="center">
+                                            {payment.accountNumber}
+                                        </TableCell>
 
-                                    </TableCell>
+                                        <TableCell align="center">
+                                            {currencyFormatter(payment.amount)}
+                                        </TableCell>
 
-                                    <TableCell align="right">
-                                        <NavigateNextOutlinedIcon onClick={() => history.push(`/payments/${payment.id}/details`)} />
-                                    </TableCell>
+                                        <TableCell align="center">
+                                            <a>
+                                                <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
+                                            </a>
+                                        </TableCell>
 
-                                </TableRow>
+                                        <TableCell align="center">
+                                            <Label content={getPaymentStatusText(payment.status)} color={getPaymentStatusColor(payment.status)} />
+                                        </TableCell>
+
+                                        <TableCell align="center">
+                                            {
+                                                !(payment.status === PaymentStatus.Approved || payment.status === PaymentStatus.Declined) &&
+                                                <>
+                                                    <UpdateButton title="Approved" color="orange" onClick={() => updateStatus(payment.id, true)} />
+                                                    <UpdateButton title="Declined" color="red" onClick={() => updateStatus(payment.id, false)} />
+                                                </>
+                                            }
+                                        </TableCell>
+
+
+                                    </TableRow>
+
+
+                                </>
                             )
                         }
                     />

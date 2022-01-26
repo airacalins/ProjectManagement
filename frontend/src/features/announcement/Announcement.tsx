@@ -49,26 +49,35 @@ const Announcement = () => {
                     navigateTo="/announcements/create"
                     columns={columns}
                     rows={
-                        data.map(announcement =>
-                            <TableRow key={announcement.id}>
+                        !data.length ?
+                            [
+                                <TableRow>
+                                    <TableCell align="center" colSpan={8}>
+                                        No data
+                                    </TableCell>
+                                </TableRow>
+                            ]
+                            :
+                            data.map(announcement =>
+                                <TableRow key={announcement.id}>
 
-                                <TableCell align="center">
-                                    {moment(announcement.dateCreated).format("MMM DD, YYYY")}
-                                </TableCell>
+                                    <TableCell align="center">
+                                        {moment(announcement.dateCreated).format("MMM DD, YYYY")}
+                                    </TableCell>
 
-                                <TableCell className="w-25" align="center">
-                                    {announcement.title}
-                                </TableCell>
+                                    <TableCell className="w-25" align="center">
+                                        {announcement.title}
+                                    </TableCell>
 
-                                <TableCell className="w-50" align="center">
-                                    {announcement.message}
-                                </TableCell>
+                                    <TableCell className="w-50" align="center">
+                                        {announcement.message}
+                                    </TableCell>
 
-                                <TableCell align="right">
-                                    <NavigateNextOutlinedIcon onClick={() => history.push(`/announcements/${announcement.id}/details`)} />
-                                </TableCell>
-                            </TableRow>
-                        )
+                                    <TableCell align="right">
+                                        <NavigateNextOutlinedIcon onClick={() => history.push(`/announcements/${announcement.id}/details`)} />
+                                    </TableCell>
+                                </TableRow>
+                            )
                     }
                 />
             }

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchModeOfPaymentsAsync } from "./modeOfPaymentSlice";
+import { fetchModeOfPaymentsAsync, updateModeOfPaymentDetailsAsync, updateStatus } from "./modeOfPaymentSlice";
 import history from '../../app/utils/history';
-import { Icon } from 'semantic-ui-react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
@@ -31,6 +30,11 @@ const ModeOfPayment = () => {
         dispatch(fetchModeOfPaymentsAsync());
     }, [])
 
+    const onUpdate = async (values: any) => {
+        await dispatch(updateModeOfPaymentDetailsAsync(values));
+        dispatch(updateStatus(values))
+    }
+
     const columns = [
         { title: 'Bank Name' },
         { title: 'Account Name' },
@@ -51,35 +55,43 @@ const ModeOfPayment = () => {
                     buttonTitle="Mode of Payment"
                     navigateTo="/mode-of-payments/create"
                     columns={columns}
-                    rows=
-                    {
-                        data.map(mop =>
-                            <TableRow key={mop.id}>
+                    rows={
+                        !data.length ?
+                            [
+                                <TableRow>
+                                    <TableCell align="center" colSpan={8}>
+                                        No data...
+                                    </TableCell>
+                                </TableRow>
+                            ]
+                            :
+                            data.map(mop =>
+                                <TableRow key={mop.id}>
 
-                                <TableCell align="center">
-                                    {mop.bankName}
-                                </TableCell>
+                                    <TableCell align="center">
+                                        {mop.bankName}
+                                    </TableCell>
 
-                                <TableCell align="center">
-                                    {mop.accountName}
-                                </TableCell>
+                                    <TableCell align="center">
+                                        {mop.accountName}
+                                    </TableCell>
 
-                                <TableCell align="center">
-                                    {mop.accountNumber}
-                                </TableCell>
+                                    <TableCell align="center">
+                                        {mop.accountNumber}
+                                    </TableCell>
 
-                                <TableCell align="center">
-                                    <div>
-                                        {mop.isEnabled ? <ToggleOnOutlinedIcon fontSize="medium" /> : <ToggleOffOutlinedIcon fontSize="medium" />}
-                                    </div>
-                                </TableCell>
+                                    <TableCell align="center">
+                                        <div onClick={() => onUpdate(mop)}>
+                                            {mop.isEnabled ? <ToggleOnOutlinedIcon fontSize="medium" /> : <ToggleOffOutlinedIcon fontSize="medium" />}
+                                        </div>
+                                    </TableCell>
 
-                                <TableCell align="right">
-                                    <NavigateNextOutlinedIcon onClick={() => history.push(`/mode-of-payments/${mop.id}/details`)} />
-                                </TableCell>
+                                    <TableCell align="right">
+                                        <NavigateNextOutlinedIcon onClick={() => history.push(`/mode-of-payments/${mop.id}/details`)} />
+                                    </TableCell>
 
-                            </TableRow>
-                        )
+                                </TableRow>
+                            )
                     }
                 />
             }

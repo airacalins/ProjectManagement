@@ -36,6 +36,15 @@ const User: React.FC<Props> = ({ }) => {
                     navigateTo="/users/create"
                     columns={columns}
                     rows={
+                        // !data.length ?
+                        //     [
+                        //         <TableRow>
+                        //             <TableCell align="center" colSpan={8}>
+                        //                 No data
+                        //             </TableCell>
+                        //         </TableRow>
+                        //     ]
+                        //     :
                         users.map(user =>
                             <TableRow key={user.id}>
 

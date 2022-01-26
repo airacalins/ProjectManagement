@@ -52,31 +52,40 @@ const Slot = () => {
           columns={columns}
           rows=
           {
-            slots.map(slot =>
-              <TableRow key={slot.id}>
+            !data.length ?
+              [
+                <TableRow>
+                  <TableCell align="center" colSpan={8}>
+                    No data
+                  </TableCell>
+                </TableRow>
+              ]
+              :
+              data.map(slot =>
+                <TableRow key={slot.id}>
 
-                <TableCell align="center">
-                  {slot.slotNumber}
-                </TableCell>
+                  <TableCell align="center">
+                    {slot.slotNumber}
+                  </TableCell>
 
-                <TableCell align="center">
-                  {slot.size}
-                </TableCell>
+                  <TableCell align="center">
+                    {slot.size}
+                  </TableCell>
 
-                <TableCell align="center">
-                  {currencyFormatter(slot.price!)}
-                </TableCell>
+                  <TableCell align="center">
+                    {currencyFormatter(slot.price!)}
+                  </TableCell>
 
-                <TableCell align="center">
-                  <Label content={slot.tenantContract ? "Rented" : "Available"} color={slot.tenantContract ? "blue" : "green"}></Label>
-                </TableCell>
+                  <TableCell align="center">
+                    <Label content={slot.tenantContract ? "Rented" : "Available"} color={slot.tenantContract ? "blue" : "green"}></Label>
+                  </TableCell>
 
-                <TableCell align="right">
-                  <NavigateNextOutlinedIcon onClick={() => history.push(`/slots/${slot.id}/details`)} />
-                </TableCell>
+                  <TableCell align="right">
+                    <NavigateNextOutlinedIcon onClick={() => history.push(`/slots/${slot.id}/details`)} />
+                  </TableCell>
 
-              </TableRow>
-            )
+                </TableRow>
+              )
           }
         />
       }

@@ -10,14 +10,21 @@ export interface IInvoice {
   payments: [
     {
       id: string,
+      dateCreated: Date,
       status: PaymentStatus,
       bankName: string,
       accountName: string,
-      accountNumber: string
+      accountNumber: string,
+      amount: number
     }
   ],
   dateCreated: Date,
   dueDate: Date
+}
+
+export interface IUpdatePaymentStatusModel {
+  id: string,
+  isApproved: boolean
 }
 
 export enum PaymentStatus {

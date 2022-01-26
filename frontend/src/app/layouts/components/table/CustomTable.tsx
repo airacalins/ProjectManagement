@@ -11,7 +11,7 @@ import { TableHead } from '@mui/material';
 
 import CustomTablePagination from './CustomTablePagination';
 import { Col, Form, Row } from 'react-bootstrap';
-import CreateButton from '../buttons/CreateButton';
+import NavigationButton from '../buttons/NavigationButton';
 
 interface CustomTableProps {
   columns: Array<{ title: string; style?: any }>,
@@ -48,7 +48,6 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
 
     <div className='px-5'>
       {
-        buttonTitle &&
         <Row className="d-flex align-items-center justify-content-between py-3 ms-1" md={5}>
           <Col className="d-flex align-items-center p-0" >
             {
@@ -64,7 +63,7 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
 
           {buttonTitle &&
             <Col className="d-flex justify-content-end">
-              <CreateButton title={buttonTitle} navigateTo={navigateTo!} />
+              <NavigationButton title={buttonTitle} navigateTo={navigateTo!} />
             </Col>
           }
         </Row>
