@@ -1,19 +1,19 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Table, Button } from "semantic-ui-react";
-import Details from "../../app/layouts/components/common/Details";
-import DetailsAction from "../../app/layouts/components/common/DetailsAction";
-import DetailsInput from "../../app/layouts/components/common/DetailsInput";
-import ContainerDetails from "../../app/layouts/components/container/ContainerDetails";
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import { useParams } from "react-router-dom";
 import { dateFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchTenantDetailsAsync } from "./tenantSlice";
 
+import DetailItem from "../../app/layouts/components/items/DetailItem";
+import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
+
 const TenantDetails = () => {
 
     const { id } = useParams<{ id: string }>();
-    
+
     const { tenant, isFetchingDetails } = useAppSelecter(state => state.tenant);
     const dispatch = useAppDispatch();
 
@@ -23,39 +23,39 @@ const TenantDetails = () => {
 
     if (isFetchingDetails || !tenant) return (<LoadingComponent content="Loading tenant..." />)
 
+    const { companyName, firstName, lastName, address, phone, slotContract } = tenant
+
     return (
-        <ContainerDetails goBackTo="/tenants">
-            <Details
-                title="Tenant"
-                detailsInput={
+        <>
+            <DetailsPage
+                title="Personal Information"
+                backNavigationLink="/tenants"
+                content={
                     <>
-                        <DetailsInput label="Business Name" input={tenant.companyName} />
-                        <DetailsInput label="First Name" input={tenant.firstName} />
-                        <DetailsInput label="Last Name" input={tenant.lastName} />
-                        <DetailsInput label="Address" input={tenant.address} />
-                        <DetailsInput label="Contact Number" input={tenant.phone} />
-                        <DetailsInput label="Tenant Since" input="input" />
-                        <DetailsInput label="contract Start Date" input={dateFormatter(tenant.slotContract?.contractStartDate)} />
-                        <DetailsInput label="Contract End Date" input={dateFormatter(tenant.slotContract?.contractEndDate)} />
-                        <Table.Row>
-                            <Table.Cell>Contact</Table.Cell>
-                            <Table.Cell>
-                                <div>
-                                    <Button as={Link} to={`/tenants/${id}/view-contract`} content="View" color="orange" icon="eye" size="mini"></Button>
-                                    <Button as={Link} to={`/tenants/${id}/download-contract`} content="Download" color="blue" icon="download" size="mini"></Button>
-                                </div>
-                            </Table.Cell>
-                        </Table.Row>
-                    </>
-                }
-                detailsButton={
-                    <>
-                        <DetailsAction name="Edit" icon="pencil" color="yellow" />
-                        <DetailsAction name="Delete" icon="trash" color="red" />
+                        <DetailItem title="Business Name" value={companyName} />
+                        <DetailItem title="First Name" value={firstName} />
+                        <DetailItem title="Last Name" value={lastName} />
+                        <DetailItem title="Address" value={address} />
+                        <DetailItem title="Contact Number" value={phone} />
+                        <FormButtonContainer>
+                            <NavigationButton title="Edit" navigateTo={`/tenants/${id}/manage`} />
+                            {/* <DeleteButton onClick={handleDelete(announcementId)} /> */}
+                        </FormButtonContainer>
                     </>
                 }
             />
-        </ContainerDetails>
+
+            <DetailsPage
+                title="Contract"
+                content={
+                    <>
+                        <DetailItem title="Start Date" value={dateFormatter(slotContract?.contractStartDate)} />
+                        <DetailItem title="End Date" value={dateFormatter(slotContract?.contractEndDate)} />
+                        <DetailItem title="Contract" value="" />
+                    </>
+                }
+            />
+        </>
     );
 }
 

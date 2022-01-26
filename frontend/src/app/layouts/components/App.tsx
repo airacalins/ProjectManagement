@@ -44,9 +44,11 @@ function App() {
               <Route path={'/slots'} exact component={Slot} />
               <Route path={['/slots/create', '/slots/:id/manage']} exact key={location.key} component={SlotForm} />
               <Route path='/slots/:id/details' exact component={SlotDetails} />
+
               <Route path='/tenants' exact component={Tenant} />
-              <Route path='/tenants/create' exact component={TenantForm} />
+              <Route path={['/tenants/create', "tenants/:id/manage"]} exact component={TenantForm} />
               <Route path='/tenants/:slotId/create' exact component={TenantForm} />
+
               <Route path='/tenants/:id/details' exact component={TenantDetails} />
               <Route path={['/payments', '/payment/:sort']} exact component={Payment} />
               <Route path='/payments/:id/details' exact component={PaymentDetails} />
