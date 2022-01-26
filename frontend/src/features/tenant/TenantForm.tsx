@@ -1,33 +1,21 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchTenantDetailsAsync, createTenantsAsync, updateTenantDetailsAsync } from "./tenantSlice";
 import { useParams } from "react-router-dom";
-import history from '../../app/utils/history';
 import { Form, Formik } from "formik";
 import * as Yup from 'yup';
-
-import { Button } from "semantic-ui-react";
-import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
-
-import FormContainer from "../../app/layouts/components/form/FormContainer";
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import FormTextInput from "../../app/layouts/components/form/FormTextInput";
-import MainPage from "../../app/layouts/components/pages/MainPage";
-import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
-import FormDateInput from "../../app/layouts/components/form/FormDateInput";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+import { fetchTenantDetailsAsync, createTenantsAsync } from "./tenantSlice";
+import { fetchSlotsAsync } from "../slot/slotSlice";
 import { SlotStatus } from "../../app/models/slot";
-import { format } from "date-fns";
-import FormPage from "../../app/layouts/components/pages/FormPage";
+import { Button } from "semantic-ui-react";
 
-// import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-// import FormContainer from "../../app/layouts/components/form/FormContainer";
-// import FormTextInput from "../../app/layouts/components/form/FormTextInput";
-// import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
-// import FormDateInput from "../../app/layouts/components/form/FormDateInput";
-// import { format } from "date-fns";
-// // import { SlotStatus } from "../../app/models/slot";
-// import TenantDetails from "./TenantDetails";
-// import MainPage from "../../app/layouts/components/pages/MainPage";
+import FormDateInput from "../../app/layouts/components/form/FormDateInput";
+import FormPage from "../../app/layouts/components/pages/FormPage";
+import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
+import FormTextInput from "../../app/layouts/components/form/FormTextInput";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import { format } from "date-fns";
+
+
 
 interface ITenantInput {
     id: string;
@@ -58,30 +46,19 @@ const TenantForm = () => {
     })
 
     const { tenant: tenantData, isFetchingDetails } = useAppSelecter(state => state.tenant);
+    const { slots: slotsData, isFetching } = useAppSelecter(state => state.slot);
+
     const dispatch = useAppDispatch();
 
     const { tenants, isFetching: isFetchingTenants, isSaving } = useAppSelecter(state => state.tenant);
 
-    // useEffect(() => {
-    //     dispatch(fetchTenantsAsync());
-    // }, [])
+    useEffect(() => {
+        dispatch(fetchSlotsAsync());
+    }, [])
 
     useEffect(() => {
         if (id) dispatch(fetchTenantDetailsAsync(id));
     }, [id])
-
-    // useEffect(() => {
-    //     tenantData && setTenant(prev => {
-    //         return {
-    //             ...prev,
-    //             fullName: tenantData.firstName,
-    //             companyName: tenantData.companyName,
-    //             address: tenantData.address,
-    //             contact: tenantData.phone,
-    //             slotId: !!tenantData.slotContract ? tenantData.slotContract.slot.id
-    //         }
-    //     });
-    // }, [tenantData])
 
     const validationSchema = Yup.object({
         firstName: Yup.string().required("First Name is required."),
@@ -97,11 +74,12 @@ const TenantForm = () => {
     const onSubmit = async (values: ITenantInput) => {
         if (!values.firstName)
             return;
+
         // await dispatch(createTenantsAsync({
         //     ...values,
         //     startDate: format(values.startDate, 'yyyy-MM-dd'),
         //     endDate: format(values.startDate, 'yyyy-MM-dd'),
-        //     tenantId: values.tenantId ? ''
+        //     tenantId: id
         // }));
         // history.push('/tenants')
     }
@@ -109,54 +87,46 @@ const TenantForm = () => {
     return (
         <FormPage
             title={id ? "Update Tenant" : "New Tenant"}
-            backNavigationLink={!id ? "/tenants" : `/tenants/${id}/details`}
-            form={<></>}
-        // children={
-        //     <FormContainer
-        //         title={id ? "Update Tenant" : "New Tenant"}
-        //         children={
-        //             <Formik
-        //                 validationSchema={validationSchema}
-        //                 enableReinitialize
-        //                 initialValues={tenant}
-        //                 onSubmit={values => {
-        //                     onSubmit(values);
-        //                 }}>
-        //                 {
-        //                     ({ handleSubmit, touched, isValid }) => (
-        //                         <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+            backNavigationLink={id ? `/tenants/${id}/details` : "/tenants"}
+            form={
+                <Formik
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                    initialValues={tenant}
+                    onSubmit={values => { onSubmit(values) }}>
+                    {
+                        ({ handleSubmit, isValid }) => (
+                            <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
 
-        //                             <FormSelectInput
-        //                                 options={tenants.filter(i => i.status === SlotStatus.Available).map(s => ({ text: s.slotNumber, value: s.id }))}
-        //                                 name="slotId"
-        //                                 placeholder="Slot Number"
-        //                                 label="Slot Number"
-        //                             />
+                                <FormSelectInput
+                                    options={slotsData.filter(i => i.status === SlotStatus.Available).map(s => ({ text: s.slotNumber, value: s.id }))}
+                                    name="slotId"
+                                    placeholder="Slot Number"
+                                    label="Slot Number"
+                                />
 
-        //                             <FormTextInput name="firstName" placeholder="First Name" label="First Name" />
-        //                             <FormTextInput name="lastName" placeholder="Last Name" label="Last Name" />
-        //                             <FormTextInput name="companyName" placeholder="Business Name" label="Business Name" />
-        //                             <FormTextInput name="address" placeholder="Address" label="Address" />
-        //                             <FormTextInput name="contact" placeholder="Contact Number" label="Contact Number" />
-        //                             <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />
-        //                             <FormDateInput name="endDate" placeholderText="End date" label="End Date" />
+                                <FormTextInput name="firstName" placeholder="First Name" label="First Name" />
+                                <FormTextInput name="lastName" placeholder="Last Name" label="Last Name" />
+                                <FormTextInput name="companyName" placeholder="Business Name" label="Business Name" />
+                                <FormTextInput name="address" placeholder="Address" label="Address" />
+                                <FormTextInput name="contact" placeholder="Contact Number" label="Contact Number" />
+                                <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />
+                                <FormDateInput name="endDate" placeholderText="End date" label="End Date" />
 
-        //                             <div className="form__button-container py-3">
-        //                                 <Button
-        //                                     className="form__button"
-        //                                     type="submit"
-        //                                     content="Submit"
-        //                                     color="orange"
-        //                                     loading={isSaving}
-        //                                 />
-        //                             </div>
-        //                         </Form>
-        //                     )
-        //                 }
-        //             </Formik>
-        //         }
-        //     />
-        // }
+                                <div className="form__button-container py-3">
+                                    <Button
+                                        className="form__button"
+                                        type="submit"
+                                        content="Submit"
+                                        color="orange"
+                                        loading={isSaving}
+                                    />
+                                </div>
+                            </Form>
+                        )
+                    }
+                </Formik>
+            }
         />
     )
 }

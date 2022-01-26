@@ -49,19 +49,22 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
   return (
 
     <div className='px-5'>
-      <Row className="d-flex align-items-center justify-content-between py-3 ms-1" md={5}>
-        <Col className="d-flex align-items-center p-0" >
-          <Form.Control type="email" placeholder="Search..." value={searchValue}
-          // onChange={evt => onSearch(evt.target.value)}
-          />
-        </Col>
-
-        {buttonTitle &&
-          <Col className="d-flex justify-content-end">
-            <CreateButton title={buttonTitle} navigateTo={navigateTo!} />
+      {
+        !buttonTitle || !searchValue || !onSearch &&
+        <Row className="d-flex align-items-center justify-content-between py-3 ms-1" md={5}>
+          <Col className="d-flex align-items-center p-0" >
+            <Form.Control type="email" placeholder="Search..." value={searchValue}
+            // onChange={evt => onSearch(evt.target.value)}
+            />
           </Col>
-        }
-      </Row>
+
+          {buttonTitle &&
+            <Col className="d-flex justify-content-end">
+              <CreateButton title={buttonTitle} navigateTo={navigateTo!} />
+            </Col>
+          }
+        </Row>
+      }
 
 
       <TableContainer component={Paper}>

@@ -43,6 +43,10 @@ const Announcement = () => {
             title="Announcements"
             content={
                 <CustomTable
+                    searchValue={searchKey}
+                    onSearch={(value: string) => setSearchKey(value)}
+                    buttonTitle="Announcement"
+                    navigateTo="/announcements/create"
                     columns={columns}
                     rows=
                     {
@@ -68,10 +72,6 @@ const Announcement = () => {
                             </TableRow>
                         )
                     }
-                    searchValue={searchKey}
-                    onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Announcement"
-                    navigateTo="/announcements/create"
                 />
             }
         />

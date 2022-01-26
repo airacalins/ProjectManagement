@@ -9,6 +9,8 @@ import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
+import CustomTable from "../../app/layouts/components/table/CustomTable";
+import MainPage from "../../app/layouts/components/pages/MainPage";
 
 const TenantDetails = () => {
 
@@ -39,7 +41,6 @@ const TenantDetails = () => {
                         <DetailItem title="Contact Number" value={phone} />
                         <FormButtonContainer>
                             <NavigationButton title="Edit" navigateTo={`/tenants/${id}/manage`} />
-                            {/* <DeleteButton onClick={handleDelete(announcementId)} /> */}
                         </FormButtonContainer>
                     </>
                 }
@@ -52,6 +53,9 @@ const TenantDetails = () => {
                         <DetailItem title="Start Date" value={dateFormatter(slotContract?.contractStartDate)} />
                         <DetailItem title="End Date" value={dateFormatter(slotContract?.contractEndDate)} />
                         <DetailItem title="Contract" value="" />
+                        <FormButtonContainer>
+                            <NavigationButton title="Terminate Contract" navigateTo="/" />
+                        </FormButtonContainer>
                     </>
                 }
             />

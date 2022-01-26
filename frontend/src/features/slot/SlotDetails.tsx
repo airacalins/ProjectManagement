@@ -1,18 +1,14 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Table, Button, Message } from "semantic-ui-react";
-import ContainerDetails from "../../app/layouts/components/container/ContainerDetails"
-import Details from "../../app/layouts/components/common/Details";
-import DetailsInput from "../../app/layouts/components/common/DetailsInput";
-import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import { currencyFormatter, dateFormatter } from "../../app/layouts/formatter/common";
+import { useParams } from "react-router-dom";
+import { currencyFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { deleteSlotDetailsAsync, fetchSlotDetailsAsync } from "./slotSlice";
 import { getSlotStatusText } from "../../app/utils/common";
-import { SlotStatus } from "../../app/models/slot";
+
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
+import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
 
 const SlotDetails = () => {

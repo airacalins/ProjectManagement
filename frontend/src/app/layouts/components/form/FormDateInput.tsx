@@ -24,7 +24,7 @@ const FormDateInput = (props: Props) => {
 
             <Col>
                 <DatePicker
-                    className="date-input__date"
+                    className="form__input"
                     {...field}
                     {...props}
                     selected={(field.value && new Date(field.value)) || null}
