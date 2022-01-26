@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchInvoiceDetailsAsync, updateInvoicePaymentStatusAsync } from "./invoiceSlice";
@@ -29,6 +29,8 @@ const PaymentDetails = () => {
         dispatch(fetchInvoiceDetailsAsync(id));
     }, [])
 
+    const totalAmountPaid = useMemo(() => !!invoice && !!invoice.payments ? invoice.payments.reduce((previousValue, currentValue) => previousValue + currentValue.amount, 0) : 0, [invoice]);
+    
     if (isFetchingDetails || !invoice) return (<LoadingComponent content="Loading invoice details..." />)
 
     const {
@@ -55,6 +57,7 @@ const PaymentDetails = () => {
     const updateStatus = async (id: string, isApproved: boolean) => {
         await dispatch(updateInvoicePaymentStatusAsync({ id, isApproved }))
     }
+    
 
     const columns = [
         { title: 'Date' },
@@ -71,7 +74,7 @@ const PaymentDetails = () => {
         <>
             <DetailsPage
                 title="Invoice Details"
-                backNavigationLink="/payments"
+                backNavigationLink="/invoices"
                 content={
                     <>
                         <DetailItem title="Status" value={status()} />
@@ -88,10 +91,11 @@ const PaymentDetails = () => {
             <MainPage
                 title="Payment"
                 content={
+                    <>
                     <CustomTable
                         // searchValue={searchKey}
                         // onSearch={(value: string) => setSearchKey(value)}
-                        navigateTo="/payments/create"
+                        navigateTo="/invoices/create"
                         columns={columns}
                         rows={
                             // !payments.length ?
@@ -155,6 +159,9 @@ const PaymentDetails = () => {
                             )
                         }
                     />
+                    <div>Total Amount Paid: {totalAmountPaid}</div>
+                    <div>Balance: {invoice.amount - totalAmountPaid}</div>
+                    </>
                 }
             />
         </>

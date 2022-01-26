@@ -96,7 +96,7 @@ const Payment = () => {
                 </TableCell>
 
                 <TableCell align="right">
-                  <NavigateNextOutlinedIcon onClick={() => history.push(`/payments/${i.id}/details`)} />
+                  <NavigateNextOutlinedIcon onClick={() => history.push(`/invoices/${i.id}/details`)} />
                 </TableCell>
 
               </TableRow>

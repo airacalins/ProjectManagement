@@ -51,9 +51,9 @@ const NavMenu = () => {
             />
 
             <NavMenuItem
-                name="Payments"
+                name="Invoices"
                 icon={<PointOfSaleOutlinedIcon className="me-2" />}
-                navigateTo="/payments"
+                navigateTo="/invoices"
             />
 
             <NavMenuItem

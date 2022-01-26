@@ -51,8 +51,8 @@ function App() {
               <Route path={['/mode-of-payments/create', "/mode-of-payments/:id/manage"]} exact component={ModeOfPaymentForm} />
               <Route path='/mode-of-payments/:id/details' exact component={ModeOfPaymentDetails} />
 
-              <Route path={['/payments', '/payment/:sort']} exact component={Payment} />
-              <Route path='/payments/:id/details' exact component={PaymentDetails} />
+              <Route path={['/invoices', '/invoice/:sort']} exact component={Payment} />
+              <Route path='/invoices/:id/details' exact component={PaymentDetails} />
 
               <Route path={'/slots'} exact component={Slot} />
               <Route path={['/slots/create', '/slots/:id/manage']} exact key={location.key} component={SlotForm} />
