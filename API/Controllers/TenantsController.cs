@@ -117,5 +117,36 @@ namespace API.Controllers
 
       return Ok(tenant);
     }
+
+    
+    [HttpPut]
+    public async Task<ActionResult<Tenant>> UpdateTenant(UpdateTenantDto input)
+    {
+      var tenant = await _context.Tenants.FindAsync(input.Id);
+
+      if (tenant == null)
+      {
+        return NotFound("Tenant not found.");
+      }
+
+      
+        tenant.FirstName = input.FirstName;
+        tenant.LastName = input.LastName;
+        tenant.Phone = input.Contact;
+        tenant.BusinessName = input.BusinessName ?? string.Empty;
+        tenant.Address = input.Address;
+        
+      await _context.SaveChangesAsync();
+
+      var tenantContract = await _context.TenantContracts.FirstOrDefaultAsync(i => i.TenantId == input.Id);
+
+      if (tenantContract != null)
+      {
+        tenantContract.EndDate = input.EndDate;
+      }
+
+      return Ok(tenant);
+    }
+
   }
 }
