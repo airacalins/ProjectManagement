@@ -20,7 +20,7 @@ interface ITenantInput {
     id: string;
     firstName: string;
     lastName: string;
-    companyName: string;
+    businessName: string;
     address: string;
     contact: string;
     slotId?: string;
@@ -37,7 +37,7 @@ const TenantForm = () => {
         id: "",
         firstName: "",
         lastName: "",
-        companyName: "",
+        businessName: "",
         address: "",
         contact: "",
         slotId: undefined,
@@ -117,7 +117,7 @@ const TenantForm = () => {
 
                                 <FormTextInput name="firstName" placeholder="First Name" label="First Name" />
                                 <FormTextInput name="lastName" placeholder="Last Name" label="Last Name" />
-                                <FormTextInput name="companyName" placeholder="Business Name" label="Business Name" />
+                                <FormTextInput name="businessName" placeholder="Business Name" label="Business Name" />
                                 <FormTextInput name="address" placeholder="Address" label="Address" />
                                 <FormTextInput name="contact" placeholder="Contact Number" label="Contact Number" />
                                 <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />

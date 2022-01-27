@@ -64,7 +64,8 @@ namespace API.Controllers
         Phone = input.Contact,
         BusinessName = input.BusinessName ?? string.Empty,
         DateCreated = DateTimeOffset.UtcNow,
-        TenantUniqueId = tenantUniqueId
+        TenantUniqueId = tenantUniqueId,
+        Address = input.Address
       };
       _context.Tenants.Add(tenant);
       await _context.SaveChangesAsync();

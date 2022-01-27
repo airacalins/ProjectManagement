@@ -7,7 +7,7 @@ export interface ITenant {
   phone: string;
   email: string;
   dateCreated: Date;
-  companyName: string;
+  businessName: string;
   address: string;
   slotContract?: SlotContract;
 }
@@ -16,7 +16,7 @@ export interface ICreateTenantInput {
   id: string;
   firstName: string;
   lastName: string;
-  companyName: string;
+  businessName: string;
   address: string;
   contact: string;
   slotId: string;

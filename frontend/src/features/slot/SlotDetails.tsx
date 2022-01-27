@@ -52,7 +52,7 @@ const SlotDetails = () => {
         content={
           slot.tenantContract ?
             <>
-              <DetailItem title="Business Name" value={slot.tenantContract?.tenant.companyName} />
+              <DetailItem title="Business Name" value={slot.tenantContract?.tenant.businessName} />
               <DetailItem title="First Name" value={slot.tenantContract?.tenant.firstName} />
               <DetailItem title="Last Name" value={slot.tenantContract?.tenant.lastName} />
               <DetailItem title="Address" value={slot.tenantContract?.tenant.address} />

@@ -25,7 +25,7 @@ const TenantDetails = () => {
 
     if (isFetchingDetails || !tenant) return (<LoadingComponent content="Loading tenant..." />)
 
-    const { companyName, firstName, lastName, address, phone, slotContract } = tenant
+    const { businessName, firstName, lastName, address, phone, slotContract } = tenant
 
     return (
         <>
@@ -34,7 +34,7 @@ const TenantDetails = () => {
                 backNavigationLink="/tenants"
                 content={
                     <>
-                        <DetailItem title="Business Name" value={companyName} />
+                        <DetailItem title="Business Name" value={businessName} />
                         <DetailItem title="First Name" value={firstName} />
                         <DetailItem title="Last Name" value={lastName} />
                         <DetailItem title="Address" value={address} />

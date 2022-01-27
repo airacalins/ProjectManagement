@@ -63,7 +63,7 @@ const Tenant = () => {
                             </TableCell>
 
                             <TableCell align="center">
-                                {tenant.companyName}
+                                {tenant.businessName}
                             </TableCell>
 
                             <TableCell align="center">
