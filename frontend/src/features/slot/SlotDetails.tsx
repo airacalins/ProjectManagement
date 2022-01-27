@@ -58,7 +58,7 @@ const SlotDetails = () => {
               <DetailItem title="Address" value={slot.tenantContract?.tenant.address} />
               <DetailItem title="Contact Number" value={slot.tenantContract?.tenant.phone} />
             </> :
-            <NavigationButton title="Add Tenant" navigateTo="/tenants/create" />
+            <NavigationButton title="Add Tenant" navigateTo={`/tenants/${slot.id}/create`} />
         }
       />
 

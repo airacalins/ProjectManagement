@@ -62,7 +62,7 @@ namespace API.Controllers
         FirstName = input.FirstName,
         LastName = input.LastName,
         Phone = input.Contact,
-        BusinessName = input.CompanyName ?? string.Empty,
+        BusinessName = input.BusinessName ?? string.Empty,
         DateCreated = DateTimeOffset.UtcNow,
         TenantUniqueId = tenantUniqueId
       };

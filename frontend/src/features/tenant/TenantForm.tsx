@@ -13,9 +13,8 @@ import FormPage from "../../app/layouts/components/pages/FormPage";
 import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import history from "../../app/utils/history";
 import { format } from "date-fns";
-
-
 
 interface ITenantInput {
     id: string;
@@ -31,8 +30,9 @@ interface ITenantInput {
 
 const TenantForm = () => {
 
-    const { id, tenantId: routeTenantId } = useParams<{ id: string, tenantId: string }>();
-
+    const { id } = useParams<{ id: string, tenantId: string }>();
+    const { slotId } = useParams<{ slotId: string }>();
+    const [slotsLoaded, setSlotsLoaded] = useState(false);
     const [tenant, setTenant] = useState<ITenantInput>({
         id: "",
         firstName: "",
@@ -45,20 +45,31 @@ const TenantForm = () => {
         endDate: new Date()
     })
 
+    const { tenants, isFetching: isFetchingTenants, isSaving } = useAppSelecter(state => state.tenant);
     const { tenant: tenantData, isFetchingDetails } = useAppSelecter(state => state.tenant);
-    const { slots: slotsData, isFetching } = useAppSelecter(state => state.slot);
+    const { slots: slotsData } = useAppSelecter(state => state.slot);
 
     const dispatch = useAppDispatch();
 
-    const { tenants, isFetching: isFetchingTenants, isSaving } = useAppSelecter(state => state.tenant);
+    const fetchSlots = async () => {
+        await dispatch(fetchSlotsAsync());
+        setSlotsLoaded(true);
+    }
 
     useEffect(() => {
-        dispatch(fetchSlotsAsync());
+        fetchSlots();
     }, [])
 
     useEffect(() => {
         if (id) dispatch(fetchTenantDetailsAsync(id));
     }, [id])
+
+    useEffect(() => {
+        if (slotId && slotsLoaded)
+            setTenant(prev => {
+                return { ...prev, slotId }
+            })
+    }, [slotId, slotsLoaded])
 
     const validationSchema = Yup.object({
         firstName: Yup.string().required("First Name is required."),
@@ -74,14 +85,13 @@ const TenantForm = () => {
     const onSubmit = async (values: ITenantInput) => {
         if (!values.firstName)
             return;
-
-        // await dispatch(createTenantsAsync({
-        //     ...values,
-        //     startDate: format(values.startDate, 'yyyy-MM-dd'),
-        //     endDate: format(values.startDate, 'yyyy-MM-dd'),
-        //     tenantId: id
-        // }));
-        // history.push('/tenants')
+        await dispatch(createTenantsAsync({
+            ...values,
+            startDate: format(values.startDate, 'yyyy-MM-dd'),
+            endDate: format(values.startDate, 'yyyy-MM-dd'),
+            slotId: slotId!
+        }));
+        history.push('/tenants')
     }
 
     return (

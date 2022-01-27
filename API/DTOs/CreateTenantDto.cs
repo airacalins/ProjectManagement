@@ -11,7 +11,7 @@ namespace API.DTOs
         public Guid SlotId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string CompanyName {get; set; }
+        public string BusinessName {get; set; }
         public string Address { get; set; }
         public string Contact { get; set; }
         
