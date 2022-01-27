@@ -25,16 +25,66 @@ namespace API.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Tenant>>> GetTenants()
+    public async Task<ActionResult<List<TenantDto>>> GetTenants()
     {
-      var tenants = await _context.Tenants.ToListAsync();
-      return Ok(tenants);
+      var tenants = await _context.Tenants.Include(i => i.TenantContracts).ThenInclude(i => i.Unit)
+      .ToListAsync();
+
+      var result = tenants.Select(i => new TenantDto
+      {
+        Id = i.Id,
+        FirstName = i.FirstName,
+        LastName = i.LastName,
+        Phone = i.Phone,
+        BusinessName = i.BusinessName,
+        DateCreated = i.DateCreated,
+        Address = i.Address,
+        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ? 
+          i.TenantContracts.Select(t => new SlotContractDto
+          {
+            Id = t.Id,
+            SlotId = t.UnitId,
+            SlotNumber = t.Unit.SlotNumber,
+            Size = t.Unit.Size,
+            Price = t.Unit.Price,
+            StartDate = t.StartDate,
+            EndDate = t.EndDate,
+            NextBillingDate = t.NextPaymentDate
+          }).FirstOrDefault() : null
+      });
+      return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Tenant>> GetTenant(Guid id)
+    public async Task<ActionResult<TenantDto>> GetTenant(Guid id)
     {
-      var tenant = await _context.Tenants.FindAsync(id);
+      var tenants = await _context.Tenants.Include(i => i.TenantContracts).ThenInclude(i => i.Unit)
+      .ToListAsync();
+
+      var tenantsDto = tenants.Select(i => new TenantDto
+      {
+        Id = i.Id,
+        FirstName = i.FirstName,
+        LastName = i.LastName,
+        Phone = i.Phone,
+        BusinessName = i.BusinessName,
+        DateCreated = i.DateCreated,
+        Address = i.Address,
+        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ? 
+          i.TenantContracts.Select(t => new SlotContractDto
+          {
+            Id = t.Id,
+            SlotId = t.UnitId,
+            SlotNumber = t.Unit.SlotNumber,
+            Size = t.Unit.Size,
+            Price = t.Unit.Price,
+            StartDate = t.StartDate,
+            EndDate = t.EndDate,
+            NextBillingDate = t.NextPaymentDate
+          }).FirstOrDefault() : null
+      });
+
+      var tenant = tenantsDto.FirstOrDefault(i => i.Id == id);
       return Ok(tenant);
     }
 
