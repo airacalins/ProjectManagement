@@ -5,11 +5,10 @@ export interface ITenant {
   firstName: string;
   lastName: string;
   phone: string;
-  email: string;
   dateCreated: Date;
   businessName: string;
   address: string;
-  slotContract?: SlotContract;
+  contract?: SlotContract;
 }
 
 export interface ICreateTenantInput {

@@ -12,6 +12,8 @@ namespace API.DTOs
         public string LastName { get; set; } = default!;
         public string Phone { get; set; } = default!;
         public string BusinessName { get; set; } = default!;
+        public string Address { get; set; } = default!;
         public DateTimeOffset DateCreated { get; set; }
+        public SlotContractDto? Contract { get; set; }
     }
 }

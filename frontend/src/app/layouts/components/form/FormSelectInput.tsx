@@ -24,6 +24,7 @@ const FormSelectInput = (props: Props) => {
             <Col>
                 <Select
                     className="form__input"
+                    name={props.name}
                     clearable
                     options={props.options}
                     value={field.value || null}

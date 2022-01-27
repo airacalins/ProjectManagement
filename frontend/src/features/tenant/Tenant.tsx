@@ -20,7 +20,11 @@ const Tenant = () => {
 
     const data = useMemo(() => {
         if (!!searchKey) {
-            return tenants.filter(i => i.firstName.toLowerCase().includes(searchKey.toLowerCase()));
+            return tenants.filter(i => i.firstName.toLowerCase().includes(searchKey.toLowerCase())
+            || i.lastName.toLowerCase().includes(searchKey.toLowerCase())
+            || i.businessName.toLowerCase().includes(searchKey.toLowerCase())
+            || i.phone.toLowerCase().includes(searchKey.toLowerCase())
+            || (!!i.slotContract && i.slotContract?.slot?.slotNumber.toLowerCase().includes(searchKey.toLowerCase())));
         }
         return tenants;
     }, [tenants, searchKey])
@@ -56,7 +60,7 @@ const Tenant = () => {
                         //         </TableRow>
                         //     ]
                         //     :
-                        tenants.map(tenant => <TableRow key={tenant.id}>
+                        data.map(tenant => <TableRow key={tenant.id}>
 
                             <TableCell align="center">
                                 {`${tenant.firstName} ${tenant.lastName}`}
@@ -83,7 +87,7 @@ const Tenant = () => {
                     }
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Tenant"
+                    buttonTitle="Add"
                     navigateTo="/tenants/create"
                 />
             }

@@ -15,6 +15,7 @@ import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import history from "../../app/utils/history";
 import { format } from "date-fns";
+import moment from "moment";
 
 interface ITenantInput {
     id: string;
@@ -26,6 +27,14 @@ interface ITenantInput {
     slotId?: string;
     startDate: Date;
     endDate: Date;
+}
+
+const futureDate = () => {
+    const currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = currentDate.getMonth();
+    var day = currentDate.getDate();
+    return new Date(year + 1, month, day);
 }
 
 const TenantForm = () => {
@@ -42,7 +51,7 @@ const TenantForm = () => {
         contact: "",
         slotId: undefined,
         startDate: new Date(),
-        endDate: new Date()
+        endDate: futureDate()
     })
 
     const { tenants, isFetching: isFetchingTenants, isSaving } = useAppSelecter(state => state.tenant);

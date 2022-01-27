@@ -1,15 +1,11 @@
-import { ISlot } from './slot';
 
 export interface SlotContract {
   id: string;
-  slot: ISlot;
-  contractPrice: number;
-  deposit: number;
-  advance: number;
-  contractStartDate: string;
-  contractEndDate: string;
-  contractEarlyTerminationDate: string;
-  contractEarlyTerminationReason: string;
+  slotId: string;
+  slotNumber: string;
+  size: number;
+  price: number;
+  startDate: string;
+  endDate: string;
   nextBillingDate: string;
-  status: string;
 }
