@@ -8,4 +8,5 @@ export interface SlotContract {
   startDate: string;
   endDate: string;
   nextBillingDate: string;
+  status: string;
 }

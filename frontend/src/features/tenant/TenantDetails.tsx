@@ -25,7 +25,7 @@ const TenantDetails = () => {
 
     if (isFetchingDetails || !tenant) return (<LoadingComponent content="Loading tenant..." />)
 
-    const { businessName, firstName, lastName, address, phone, slotContract } = tenant
+    const { businessName, firstName, lastName, address, phone, contract } = tenant
 
     return (
         <>
@@ -50,8 +50,8 @@ const TenantDetails = () => {
                 title="Contract"
                 content={
                     <>
-                        <DetailItem title="Start Date" value={dateFormatter(slotContract?.contractStartDate)} />
-                        <DetailItem title="End Date" value={dateFormatter(slotContract?.contractEndDate)} />
+                        <DetailItem title="Start Date" value={dateFormatter(contract?.startDate)} />
+                        <DetailItem title="End Date" value={dateFormatter(contract?.endDate)} />
                         <DetailItem title="Contract" value="" />
                         <FormButtonContainer>
                             <NavigationButton title="Terminate Contract" navigateTo="/" />

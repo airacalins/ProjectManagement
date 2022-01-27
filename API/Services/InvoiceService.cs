@@ -22,6 +22,7 @@ namespace API.Services
     {
       var contracts = await _context.TenantContracts
       .Include(i => i.Tenant)
+      .Where(i => i.Status == TenantContractStatus.Active)
       .Where(i => i.NextPaymentDate < DateTimeOffset.UtcNow).ToListAsync();
 
       foreach (var contract in contracts)
@@ -47,8 +48,17 @@ namespace API.Services
 
         _context.InvoiceItems.Add(invoiceItem);
         await _context.SaveChangesAsync();
+        
+        var nextBillDate = contract.NextPaymentDate.AddMonths(1);
+        if (nextBillDate > contract.EndDate)
+        {
+          contract.Status = TenantContractStatus.Expired;
+        }
+        else
+        {
+          contract.NextPaymentDate = nextBillDate;
+        }
 
-        contract.NextPaymentDate = contract.NextPaymentDate.AddMonths(1);
         await _context.SaveChangesAsync();
       }
     }

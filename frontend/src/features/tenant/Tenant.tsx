@@ -24,7 +24,7 @@ const Tenant = () => {
             || i.lastName.toLowerCase().includes(searchKey.toLowerCase())
             || i.businessName.toLowerCase().includes(searchKey.toLowerCase())
             || i.phone.toLowerCase().includes(searchKey.toLowerCase())
-            || (!!i.slotContract && i.slotContract?.slot?.slotNumber.toLowerCase().includes(searchKey.toLowerCase())));
+            || (!!i.contract && i.contract?.slotNumber.toLowerCase().includes(searchKey.toLowerCase())));
         }
         return tenants;
     }, [tenants, searchKey])
@@ -75,7 +75,7 @@ const Tenant = () => {
                             </TableCell>
 
                             <TableCell align="center">
-                                <Label content={tenant.slotContract?.slot}></Label>
+                                <Label content={tenant.contract?.slotNumber}></Label>
                             </TableCell>
 
                             <TableCell align="right">

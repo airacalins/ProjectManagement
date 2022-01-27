@@ -11,5 +11,5 @@ export const currencyFormatter = (amount: number) => {
 };
 
 export const dateFormatter = (date: string | undefined) => {
-  return moment(date).format('MMM DD, YYYY');
+  return !!date ? moment(date).format('MMM DD, YYYY') : "-----";
 };

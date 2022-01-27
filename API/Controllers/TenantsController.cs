@@ -49,7 +49,8 @@ namespace API.Controllers
             Price = t.Unit.Price,
             StartDate = t.StartDate,
             EndDate = t.EndDate,
-            NextBillingDate = t.NextPaymentDate
+            NextBillingDate = t.NextPaymentDate,
+            Status = t.Status
           }).FirstOrDefault() : null
       });
       return Ok(result);
@@ -80,7 +81,8 @@ namespace API.Controllers
             Price = t.Unit.Price,
             StartDate = t.StartDate,
             EndDate = t.EndDate,
-            NextBillingDate = t.NextPaymentDate
+            NextBillingDate = t.NextPaymentDate,
+            Status = t.Status
           }).FirstOrDefault() : null
       });
 
@@ -193,10 +195,34 @@ namespace API.Controllers
       if (tenantContract != null)
       {
         tenantContract.EndDate = input.EndDate;
+        await _context.SaveChangesAsync();
       }
 
       return Ok(tenant);
     }
 
+    [HttpDelete("terminate-contract/{id}")]
+    public async Task<ActionResult<Tenant>> Terminate(Guid id)
+    {
+      var tenant = await _context.Tenants.FindAsync(id);
+
+      if (tenant == null)
+      {
+        return NotFound("Tenant not found.");
+      }
+        
+      await _context.SaveChangesAsync();
+
+      var tenantContract = await _context.TenantContracts.FirstOrDefaultAsync(i => i.TenantId == id);
+
+      if (tenantContract != null)
+      {
+        tenantContract.EndDate = DateTimeOffset.UtcNow;
+        tenantContract.Status = TenantContractStatus.Terminated;
+        await _context.SaveChangesAsync();
+      }
+
+      return Ok(tenant);
+    }
   }
 }
