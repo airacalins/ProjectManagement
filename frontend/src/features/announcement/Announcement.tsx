@@ -69,7 +69,7 @@ const Announcement = () => {
                                         {announcement.title}
                                     </TableCell>
 
-                                    <TableCell className="w-50" align="center">
+                                    <TableCell className="w-50" align="left">
                                         {announcement.message}
                                     </TableCell>
 

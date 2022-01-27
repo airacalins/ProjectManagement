@@ -2,6 +2,7 @@
 
 .navMenu {
     background-color: $secondary;
+    position: fixed;
 
     &__title {
         font-size: 2em;
