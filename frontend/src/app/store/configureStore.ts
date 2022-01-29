@@ -6,6 +6,7 @@ import { modeOfPaymentSlice } from "../../features/modeOfPayment/modeOfPaymentSl
 import { invoiceSlice } from "../../features/payment/invoiceSlice";
 import { slotSlice } from "../../features/slot/slotSlice";
 import { tenantSlice } from "../../features/tenant/tenantSlice";
+import { userSlice } from "../../features/user/UserSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,7 +15,8 @@ export const store = configureStore({
     announcement: announcementSlice.reducer,
     slot: slotSlice.reducer,
     modeOfPayment: modeOfPaymentSlice.reducer,
-    invoice: invoiceSlice.reducer
+    invoice: invoiceSlice.reducer,
+    user: userSlice.reducer,
   }
 })
 

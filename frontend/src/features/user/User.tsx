@@ -1,70 +1,88 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 
 import MainPage from '../../app/layouts/components/pages/MainPage';
 import CustomTable from '../../app/layouts/components/table/CustomTable';
 import history from '../../app/utils/history';
+import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
+import { deleteUserDetailsAsync, fetchUsersAsync } from './UserSlice';
+import LoadingComponent from '../../app/layouts/components/loading/LoadingComponent';
+import DeleteButton from '../../app/layouts/components/buttons/DeleteButton';
 
-interface Props {
+const User = () => {
+    const [searchKey, setSearchKey] = useState('');
+    const { users, isFetching: isFetchingUsers, isSaving } = useAppSelecter(state => state.user);
 
-}
+    const dispatch = useAppDispatch();
 
-const users = [
-    { id: 1, firstName: "Ali", lasNtame: "Baba", role: "Admin", phone: "0928882899288" },
-    { id: 2, firstName: "Ali", lastName: "Express", role: "Admin", phone: "09878344343" },
-    { id: 3, firstName: "Ali", lastName: "Lala", role: "Finance", phone: "43493984939" }
-]
+    const data = useMemo(() => {
+        if (!!searchKey) {
+            return users.filter(i =>
+                i.firstName.toLowerCase().includes(searchKey.toLowerCase()) ||
+                i.lastName.toLowerCase().includes(searchKey.toLowerCase())
+            );
+        }
+        return users;
+    }, [users, searchKey])
 
-const columns = [
-    { title: 'Full Name' },
-    { title: 'Role' },
-    { title: 'Contact Number' },
-    { title: '' },
-]
+    useEffect(() => {
+        dispatch(fetchUsersAsync())
+    }, [])
 
-const User: React.FC<Props> = ({ }) => {
+    const columns = [
+        { title: 'Full Name' },
+        { title: 'Contact Number' },
+        { title: 'Address' },
+        { title: '' },
+    ]
+
+    const handleDelete = async (id: string) => {
+        await dispatch(deleteUserDetailsAsync(id));
+        history.push("/users");
+    }
+
+    if (isFetchingUsers) return <LoadingComponent content="Loading users..." />
+
     return (
         <MainPage
             title="App Users"
             content={
                 <CustomTable
-                    // searchValue={searchKey}
-                    // onSearch={(value: string) => setSearchKey(value)}
+                    searchValue={searchKey}
+                    onSearch={(value: string) => setSearchKey(value)}
                     buttonTitle="Add User"
                     navigateTo="/users/create"
                     columns={columns}
                     rows={
-                        // !data.length ?
-                        //     [
-                        //         <TableRow>
-                        //             <TableCell align="center" colSpan={8}>
-                        //                 No data
-                        //             </TableCell>
-                        //         </TableRow>
-                        //     ]
-                        //     :
-                        users.map(user =>
-                            <TableRow key={user.id}>
+                        !data.length ?
+                            [
+                                <TableRow>
+                                    <TableCell align="center" colSpan={8}>
+                                        No data
+                                    </TableCell>
+                                </TableRow>
+                            ]
+                            :
+                            data.map(user =>
+                                <TableRow key={user.id}>
+                                    <TableCell align="center">
+                                        {`${user.firstName} ${user.lastName}`}
+                                    </TableCell>
 
-                                <TableCell align="center">
-                                    {`${user.firstName} ${user.lastName}`}
-                                </TableCell>
+                                    <TableCell align="center">
+                                        {user.phone}
+                                    </TableCell>
 
-                                <TableCell align="center">
-                                    {user.role}
-                                </TableCell>
+                                    <TableCell align="center">
+                                        {user.address}
+                                    </TableCell>
 
-                                <TableCell align="center">
-                                    {user.phone}
-                                </TableCell>
-
-                                <TableCell align="right">
-                                    <NavigateNextOutlinedIcon onClick={() => history.push(`/users/${user.id}/details`)} />
-                                </TableCell>
-                            </TableRow>
-                        )
+                                    <TableCell align="right">
+                                        <DeleteButton onClick={() => handleDelete(user.id)} loading={isSaving} />
+                                    </TableCell>
+                                </TableRow>
+                            )
                     }
                 />
             }

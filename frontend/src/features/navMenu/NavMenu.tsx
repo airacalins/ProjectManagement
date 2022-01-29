@@ -1,14 +1,16 @@
 import { Nav } from "react-bootstrap";
 
-import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
-import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
-import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
+import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 
 import NavMenuItem from "./NavMenuItem";
 import "./navMenu.scss"
@@ -16,7 +18,7 @@ import "./navMenu.scss"
 const NavMenu = () => {
 
     return (
-        <Nav className="navMenu flex-column" defaultActiveKey="/home">
+        <Nav className="navMenu flex-column vh-100" defaultActiveKey="/home">
 
             <Nav.Link className="navMenu__title text-light px-4 d-flex align-items-center" href="/">MaxiMarket</Nav.Link>
 
@@ -68,11 +70,26 @@ const NavMenu = () => {
                 navigateTo="/announcements"
             />
 
-            {/* <NavMenuItem
+            <NavMenuItem
                 name="Reports"
                 icon={<AssessmentOutlinedIcon className="me-2" />}
                 navigateTo="/reports"
-            /> */}
+            />
+
+            <div style={{ position: "absolute", bottom: 0 }}>
+                <NavMenuItem
+                    name="Account"
+                    icon={<AccountBoxOutlinedIcon className="me-2" />}
+                    navigateTo="/account"
+                />
+
+                <NavMenuItem
+                    name="Logout"
+                    icon={<LogoutOutlinedIcon className="me-2" />}
+                    navigateTo="/logout"
+                />
+            </div>
+
 
         </Nav>
     );

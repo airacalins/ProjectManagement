@@ -20,7 +20,8 @@ const ModeOfPayment = () => {
     const data = useMemo(() => {
         if (!!searchKey) {
             return modeOfPayments.filter(i =>
-                i.bankName.toLowerCase().includes(searchKey.toLowerCase()) || i.accountName.toLowerCase().includes(searchKey.toLowerCase())
+                i.bankName.toLowerCase().includes(searchKey.toLowerCase()) ||
+                i.accountName.toLowerCase().includes(searchKey.toLowerCase())
             );
         }
         return modeOfPayments;
@@ -47,20 +48,20 @@ const ModeOfPayment = () => {
 
     return (
         <MainPage
-            title="Mode of Payments"
+            title="Mode of Payment"
             content={
                 <CustomTable
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Mode of Payment"
+                    buttonTitle="Add Mode of Payment"
                     navigateTo="/mode-of-payments/create"
                     columns={columns}
                     rows={
                         !data.length ?
                             [
                                 <TableRow>
-                                    <TableCell align="center" colSpan={8}>
-                                        No data...
+                                    <TableCell align="center" colSpan={columns.length}>
+                                        No data
                                     </TableCell>
                                 </TableRow>
                             ]

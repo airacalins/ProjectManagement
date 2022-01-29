@@ -21,10 +21,10 @@ const Tenant = () => {
     const data = useMemo(() => {
         if (!!searchKey) {
             return tenants.filter(i => i.firstName.toLowerCase().includes(searchKey.toLowerCase())
-            || i.lastName.toLowerCase().includes(searchKey.toLowerCase())
-            || i.businessName.toLowerCase().includes(searchKey.toLowerCase())
-            || i.phone.toLowerCase().includes(searchKey.toLowerCase())
-            || (!!i.contract && i.contract?.slotNumber.toLowerCase().includes(searchKey.toLowerCase())));
+                || i.lastName.toLowerCase().includes(searchKey.toLowerCase())
+                || i.businessName.toLowerCase().includes(searchKey.toLowerCase())
+                || i.phone.toLowerCase().includes(searchKey.toLowerCase())
+                || (!!i.contract && i.contract?.slotNumber.toLowerCase().includes(searchKey.toLowerCase())));
         }
         return tenants;
     }, [tenants, searchKey])
@@ -48,47 +48,47 @@ const Tenant = () => {
             title="Tenants"
             content={
                 <CustomTable
+                    searchValue={searchKey}
+                    onSearch={(value: string) => setSearchKey(value)}
+                    buttonTitle="Add Tenant"
+                    navigateTo="/tenants/create"
                     columns={columns}
                     rows=
                     {
-                        // !data.length ?
-                        //     [
-                        //         <TableRow>
-                        //             <TableCell align="center" colSpan={8}>
-                        //                 No data
-                        //             </TableCell>
-                        //         </TableRow>
-                        //     ]
-                        //     :
-                        data.map(tenant => <TableRow key={tenant.id}>
+                        !data.length ?
+                            [
+                                <TableRow>
+                                    <TableCell align="center" colSpan={columns.length}>
+                                        No data
+                                    </TableCell>
+                                </TableRow>
+                            ]
+                            :
+                            data.map(tenant => <TableRow key={tenant.id}>
 
-                            <TableCell align="center">
-                                {`${tenant.firstName} ${tenant.lastName}`}
-                            </TableCell>
+                                <TableCell align="center">
+                                    {`${tenant.firstName} ${tenant.lastName}`}
+                                </TableCell>
 
-                            <TableCell align="center">
-                                {tenant.businessName}
-                            </TableCell>
+                                <TableCell align="center">
+                                    {tenant.businessName}
+                                </TableCell>
 
-                            <TableCell align="center">
-                                {tenant.phone}
-                            </TableCell>
+                                <TableCell align="center">
+                                    {tenant.phone}
+                                </TableCell>
 
-                            <TableCell align="center">
-                                <Label content={tenant.contract?.slotNumber}></Label>
-                            </TableCell>
+                                <TableCell align="center">
+                                    <Label content={tenant.contract?.slotNumber}></Label>
+                                </TableCell>
 
-                            <TableCell align="right">
-                                <NavigateNextOutlinedIcon onClick={() => history.push(`/tenants/${tenant.id}/details`)} />
-                            </TableCell>
+                                <TableCell align="right">
+                                    <NavigateNextOutlinedIcon onClick={() => history.push(`/tenants/${tenant.id}/details`)} />
+                                </TableCell>
 
-                        </TableRow>
-                        )
+                            </TableRow>
+                            )
                     }
-                    searchValue={searchKey}
-                    onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Add"
-                    navigateTo="/tenants/create"
                 />
             }
         />

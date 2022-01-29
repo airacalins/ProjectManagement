@@ -36,7 +36,7 @@ const Announcement = () => {
         { title: '' },
     ]
 
-    if (isFetchingAnnouncements) return <LoadingComponent content="Loading Announcements..." />
+    if (isFetchingAnnouncements) return <LoadingComponent content="Loading announcements..." />
 
     return (
         <MainPage
@@ -52,7 +52,7 @@ const Announcement = () => {
                         !data.length ?
                             [
                                 <TableRow>
-                                    <TableCell align="center" colSpan={8}>
+                                    <TableCell align="center" colSpan={columns.length}>
                                         No data
                                     </TableCell>
                                 </TableRow>

@@ -5,7 +5,7 @@ import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
 import './page.scss'
 
 interface Props {
-    backNavigationLink: string
+    backNavigationLink?: string
     title: string
     form: React.ReactNode,
 }
@@ -13,9 +13,12 @@ interface Props {
 const FormPage: React.FC<Props> = ({ backNavigationLink, title, form }) => {
     return (
         <div>
-            <Button className="page d-flex align-items-center px-4 mb-1" as={Link} to={backNavigationLink}>
-                <MenuOpenOutlinedIcon />
-            </Button>
+            {
+                backNavigationLink &&
+                <Button className="page d-flex align-items-center px-4 mb-1" as={Link} to={backNavigationLink}>
+                    <MenuOpenOutlinedIcon />
+                </Button>
+            }
 
             <h3 className="page__title w-100 d-flex align-items-center px-4">{title}</h3>
 

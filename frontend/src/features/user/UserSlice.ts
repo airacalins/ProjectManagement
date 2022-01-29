@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
-import { IUser } from "../../app/models/user";
+import { IApplicationUsers, IUpdateUserPasswordInput, IUser } from "../../app/models/user";
 
 export interface IUserState {
-  users: IUser[];
+  users: IApplicationUsers[];
   user?: IUser;
   isFetching: boolean;
   isFetchingDetails: boolean;
@@ -18,7 +18,7 @@ const initialState: IUserState = {
   isSaving: false
 }
 
-export const fetchUsersAsync = createAsyncThunk<IUser[]>(
+export const fetchUsersAsync = createAsyncThunk<IApplicationUsers[]>(
   'users/fetchUserssAsync',
   async (_, thunkAPI) => {
     try {
@@ -56,6 +56,17 @@ export const updateUserDetailsAsync = createAsyncThunk<IUser, IUser>(
   async (user, thunkAPI) => {
     try {
       return await agent.Users.update(user);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const updateUserPasswordAsync = createAsyncThunk<IUser, IUpdateUserPasswordInput>(
+  'users/updateUserPasswordAsync',
+  async (user, thunkAPI) => {
+    try {
+      return await agent.Users.updatePassword(user);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})
     }

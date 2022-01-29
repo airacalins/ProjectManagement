@@ -55,7 +55,7 @@ const Slot = () => {
             !data.length ?
               [
                 <TableRow>
-                  <TableCell align="center" colSpan={8}>
+                  <TableCell align="center" colSpan={columns.length}>
                     No data
                   </TableCell>
                 </TableRow>
