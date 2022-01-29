@@ -5,6 +5,7 @@ namespace API.Enums
         Available,
         Rented,
         UnderMaintenance,
-        Reserved
+        Reserved,
+        Archived
     }
 }

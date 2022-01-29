@@ -57,6 +57,11 @@ builder.Services.AddDbContext<PropertyManagementContext>(opt =>
 builder.Services.AddIdentityCore<User>(opt =>
 {
   opt.User.RequireUniqueEmail = false;
+  opt.Password.RequireDigit = false;
+  opt.Password.RequiredLength = 4;
+  opt.Password.RequireLowercase = false;
+  opt.Password.RequireNonAlphanumeric = false;
+  opt.Password.RequireUppercase = false;
 
 }).AddRoles<IdentityRole>().AddEntityFrameworkStores<PropertyManagementContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
