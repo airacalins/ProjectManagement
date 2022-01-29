@@ -10,7 +10,7 @@ interface Props {
 
 const DeleteButton: React.FC<Props> = ({ onClick, loading }) => {
     return (
-        <Button className="btn-danger me-2" color='red' onClick={onClick} isLoading={loading} disabled={loading}>
+        <Button className="btn-danger me-2" color='red' onClick={onClick} loading={loading} disabled={loading}>
             Delete
         </Button>
     );

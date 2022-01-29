@@ -25,7 +25,7 @@ const NavMenu = () => {
             <NavMenuItem
                 name="Dashboard"
                 icon={<DashboardCustomizeOutlinedIcon className="me-2" />}
-                navigateTo="/dashboard"
+                navigateTo="/"
             />
 
             <NavMenuItem

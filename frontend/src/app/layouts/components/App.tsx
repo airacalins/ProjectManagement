@@ -53,41 +53,44 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        <Route path='/account/:id/details' element={<PrivateRoute><Account /></PrivateRoute>} />
+        <Route path='/' element={<PrivateRoute />}>
+          <Route path='/' element={<Dashboard />} />
+          <Route path='/account/:id/details' element={<Account />} />
+          <Route path='/map' element={<Map />} />
+
+          <Route path='/announcements' element={<Announcement />} />
+          <Route path={'/announcements/create'} element={<AnnouncementForm />} />
+          <Route path={'/announcements/:id/manage'} element={<AnnouncementForm />} />
+          <Route path='/announcements/:id/details' element={<AnnouncementDetails />} />
+
+          <Route path={'/invoices'} element={<Payment />} />
+          <Route path={'/invoice/:sort'} element={<Payment />} />
+          <Route path='/invoices/:id/details' element={<PaymentDetails />} />
+
+          <Route path='/mode-of-payments' element={<ModeOfPayment />} />
+          <Route path={'/mode-of-payments/create'} element={<ModeOfPaymentForm />} />
+          <Route path={"/mode-of-payments/:id/manage"} element={<ModeOfPaymentForm />} />
+          <Route path='/mode-of-payments/:id/details' element={<ModeOfPaymentDetails />} />
+
+          <Route path='/reports' element={<Report />} />
+
+          <Route path={'/slots'} element={<Slot />} />
+          <Route path={'/slots/create'} element={<SlotForm />} />
+          <Route path={'/slots/:id/manage'} element={<SlotForm />} />
+          <Route path='/slots/:id/details' element={<SlotDetails />} />
+
+          <Route path='/tenants' element={<Tenant />} />
+          <Route path={'/tenants/create'} element={<TenantForm />} />
+          <Route path={'/tenants/:slotId/create'} element={<TenantForm />} />
+          <Route path='/tenants/:id/manage' element={<TenantUpdateForm />} />
+          <Route path='/tenants/:id/details' element={<TenantDetails />} />
+
+          <Route path="/users" element={<User />} />
+          <Route path="/users/:id/details" element={<UserDetails />} />
+          <Route path="/users/create" element={<UserForm />} />
+        </Route>
+
         <Route path='/login' element={<LoginForm />} />
-        <Route path='/map' element={<PrivateRoute><Map /></PrivateRoute>} />
-
-        <Route path='/announcements' element={<PrivateRoute><Announcement /></PrivateRoute>} />
-        <Route path={'/announcements/create'} element={<PrivateRoute><AnnouncementForm /></PrivateRoute>} />
-        <Route path={'/announcements/:id/manage'} element={<PrivateRoute><AnnouncementForm /></PrivateRoute>} />
-        <Route path='/announcements/:id/details' element={<PrivateRoute><AnnouncementDetails /></PrivateRoute>} />
-
-        <Route path={'/invoices'} element={<PrivateRoute><Payment /></PrivateRoute>} />
-        <Route path={'/invoice/:sort'} element={<PrivateRoute><Payment /></PrivateRoute>} />
-        <Route path='/invoices/:id/details' element={<PrivateRoute><PaymentDetails /></PrivateRoute>} />
-
-        <Route path='/mode-of-payments' element={<PrivateRoute><ModeOfPayment /></PrivateRoute>} />
-        <Route path={'/mode-of-payments/create'} element={<PrivateRoute><ModeOfPaymentForm /></PrivateRoute>} />
-        <Route path={"/mode-of-payments/:id/manage"} element={<PrivateRoute><ModeOfPaymentForm /></PrivateRoute>} />
-        <Route path='/mode-of-payments/:id/details' element={<PrivateRoute><ModeOfPaymentDetails /></PrivateRoute>} />
-
-        <Route path='/reports' element={<PrivateRoute><Report /></PrivateRoute>} />
-
-        <Route path={'/slots'} element={<PrivateRoute><Slot /></PrivateRoute>} />
-        <Route path={'/slots/create'} element={<PrivateRoute><SlotForm /></PrivateRoute>} />
-        <Route path={'/slots/:id/manage'} element={<PrivateRoute><SlotForm /></PrivateRoute>} />
-        <Route path='/slots/:id/details' element={<PrivateRoute><SlotDetails /></PrivateRoute>} />
-
-        <Route path='/tenants' element={<PrivateRoute><Tenant /></PrivateRoute>} />
-        <Route path={'/tenants/create'} element={<PrivateRoute><TenantForm /></PrivateRoute>} />
-        <Route path={'/tenants/:slotId/create'} element={<PrivateRoute><TenantForm /></PrivateRoute>} />
-        <Route path='/tenants/:id/manage' element={<PrivateRoute><TenantUpdateForm /></PrivateRoute>} />
-        <Route path='/tenants/:id/details' element={<PrivateRoute><TenantDetails /></PrivateRoute>} />
-
-        <Route path="/users" element={<PrivateRoute><User /></PrivateRoute>} />
-        <Route path="/users/:id/details" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
-        <Route path="/users/create" element={<PrivateRoute><UserForm /></PrivateRoute>} />
       </Routes>
       {/* <Route exact path="/" component={Home} />
 
