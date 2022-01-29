@@ -64,7 +64,6 @@ export const uploadTenantContractPhoto = createAsyncThunk<any, ITenantContractPh
   }
 )
 
-
 export const updateTenantDetailsAsync = createAsyncThunk<ITenant, IUpdateTenantInput>(
   'tenants/updateTenantDetailsAsync',
   async (tenant, thunkAPI) => {

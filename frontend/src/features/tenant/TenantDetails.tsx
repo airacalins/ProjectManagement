@@ -51,7 +51,7 @@ const TenantDetails = () => {
     //   })
     //   .then(res => console.log(res))
     //   .catch(err => console.log(err))
-        await dispatch(uploadTenantContractPhoto({id: (tenant as any).contract.id ?? '', file}))
+        await dispatch(uploadTenantContractPhoto({id: tenant.contract?.id!, file}))
     })
   }
   

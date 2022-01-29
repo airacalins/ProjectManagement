@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace API.DTOs
 {
-    public class TenantContractPhotoDto
+    public class TenantContractImagesDto
     {
         public Guid Id { get; set; }
-        public IFormFile File { get; set; }
+        public string Url { get; set; } = default!;
     }
 }
