@@ -14,3 +14,9 @@ export interface ITenantContract {
   status: string;
   tenant: ITenant;
 }
+
+
+export interface ITenantContractPhotoInput {
+  id: string;
+  file: File;
+}

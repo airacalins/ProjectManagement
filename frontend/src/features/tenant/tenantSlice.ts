@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
 import { ICreateTenantInput, ITenant, IUpdateTenantInput } from "../../app/models/tenant";
+import { ITenantContractPhotoInput } from "../../app/models/tenantContract";
 
 export interface ITenantState {
   tenants: ITenant[];
@@ -51,6 +52,18 @@ export const createTenantsAsync = createAsyncThunk<ITenant, ICreateTenantInput>(
     }
   }
 )
+
+export const uploadTenantContractPhoto = createAsyncThunk<any, ITenantContractPhotoInput>(
+  'tenants/uploadTenantContractPhoto',
+  async (model, thunkAPI) => {
+    try {
+      return await agent.Tenant.uploadContract(model);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
 
 export const updateTenantDetailsAsync = createAsyncThunk<ITenant, IUpdateTenantInput>(
   'tenants/updateTenantDetailsAsync',

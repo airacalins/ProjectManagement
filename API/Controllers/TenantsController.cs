@@ -214,7 +214,7 @@ namespace API.Controllers
     }
 
     [HttpPost("upload-contract-photo")]
-    public async Task<ActionResult> UploadTenantPhoto(TenantContractPhotoDto input)
+    public async Task<ActionResult> UploadTenantContractPhoto(TenantContractPhotoDto input)
     {
       var tenantContract = await _context.TenantContracts.FindAsync(input.Id);
 
@@ -232,6 +232,19 @@ namespace API.Controllers
       await _context.SaveChangesAsync();
 
       return Ok();
+    }
+
+    [HttpGet("get-contract-photo")]
+    public async Task<ActionResult<TenantContractPhoto>> GetTenantContractPhoto(Guid id)
+    {
+      var tenantContract = await _context.TenantContracts.FindAsync(id);
+
+      if (tenantContract == null)
+      {
+        return NotFound("Tenant contract not found.");
+      }
+      var result = _context.TenantContractPhotos.Where(i => i.TenantContractId == id).ToListAsync();
+      return Ok(result);
     }
 
     [HttpDelete("terminate-contract/{id}")]
