@@ -68,6 +68,10 @@ const Announcement = {
   delete: (id: string) => request.delete(`announcements/${id}`),
 };
 
+const Dashboard = {
+  list: () => request.get('dashboard')
+}
+
 const Invoice = {
   list: () => request.get('invoices'),
   details: (id: string) => request.get(`invoices/${id}`),
@@ -111,6 +115,7 @@ const Users = {
 const agent = {
   Account,
   Announcement,
+  Dashboard,
   ModeOfPayment,
   Invoice,
   Slot,

@@ -31,6 +31,15 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";
 
 
+<<<<<<< Updated upstream
+=======
+import { useAppDispatch } from "../../store/configureStore";
+import { useCallback, useEffect, useState } from "react";
+import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";
+import UserDetails from "../../../features/user/UserDetails";
+
+
+>>>>>>> Stashed changes
 function App() {
   const location = useLocation();
 
@@ -94,6 +103,7 @@ function App() {
               <Route path='/tenants/:id/details' exact component={TenantDetails} />
 
               <Route path="/users" exact component={User} />
+              <Route path="/users/:id/details" exact component={UserDetails} />
               <Route path="/users/create" exact component={UserForm} />
             </Col>
           </Row>
