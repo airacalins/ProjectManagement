@@ -29,5 +29,14 @@ namespace API.Services
 
         return photo.Url;
     }
+
+    public async Task<Photo> UploadPhoto(IFormFile file)
+    {
+        var photoResult = await _photoAccessorService.AddPhoto(file);
+        var photo = new Photo { Url = photoResult.Url, PublicId = photoResult.PublicId };
+        _context.Photos.Add(photo);
+        await _context.SaveChangesAsync();
+        return photo;
+    }
   }
 }

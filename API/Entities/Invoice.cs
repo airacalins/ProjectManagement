@@ -20,5 +20,6 @@ namespace API.Entities
         public ICollection<Payment> Payments { get; set; }
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset DueDate { get; set; }
+        public InvoiceStatus InvoiceStatus { get; set; }
     }
 }

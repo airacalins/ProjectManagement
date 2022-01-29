@@ -180,7 +180,6 @@ namespace API.Controllers
       {
         return NotFound("Tenant not found.");
       }
-
       
         tenant.FirstName = input.FirstName;
         tenant.LastName = input.LastName;
@@ -189,16 +188,24 @@ namespace API.Controllers
         tenant.Address = input.Address;
         
       await _context.SaveChangesAsync();
+      return Ok(tenant);
+    }
 
-      var tenantContract = await _context.TenantContracts.FirstOrDefaultAsync(i => i.TenantId == input.Id);
+    [HttpPut("update-tenant-contract")]
+    public async Task<ActionResult> UpdateTenantContract(UpdateTenantContractDto input)
+    {
+      var tenantContract = await _context.TenantContracts.FindAsync(input.Id);
 
-      if (tenantContract != null)
+      if (tenantContract == null)
       {
-        tenantContract.EndDate = input.EndDate;
-        await _context.SaveChangesAsync();
+        return NotFound("Tenant contract not found.");
       }
 
-      return Ok(tenant);
+      tenantContract.EndDate = input.EndDate;
+        
+      await _context.SaveChangesAsync();
+
+      return Ok();
     }
 
     [HttpDelete("terminate-contract/{id}")]

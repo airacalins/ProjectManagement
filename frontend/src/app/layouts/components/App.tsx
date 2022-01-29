@@ -21,13 +21,39 @@ import Tenant from "../../../features/tenant/Tenant";
 import TenantForm from "../../../features/tenant/TenantForm";
 import TenantDetails from "../../../features/tenant/TenantDetails";
 import User from "../../../features/user/User";
+
 import Report from "../../../features/report/Report";
 import UserForm from "../../../features/user/UserForm";
 import Account from "../../../features/account/Account";
 import TenantUpdateForm from "../../../features/tenant/TenantUpdateForm";
 
+import UserDetails from "../../../features/user/UserDetails";
+import { useAppDispatch } from "../../store/configureStore";
+import { useCallback, useEffect, useState } from "react";
+import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";
+
+
 function App() {
   const location = useLocation();
+
+  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+
+  const initApp = useCallback(
+    async () => {
+      try {
+        await dispatch(fetchCurrentUserAsync());
+      } catch (error) {
+        console.log(error);
+      }
+    }, [dispatch])
+
+  useEffect(() => {
+    initApp().then(() => setLoading(false));
+  }, [initApp])
+
+  if (loading)
+    return <></>
 
   return (
     <>

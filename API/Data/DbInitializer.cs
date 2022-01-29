@@ -16,8 +16,9 @@ namespace API.Data
       {
         var admin = new User
         {
-          UserName = "airagals@sample.com",
+          UserName = "airagals",
           Email = "airagals@sample.com",
+          IsEnabled = true
         };
 
         await userManager.CreateAsync(admin, "EFp3GZ(V2=7q<kze");
@@ -25,8 +26,9 @@ namespace API.Data
 
         var user1 = new User
         {
-          UserName = "lexcalin@sample.com",
+          UserName = "lexcalin",
           Email = "lexcalin@sample.com",
+          IsEnabled = true
         };
 
         await userManager.CreateAsync(user1, "EFp3GZ(V2=7q<kze");
@@ -34,8 +36,9 @@ namespace API.Data
 
         var user2 = new User
         {
-          UserName = "ayaheloise@sample.com",
+          UserName = "ayaheloise",
           Email = "ayaheloise@sample.com",
+          IsEnabled = true
         };
 
         await userManager.CreateAsync(user2, "EFp3GZ(V2=7q<kze");
@@ -88,7 +91,8 @@ namespace API.Data
           {
             SlotNumber = $"UNT{i}",
             Size = 30,
-            Price = 15000
+            Price = 15000,
+            SlotStatus = Enums.SlotStatus.Available
           });
         }
 

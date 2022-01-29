@@ -64,12 +64,11 @@ namespace API.Controllers
     [HttpPost("add-user")]
     public async Task<ActionResult> Register(RegisterDto registerDto)
     {
-      var user = new User { UserName = registerDto.Email };
+      var user = new User { UserName = registerDto.Username };
       user.IsEnabled = true;
       user.FirstName = registerDto.FirstName;
       user.LastName = registerDto.LastName;
       user.Phone = registerDto.Phone;
-      user.Email = registerDto.Email;
       user.Address = registerDto.Address;
       var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -100,10 +99,24 @@ namespace API.Controllers
       user.Phone = input.Phone;
       user.Email = input.Email;
       user.Address = input.Address;
+      user.UserName = string.IsNullOrEmpty(input.Username) ? input.Username : user.UserName;
 
       await _context.SaveChangesAsync();
 
       return Ok(user);
+    }
+
+    [HttpPut("update-password")]
+    public async Task<ActionResult<ApplicationUserDto>> UpdatePassword(UpdatePasswordDto input)
+    {
+      var user = await _context.Users.FindAsync(input.Id);
+      if (user == null)
+        return NotFound("User not found");
+
+      await _userManager.RemovePasswordAsync(user);
+      await _userManager.AddPasswordAsync(user, input.password);
+
+      return Ok();
     }
 
     [HttpDelete("{id}")]

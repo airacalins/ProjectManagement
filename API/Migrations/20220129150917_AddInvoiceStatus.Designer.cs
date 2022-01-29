@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    partial class PropertyManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20220129150917_AddInvoiceStatus")]
+    partial class AddInvoiceStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -445,15 +447,15 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b33a5c11-6802-4801-a1f4-a2bd934ba727",
-                            ConcurrencyStamp = "85882901-4657-4b30-a98f-64da777ca3bf",
+                            Id = "4e1bc48f-d061-45e5-8611-a342fc9c5df9",
+                            ConcurrencyStamp = "8e5d85d6-4874-425d-be66-59885dc235b2",
                             Name = "USER",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "597c9ea1-826d-4410-bc1c-409b55dd4866",
-                            ConcurrencyStamp = "bbc36d5d-c64b-4620-8be6-a809dfa89f8b",
+                            Id = "3b10006a-2c46-448b-8924-62bea8e6f1ae",
+                            ConcurrencyStamp = "5014196c-b58f-44de-a11d-95004072a343",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
