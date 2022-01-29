@@ -92,7 +92,7 @@ namespace API.Controllers
 
 
     [HttpPost]
-    public async Task<ActionResult<Tenant>> AddTenant(CreateTenantDto input)
+    public async Task<ActionResult> AddTenant(CreateTenantDto input)
     {
       var unit = await _context.Units.FindAsync(input.SlotId);
 
@@ -100,7 +100,7 @@ namespace API.Controllers
       {
         return NotFound("Unit not found.");
       }
-
+  
       var isValidTenantUniqueId = false;
       var tenantUniqueId = string.Empty;
       while(!isValidTenantUniqueId)
@@ -120,6 +120,9 @@ namespace API.Controllers
         Address = input.Address
       };
       _context.Tenants.Add(tenant);
+      await _context.SaveChangesAsync();
+
+      unit.SlotStatus = SlotStatus.Rented;
       await _context.SaveChangesAsync();
 
       var newContract = new TenantContract
@@ -167,12 +170,12 @@ namespace API.Controllers
         _context.InvoiceItems.Add(depositInvoiceItem);
         await _context.SaveChangesAsync();
 
-      return Ok(tenant);
+      return Ok();
     }
 
     
     [HttpPut]
-    public async Task<ActionResult<Tenant>> UpdateTenant(UpdateTenantDto input)
+    public async Task<ActionResult> UpdateTenant(UpdateTenantDto input)
     {
       var tenant = await _context.Tenants.FindAsync(input.Id);
 
@@ -188,7 +191,7 @@ namespace API.Controllers
         tenant.Address = input.Address;
         
       await _context.SaveChangesAsync();
-      return Ok(tenant);
+      return Ok();
     }
 
     [HttpPut("update-tenant-contract")]
@@ -209,7 +212,7 @@ namespace API.Controllers
     }
 
     [HttpDelete("terminate-contract/{id}")]
-    public async Task<ActionResult<Tenant>> Terminate(Guid id)
+    public async Task<ActionResult> Terminate(Guid id)
     {
       var tenant = await _context.Tenants.FindAsync(id);
 
@@ -229,7 +232,7 @@ namespace API.Controllers
         await _context.SaveChangesAsync();
       }
 
-      return Ok(tenant);
+      return Ok();
     }
   }
 }

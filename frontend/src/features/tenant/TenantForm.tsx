@@ -81,7 +81,7 @@ const TenantForm = () => {
             ...values,
             startDate: new Date(),
             endDate: futureDate(),
-            slotId: slotId!
+            slotId: !!slotId ? slotId : values.slotId
         }));
         history.push('/tenants')
     }
