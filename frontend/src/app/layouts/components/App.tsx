@@ -26,8 +26,6 @@ import Report from "../../../features/report/Report";
 import UserForm from "../../../features/user/UserForm";
 import Account from "../../../features/account/Account";
 import TenantUpdateForm from "../../../features/tenant/TenantUpdateForm";
-
-import UserDetails from "../../../features/user/UserDetails";
 import { useAppDispatch } from "../../store/configureStore";
 import { useCallback, useEffect, useState } from "react";
 import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";

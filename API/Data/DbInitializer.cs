@@ -18,7 +18,11 @@ namespace API.Data
         {
           UserName = "airagals",
           Email = "airagals@sample.com",
-          IsEnabled = true
+          IsEnabled = true,
+          Address = "Pasig",
+          FirstName = "Aira",
+          LastName = "Gals",
+          Phone = "09123456789"
         };
 
         await userManager.CreateAsync(admin, "EFp3GZ(V2=7q<kze");
@@ -28,7 +32,11 @@ namespace API.Data
         {
           UserName = "lexcalin",
           Email = "lexcalin@sample.com",
-          IsEnabled = true
+          IsEnabled = true,
+          Address = "Pasig",
+          FirstName = "Lex",
+          LastName = "Calin",
+          Phone = "09123456789"
         };
 
         await userManager.CreateAsync(user1, "EFp3GZ(V2=7q<kze");
@@ -38,7 +46,11 @@ namespace API.Data
         {
           UserName = "ayaheloise",
           Email = "ayaheloise@sample.com",
-          IsEnabled = true
+          IsEnabled = true,
+          Address = "Pasig",
+          FirstName = "Ayah",
+          LastName = "Eloise",
+          Phone = "09123456789"
         };
 
         await userManager.CreateAsync(user2, "EFp3GZ(V2=7q<kze");
