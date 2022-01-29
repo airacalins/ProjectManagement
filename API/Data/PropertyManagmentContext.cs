@@ -26,7 +26,7 @@ namespace API.Data
     public DbSet<Announcement> Announcements { get; set; }
     public DbSet<ModeOfPayment> ModeOfPayments { get; set; }
     public DbSet<Payment> Payments { get; set; }
-
+    public DbSet<TenantContractPhoto> TenantContractPhotos { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
       base.OnModelCreating(builder);

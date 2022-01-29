@@ -6,7 +6,7 @@ import history from '../../app/utils/history';
 import { Formik, Form } from "formik"
 import * as Yup from 'yup';
 
-import { Button, Message } from "semantic-ui-react";
+import { Button, Message, Label } from "semantic-ui-react";
 import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
 
 import { ISlot, SlotStatus } from "../../app/models/slot";
@@ -15,6 +15,9 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import FormPage from "../../app/layouts/components/pages/FormPage";
+import { getSlotStatusColor, getSlotStatusText } from "../../app/utils/common";
+import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
+import { color } from "@mui/system";
 
 const SlotForm = () => {
     const { id } = useParams<{ id: string }>();
@@ -48,11 +51,20 @@ const SlotForm = () => {
     if (isFetchingDetails) return (<LoadingComponent content="Loading slot..." />)
 
     const onSubmit = async (values: any) => {
-        await dispatch(createSlotAsync(values));
+        if (id) {
+            await dispatch(updateSlotDetailsAsync(values));
+        } else {
+            await dispatch(createSlotAsync(values));
+        }
         history.push('/slots')
-        if (id) dispatch(updateSlotDetailsAsync(values));
     }
 
+    const slotStatusOptions = [
+        {text: getSlotStatusText(SlotStatus.Available), value: SlotStatus.Available},
+        {text: getSlotStatusText(SlotStatus.Reserved), value: SlotStatus.Reserved},
+        {text: getSlotStatusText(SlotStatus.UnderMaintenance), value: SlotStatus.UnderMaintenance},
+        {text: getSlotStatusText(SlotStatus.Archived), value: SlotStatus.Archived}
+      ]
     return (
         <FormPage
             title={id ? "Update Slot" : "New Slot"}
@@ -74,7 +86,15 @@ const SlotForm = () => {
                                 <FormTextInput label="Slot Number" name="slotNumber" placeholder="Slot Number" />
                                 <FormTextInput label="Size" name="size" placeholder="Size" />
                                 <FormTextInput label="Rental Fee" name="price" placeholder="Rental Fee" />
-
+                                {!!id && slot.status != SlotStatus.Rented && <FormSelectInput
+                                    options={slotStatusOptions}
+                                    name="status"
+                                    placeholder="Slot status"
+                                    label="Status"
+                                />}
+                                {!!id && slot.status === SlotStatus.Rented &&
+                                    <Label content={getSlotStatusText(SlotStatus.Rented)} color={getSlotStatusColor(SlotStatus.Rented)}></Label>
+                                }
                                 <div className="form__button-container py-3">
                                     <Button
                                         className="form__button"

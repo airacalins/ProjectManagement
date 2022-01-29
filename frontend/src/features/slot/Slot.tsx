@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchSlotsAsync } from "./slotSlice";
 import history from '../../app/utils/history';
 
-import { Label } from 'semantic-ui-react';
+import { Label, Select } from 'semantic-ui-react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
@@ -12,19 +12,29 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 import { currencyFormatter } from "../../app/layouts/formatter/common";
+import { getSlotStatusColor, getSlotStatusText } from "../../app/utils/common";
+import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
+import { SlotStatus } from "../../app/models/slot";
 
 const Slot = () => {
   const [searchKey, setSearchKey] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState<SlotStatus | undefined>(undefined);
   const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
 
   const dispatch = useAppDispatch();
 
   const data = useMemo(() => {
+    let searchResult = slots;
     if (!!searchKey) {
-      return slots.filter(i => i.slotNumber.toLowerCase().includes(searchKey.toLowerCase()));
+      searchResult =  searchResult.filter(i => i.slotNumber.toLowerCase().includes(searchKey.toLowerCase()));
     }
-    return slots;
-  }, [slots, searchKey])
+
+    if (!!selectedStatus) {
+      searchResult =  searchResult.filter(i => i.status === selectedStatus);
+    }
+
+    return searchResult;
+  }, [slots, searchKey, selectedStatus])
 
   useEffect(() => {
     dispatch(fetchSlotsAsync());
@@ -40,6 +50,15 @@ const Slot = () => {
 
   if (isFetchingSlots) return <LoadingComponent content="Loading Slots..." />
 
+  const slotStatusOptions = [
+    {text: 'All', value: undefined },
+    {text: getSlotStatusText(SlotStatus.Available), value: SlotStatus.Available},
+    {text: getSlotStatusText(SlotStatus.Rented), value: SlotStatus.Rented},
+    {text: getSlotStatusText(SlotStatus.Reserved), value: SlotStatus.Reserved},
+    {text: getSlotStatusText(SlotStatus.UnderMaintenance), value: SlotStatus.UnderMaintenance},
+    {text: getSlotStatusText(SlotStatus.Archived), value: SlotStatus.Archived}
+  ]
+
   return (
     <MainPage
       title="Slots"
@@ -50,6 +69,16 @@ const Slot = () => {
           buttonTitle="Add Slot"
           navigateTo="/slots/create"
           columns={columns}
+          tableControls={<>
+            <Select
+              options={slotStatusOptions}
+              value={selectedStatus}
+              onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as SlotStatus : undefined )}
+              name="slotId"
+              placeholder="Slot Number"
+              label="Slot Number"
+            />
+          </>}
           rows=
           {
             !data.length ?
@@ -77,7 +106,7 @@ const Slot = () => {
                   </TableCell>
 
                   <TableCell align="center">
-                    <Label content={slot.tenantContract ? "Rented" : "Available"} color={slot.tenantContract ? "blue" : "green"}></Label>
+                    <Label content={getSlotStatusText(slot.status)} color={getSlotStatusColor(slot.status)}></Label>
                   </TableCell>
 
                   <TableCell align="right">

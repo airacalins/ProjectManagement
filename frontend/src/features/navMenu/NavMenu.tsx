@@ -14,9 +14,12 @@ import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 
 import NavMenuItem from "./NavMenuItem";
 import "./navMenu.scss"
+import { useAppDispatch } from "../../app/store/configureStore";
+import { signOut } from "../account/accountSlice";
 
 const NavMenu = () => {
 
+    const dispatch = useAppDispatch();
     return (
         <Nav className="navMenu flex-column vh-100" defaultActiveKey="/home">
 
@@ -85,8 +88,9 @@ const NavMenu = () => {
 
                 <NavMenuItem
                     name="Logout"
+                    onClick={() => dispatch(signOut())}
                     icon={<LogoutOutlinedIcon className="me-2" />}
-                    navigateTo="/logout"
+                    navigateTo="/"
                 />
             </div>
 

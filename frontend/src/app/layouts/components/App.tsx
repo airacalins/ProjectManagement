@@ -82,7 +82,7 @@ function App() {
           <Route path='/tenants' element={<Tenant />} />
           <Route path={'/tenants/create'} element={<TenantForm />} />
           <Route path={'/tenants/:slotId/create'} element={<TenantForm />} />
-          <Route path='/tenants/:id/manage' element={<TenantUpdateForm />} />
+          <Route path='/tenants/:id/manage' element={<TenantForm />} />
           <Route path='/tenants/:id/details' element={<TenantDetails />} />
 
           <Route path="/users" element={<User />} />

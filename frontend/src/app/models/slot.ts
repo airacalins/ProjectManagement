@@ -13,5 +13,6 @@ export enum SlotStatus {
   Available = 0,
   Rented = 1,
   UnderMaintenance = 2,
-  Reserved = 3
+  Reserved = 3,
+  Archived = 4
 }

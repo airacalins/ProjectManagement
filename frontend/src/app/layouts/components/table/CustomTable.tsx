@@ -20,9 +20,10 @@ interface CustomTableProps {
   onSearch?: (value: string) => void
   buttonTitle?: string,
   navigateTo?: string,
+  tableControls?: React.ReactNode;
 }
 
-const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, navigateTo }: CustomTableProps) => {
+const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, navigateTo, tableControls }: CustomTableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -51,13 +52,16 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
         <Row className="d-flex align-items-center justify-content-between py-3 ms-1" md={5}>
           <Col className="d-flex align-items-center p-0" >
             {
-              !!onSearch &&
+              <>
+              {!!onSearch &&
               <Form.Control
                 type="text"
                 placeholder="Search..."
                 value={searchValue ?? ''}
                 onChange={evt => onSearch(evt.target.value)}
-              />
+              />}
+              {tableControls}
+              </>
             }
           </Col>
 

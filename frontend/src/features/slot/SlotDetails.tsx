@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 import { currencyFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { deleteSlotDetailsAsync, fetchSlotDetailsAsync } from "./slotSlice";
-import { getSlotStatusText } from "../../app/utils/common";
+import { getSlotStatusColor, getSlotStatusText } from "../../app/utils/common";
 
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
+import { Label } from "semantic-ui-react";
 
 const SlotDetails = () => {
 
@@ -19,7 +20,7 @@ const SlotDetails = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if(id) dispatch(fetchSlotDetailsAsync(id));
+    if (id) dispatch(fetchSlotDetailsAsync(id));
   }, [])
 
   if (isFetchingDetails || !slot) return (<LoadingComponent content="Loading slot details..." />)
@@ -40,6 +41,7 @@ const SlotDetails = () => {
             <DetailItem title="Size" value={`${slot.size} sqm.`} />
             <DetailItem title="Rental Fee" value={slot.price ? currencyFormatter(slot.price) : "Not Configured"} />
             <DetailItem title="Next Billing Date" value={getSlotStatusText(slot.status)} />
+            <DetailItem title="Next Billing Date" value={<Label content={getSlotStatusText(slot.status)} color={getSlotStatusColor(slot.status)}></Label>} />
             <FormButtonContainer>
               <NavigationButton title="Edit" navigateTo={`/slots/${id}/manage`} />
             </FormButtonContainer>

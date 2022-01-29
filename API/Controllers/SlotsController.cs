@@ -78,7 +78,7 @@ namespace API.Controllers
             unit.SlotNumber = input.SlotNumber;
             unit.Size = input.Size;
             unit.Price = input.Price;
-            unit.SlotStatus = input.Status;
+            unit.SlotStatus = unit.SlotStatus == SlotStatus.Rented ? SlotStatus.Rented : input.Status;
 
             await _context.SaveChangesAsync();
 

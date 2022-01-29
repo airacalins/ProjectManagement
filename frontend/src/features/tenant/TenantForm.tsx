@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchTenantDetailsAsync, createTenantsAsync } from "./tenantSlice";
+import { fetchTenantDetailsAsync, createTenantsAsync, updateTenantDetailsAsync } from "./tenantSlice";
 import { fetchSlotsAsync } from "../slot/slotSlice";
 import { SlotStatus } from "../../app/models/slot";
 
@@ -26,6 +26,7 @@ const futureDate = () => {
 }
 
 const TenantForm = () => {
+    const { id } = useParams<{ id: string }>();
     const { slotId } = useParams<{ slotId: string }>();
     const [slotsLoaded, setSlotsLoaded] = useState(false);
 
@@ -41,7 +42,7 @@ const TenantForm = () => {
         endDate: futureDate()
     })
 
-    const { isFetching: isFetchingTenants, isSaving } = useAppSelecter(state => state.tenant);
+    const { isFetching: isFetchingTenants, isSaving, tenant: tenantDetails, isFetchingDetails: isFetchingTenantDetails } = useAppSelecter(state => state.tenant);
     const { slots: slotsData } = useAppSelecter(state => state.slot);
 
     const dispatch = useAppDispatch();
@@ -63,6 +64,25 @@ const TenantForm = () => {
             })
     }, [slotId, slotsLoaded])
 
+
+    useEffect(() => {
+        if (id) dispatch(fetchTenantDetailsAsync(id));
+    }, [id])
+
+    useEffect(() => {
+        tenantDetails && setTenant(prev => {
+            return {
+                ...prev,
+                id: tenantDetails.id,
+                firstName: tenantDetails.firstName,
+                lastName: tenantDetails.lastName,
+                businessName: tenantDetails.businessName,
+                address: tenantDetails.address,
+                contact: tenantDetails.phone
+            }
+        });
+    }, [tenantDetails])
+
     const validationSchema = Yup.object({
         firstName: Yup.string().required("First Name is required."),
         lastName: Yup.string().required("Last Name is required."),
@@ -77,18 +97,32 @@ const TenantForm = () => {
     const onSubmit = async (values: ICreateTenantInput) => {
         if (!values.firstName)
             return;
-        await dispatch(createTenantsAsync({
-            ...values,
-            startDate: new Date(),
-            endDate: futureDate(),
-            slotId: !!slotId ? slotId : values.slotId
-        }));
+
+        if (!!id) {
+            await dispatch(updateTenantDetailsAsync({
+                id: values.id,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                businessName: values.businessName,
+                address: values.address,
+                contact: values.contact,
+            }));
+
+        } else {
+            await dispatch(createTenantsAsync({
+                ...values,
+                startDate: new Date(),
+                endDate: futureDate(),
+                slotId: !!slotId ? slotId : values.slotId
+            }));
+
+        }
         history.push('/tenants')
     }
 
     return (
         <FormPage
-            title="New Tenant"
+            title={!!id ? "Update Tenant" : "New Tenant"}
             backNavigationLink="/tenants"
             form={
                 <Formik
@@ -100,20 +134,20 @@ const TenantForm = () => {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
 
-                                <FormSelectInput
+                                {!id && <FormSelectInput
                                     options={slotsData.filter(i => i.status === SlotStatus.Available).map(s => ({ text: s.slotNumber, value: s.id }))}
                                     name="slotId"
                                     placeholder="Slot Number"
                                     label="Slot Number"
-                                />
+                                />}
 
                                 <FormTextInput name="firstName" placeholder="First Name" label="First Name" />
                                 <FormTextInput name="lastName" placeholder="Last Name" label="Last Name" />
                                 <FormTextInput name="businessName" placeholder="Business Name" label="Business Name" />
                                 <FormTextInput name="address" placeholder="Address" label="Address" />
                                 <FormTextInput name="contact" placeholder="Contact Number" label="Contact Number" />
-                                <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />
-                                <FormDateInput name="endDate" placeholderText="End date" label="End Date" />
+                                {!id && <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />}
+                                {!id && <FormDateInput name="endDate" placeholderText="End date" label="End Date" />}
 
                                 <FormButtonContainer>
                                     <AddButton loading={isSaving} disabled={!isValid} />

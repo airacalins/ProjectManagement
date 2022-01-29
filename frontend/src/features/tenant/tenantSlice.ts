@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
-import { ICreateTenantInput, ITenant } from "../../app/models/tenant";
+import { ICreateTenantInput, ITenant, IUpdateTenantInput } from "../../app/models/tenant";
 
 export interface ITenantState {
   tenants: ITenant[];
@@ -52,7 +52,7 @@ export const createTenantsAsync = createAsyncThunk<ITenant, ICreateTenantInput>(
   }
 )
 
-export const updateTenantDetailsAsync = createAsyncThunk<ITenant, ITenant>(
+export const updateTenantDetailsAsync = createAsyncThunk<ITenant, IUpdateTenantInput>(
   'tenants/updateTenantDetailsAsync',
   async (tenant, thunkAPI) => {
     try {

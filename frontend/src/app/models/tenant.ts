@@ -24,6 +24,7 @@ export interface ICreateTenantInput {
 }
 
 export interface  IUpdateTenantInput {
+  id: string;
   firstName: string;
   lastName: string;
   businessName: string;

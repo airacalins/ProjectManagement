@@ -18,10 +18,12 @@ namespace API.Controllers
   {
     private readonly PropertyManagementContext _context;
     private readonly RandomStringService _randomStringService;
-    public TenantsController(PropertyManagementContext context, RandomStringService randomStringService)
+    private readonly PhotoService _photoService;
+    public TenantsController(PropertyManagementContext context, RandomStringService randomStringService, PhotoService photoService)
     {
       _randomStringService = randomStringService;
       _context = context;
+      _photoService = photoService;
     }
 
     [HttpGet]
@@ -205,6 +207,27 @@ namespace API.Controllers
       }
 
       tenantContract.EndDate = input.EndDate;
+        
+      await _context.SaveChangesAsync();
+
+      return Ok();
+    }
+
+    [HttpPost("upload-contract-photo")]
+    public async Task<ActionResult> UploadTenantPhoto(TenantContractPhotoDto input)
+    {
+      var tenantContract = await _context.TenantContracts.FindAsync(input.Id);
+
+      if (tenantContract == null)
+      {
+        return NotFound("Tenant contract not found.");
+      }
+
+      var photo = await _photoService.UploadPhoto(input.File);
+      _context.TenantContractPhotos.Add(new TenantContractPhoto {
+        PhotoId = photo.Id,
+        TenantContractId = tenantContract.Id
+      });
         
       await _context.SaveChangesAsync();
 

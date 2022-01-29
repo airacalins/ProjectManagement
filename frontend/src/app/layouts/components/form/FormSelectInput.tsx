@@ -27,7 +27,7 @@ const FormSelectInput = (props: Props) => {
                     name={props.name}
                     clearable
                     options={props.options}
-                    value={field.value || null}
+                    value={!!field.value ||  field.value === 0 ? field.value : null}
                     onChange={(e, d) => helpers.setValue(d.value)}
                     onBlur={() => helpers.setTouched(true)}
                     placeholder={props.placeholder}

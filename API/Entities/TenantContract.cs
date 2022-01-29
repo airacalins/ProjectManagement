@@ -19,5 +19,6 @@ namespace API.Entities
         public DateTimeOffset EndDate { get; set; }
         public double Price { get; set; }
         public int NumberOfDeposit { get; set; }
+        public ICollection<TenantContractPhoto> TenantContractPhotos { get; set;}
     }
 }
