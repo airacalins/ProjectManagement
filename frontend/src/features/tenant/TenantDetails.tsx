@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { dateFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchTenantDetailsAsync } from "./tenantSlice";
+import { fetchTenantDetailsAsync, uploadTenantContractPhoto } from "./tenantSlice";
 
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
@@ -37,7 +37,7 @@ const TenantDetails = () => {
   }
  
   const upload = () => {
-    // files.forEach(file => {
+    files.forEach(async (file) => {
     //   const formData = new FormData();
     //   formData.append('file', file);
     //   formData.append('upload_preset', uploadPreset);
@@ -51,7 +51,8 @@ const TenantDetails = () => {
     //   })
     //   .then(res => console.log(res))
     //   .catch(err => console.log(err))
-    // })
+        await dispatch(uploadTenantContractPhoto({id: (tenant as any).contract.id ?? '', file}))
+    })
   }
   
     return (
@@ -82,7 +83,9 @@ const TenantDetails = () => {
                         <DetailItem title="Amount" value={contract?.price} />
                         <DetailItem title="Contract" value="" />
                         <FormButtonContainer>
+                            
                         <ImageUpload files={files} onDrop={onDrop}/>
+                        <button onClick={() => upload()}>Upload</button>
                             <NavigationButton title="Terminate Contract" navigateTo="/" />
                         </FormButtonContainer>
                     </>
