@@ -4,21 +4,21 @@ import { Button } from 'semantic-ui-react';
 import "./button.scss"
 
 interface Props {
-    loading: boolean
+    title?: string,
+    loading?: boolean
     disabled: boolean,
 }
 
-const AddButton: React.FC<Props> = ({ loading, disabled }) => {
+const AddButton: React.FC<Props> = ({ title, loading, disabled }) => {
     return (
 
         <Button
             className="button__primary"
             type="submit"
-            content="Submit"
+            content={title ? title : "Submit"}
             loading={loading}
             disabled={disabled}
         />
-
     );
 }
 

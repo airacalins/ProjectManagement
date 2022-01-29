@@ -1,55 +1,62 @@
+import { Formik } from 'formik';
+import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { Button, Form, Header, Image, Segment } from 'semantic-ui-react'
-import { useAppDispatch } from '../../app/store/configureStore';
+import LoadingComponent from '../../app/layouts/components/loading/LoadingComponent';
+import FormPage from '../../app/layouts/components/pages/FormPage';
+import { IAccount } from '../../app/models/account';
+import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import history from '../../app/utils/history';
 import { signInUserAsync } from './accountSlice';
-// import ContainerHome from '../../app/layouts/components/container/ContainerHome'
+import * as Yup from 'yup';
+import FormTextInput from '../../app/layouts/components/form/FormTextInput';
+import FormButtonContainer from '../../app/layouts/components/form/FormButtonContainer';
+import AddButton from '../../app/layouts/components/buttons/AddButton';
 
 const LoginForm = () => {
+    const [account, setAccount] = useState<IAccount>(
+        { username: "", password: "" }
+    )
+
+    const { user } = useAppSelecter(state => state.account)
 
     const dispatch = useAppDispatch();
-    const submitForm = async (data: FieldValues) => {
-        try {
-            await dispatch(signInUserAsync(data));
-            history.push('/');
-        }
-        catch {
 
+    const validationSchema = Yup.object(
+        {
+            username: Yup.string().required('Username is required.'),
+            password: Yup.string().required('Password is required.'),
         }
+    )
+
+    const onSubmit = async (data: FieldValues) => {
+        await dispatch(signInUserAsync(data));
+        history.push('/');
     }
-  
+
     return (
-        <div>
-            <>
-                <Segment stacked padded="very">
-                    <Form size='large'>
-
-                        <Header as='h2' color='orange' textAlign='center'>
-                            <Image src='/logo.png' /> Log-in to your account
-                        </Header>
-
-                        <Form.Input fluid icon='user' iconPosition='left' placeholder='E-mail address' />
-
-                        <Form.Input
-                            fluid
-                            icon='lock'
-                            iconPosition='left'
-                            placeholder='Password'
-                            type='password'
-                        />
-
-                        <Button color='orange' fluid size='large'>
-                            Login
-                        </Button>
-
-                    </Form>
-                </Segment>
-
-                {/* <Message>
-                    New to us? <a href='#'>Sign Up</a>
-                </Message> */}
-            </>
-        </div >
+        <FormPage
+            title="Login"
+            form={
+                <Formik
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                    initialValues={account}
+                    onSubmit={values => onSubmit(values)}>
+                    {
+                        ({ handleSubmit, isValid }) => (
+                            <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
+                                <FormTextInput label="Username" name="username" placeholder="Username" />
+                                <FormTextInput label="Password" name="password" placeholder="Password" />
+                                <FormButtonContainer>
+                                    <AddButton title="Login" disabled={!isValid} />
+                                </FormButtonContainer>
+                            </Form>
+                        )
+                    }
+                </Formik>
+            }
+        />
     )
 };
 
