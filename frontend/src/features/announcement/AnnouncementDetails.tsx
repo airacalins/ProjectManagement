@@ -13,7 +13,6 @@ import NavigationButton from "../../app/layouts/components/buttons/NavigationBut
 import DeleteButton from "../../app/layouts/components/buttons/DeleteButton"
 
 const AnnouncementDetails = () => {
-
     const { announcement, isFetchingDetails, isSaving } = useAppSelecter(state => state.announcement);
     const dispatch = useAppDispatch();
 
@@ -42,7 +41,7 @@ const AnnouncementDetails = () => {
                     <DetailItem title="Subject" value={title} />
                     <DetailItem title="Message" value={message} />
                     <FormButtonContainer>
-                        <NavigationButton title="Edit" navigateTo={`/announcements/${id}/manage`} />
+                        <NavigationButton title="Edit" navigateTo={`/announcements/${announcementId}/manage`} />
                         <DeleteButton onClick={handleDelete} loading={isSaving} />
                     </FormButtonContainer>
                 </>

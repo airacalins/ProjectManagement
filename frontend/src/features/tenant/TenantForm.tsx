@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import history from "../../app/utils/history";
 import { useParams } from "react-router-dom";
 import { Form, Formik } from "formik";
 import * as Yup from 'yup';
@@ -6,28 +7,15 @@ import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchTenantDetailsAsync, createTenantsAsync } from "./tenantSlice";
 import { fetchSlotsAsync } from "../slot/slotSlice";
 import { SlotStatus } from "../../app/models/slot";
-import { Button } from "semantic-ui-react";
 
 import FormDateInput from "../../app/layouts/components/form/FormDateInput";
 import FormPage from "../../app/layouts/components/pages/FormPage";
 import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
-import history from "../../app/utils/history";
-import { format } from "date-fns";
-import moment from "moment";
-
-interface ITenantInput {
-    id: string;
-    firstName: string;
-    lastName: string;
-    businessName: string;
-    address: string;
-    contact: string;
-    slotId?: string;
-    startDate: Date;
-    endDate: Date;
-}
+import AddButton from "../../app/layouts/components/buttons/AddButton";
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
+import { ICreateTenantInput } from "../../app/models/tenant";
 
 const futureDate = () => {
     const currentDate = new Date();
@@ -38,11 +26,10 @@ const futureDate = () => {
 }
 
 const TenantForm = () => {
-
-    const { id } = useParams<{ id: string, tenantId: string }>();
     const { slotId } = useParams<{ slotId: string }>();
     const [slotsLoaded, setSlotsLoaded] = useState(false);
-    const [tenant, setTenant] = useState<ITenantInput>({
+
+    const [tenant, setTenant] = useState<ICreateTenantInput>({
         id: "",
         firstName: "",
         lastName: "",
@@ -54,8 +41,7 @@ const TenantForm = () => {
         endDate: futureDate()
     })
 
-    const { tenants, isFetching: isFetchingTenants, isSaving } = useAppSelecter(state => state.tenant);
-    const { tenant: tenantData, isFetchingDetails } = useAppSelecter(state => state.tenant);
+    const { isFetching: isFetchingTenants, isSaving } = useAppSelecter(state => state.tenant);
     const { slots: slotsData } = useAppSelecter(state => state.slot);
 
     const dispatch = useAppDispatch();
@@ -69,9 +55,6 @@ const TenantForm = () => {
         fetchSlots();
     }, [])
 
-    useEffect(() => {
-        if (id) dispatch(fetchTenantDetailsAsync(id));
-    }, [id])
 
     useEffect(() => {
         if (slotId && slotsLoaded)
@@ -89,15 +72,15 @@ const TenantForm = () => {
         endDate: Yup.string().required("End date is required."),
     })
 
-    if (isFetchingDetails || isFetchingTenants) return (<LoadingComponent content="Loading tenants and slot..." />)
+    if (isFetchingTenants) return (<LoadingComponent content="Loading tenants and slot..." />)
 
-    const onSubmit = async (values: ITenantInput) => {
+    const onSubmit = async (values: ICreateTenantInput) => {
         if (!values.firstName)
             return;
         await dispatch(createTenantsAsync({
             ...values,
-            startDate: format(values.startDate, 'yyyy-MM-dd'),
-            endDate: format(values.startDate, 'yyyy-MM-dd'),
+            startDate: new Date(),
+            endDate: futureDate(),
             slotId: slotId!
         }));
         history.push('/tenants')
@@ -105,14 +88,14 @@ const TenantForm = () => {
 
     return (
         <FormPage
-            title={id ? "Update Tenant" : "New Tenant"}
-            backNavigationLink={id ? `/tenants/${id}/details` : "/tenants"}
+            title="New Tenant"
+            backNavigationLink="/tenants"
             form={
                 <Formik
                     validationSchema={validationSchema}
                     enableReinitialize
                     initialValues={tenant}
-                    onSubmit={values => { onSubmit(values) }}>
+                    onSubmit={values => onSubmit(values)}>
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
@@ -132,15 +115,9 @@ const TenantForm = () => {
                                 <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />
                                 <FormDateInput name="endDate" placeholderText="End date" label="End Date" />
 
-                                <div className="form__button-container py-3">
-                                    <Button
-                                        className="form__button"
-                                        type="submit"
-                                        content="Submit"
-                                        color="orange"
-                                        loading={isSaving}
-                                    />
-                                </div>
+                                <FormButtonContainer>
+                                    <AddButton loading={isSaving} disabled={!isValid} />
+                                </FormButtonContainer>
                             </Form>
                         )
                     }

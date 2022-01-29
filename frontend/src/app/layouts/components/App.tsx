@@ -21,10 +21,17 @@ import Tenant from "../../../features/tenant/Tenant";
 import TenantForm from "../../../features/tenant/TenantForm";
 import TenantDetails from "../../../features/tenant/TenantDetails";
 import User from "../../../features/user/User";
+
+import Report from "../../../features/report/Report";
+import UserForm from "../../../features/user/UserForm";
+import Account from "../../../features/account/Account";
+import TenantUpdateForm from "../../../features/tenant/TenantUpdateForm";
+
 import UserDetails from "../../../features/user/UserDetails";
 import { useAppDispatch } from "../../store/configureStore";
 import { useCallback, useEffect, useState } from "react";
 import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";
+
 
 function App() {
   const location = useLocation();
@@ -62,6 +69,7 @@ function App() {
 
             <Col className="app__content p-0">
               <Route path='/login' exact component={LoginForm} />
+              <Route path='/account/:id/details' exact component={Account} />
               <Route path='/dashboard' exact component={Dashboard} />
               <Route path='/map' exact component={Map} />
 
@@ -69,23 +77,26 @@ function App() {
               <Route path={['/announcements/create', '/announcements/:id/manage']} exact component={AnnouncementForm} />
               <Route path='/announcements/:id/details' exact component={AnnouncementDetails} />
 
+              <Route path={['/invoices', '/invoice/:sort']} exact component={Payment} />
+              <Route path='/invoices/:id/details' exact component={PaymentDetails} />
+
               <Route path='/mode-of-payments' exact component={ModeOfPayment} />
               <Route path={['/mode-of-payments/create', "/mode-of-payments/:id/manage"]} exact component={ModeOfPaymentForm} />
               <Route path='/mode-of-payments/:id/details' exact component={ModeOfPaymentDetails} />
 
-              <Route path={['/invoices', '/invoice/:sort']} exact component={Payment} />
-              <Route path='/invoices/:id/details' exact component={PaymentDetails} />
+              <Route path='/reports' exact component={Report} />
 
               <Route path={'/slots'} exact component={Slot} />
               <Route path={['/slots/create', '/slots/:id/manage']} exact key={location.key} component={SlotForm} />
               <Route path='/slots/:id/details' exact component={SlotDetails} />
 
               <Route path='/tenants' exact component={Tenant} />
-              <Route path={['/tenants/create', '/tenants/:slotId/create', "tenants/:id/manage"]} exact component={TenantForm} />
+              <Route path={['/tenants/create', '/tenants/:slotId/create']} exact component={TenantForm} />
+              <Route path='/tenants/:id/manage' exact component={TenantUpdateForm} />
               <Route path='/tenants/:id/details' exact component={TenantDetails} />
 
               <Route path="/users" exact component={User} />
-              <Route path="/users/:id/details" exact component={UserDetails} />
+              <Route path="/users/create" exact component={UserForm} />
             </Col>
           </Row>
         )}

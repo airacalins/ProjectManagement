@@ -2,18 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchInvoicessAsync } from "./invoiceSlice";
 import history from '../../app/utils/history';
+import moment from "moment";
 
+import { Label } from "semantic-ui-react";
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
+import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
 
+import CustomTable from "../../app/layouts/components/table/CustomTable";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
-import CustomTable from "../../app/layouts/components/table/CustomTable";
-import { IInvoice, PaymentStatus } from "../../app/models/invoice";
-import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
-import moment from "moment";
-import { Label } from "semantic-ui-react";
 
 const Payment = () => {
   const [searchKey, setSearchKey] = useState('');
@@ -67,8 +66,8 @@ const Payment = () => {
             !data.length ?
               [
                 <TableRow>
-                  <TableCell align="center" colSpan={8}>
-                    No invoices...
+                  <TableCell align="center" colSpan={columns.length}>
+                    No data
                   </TableCell>
                 </TableRow>
               ]
@@ -102,7 +101,6 @@ const Payment = () => {
               </TableRow>
               )
           }
-
         />
       }
     />

@@ -102,8 +102,9 @@ const Tenant = {
 const Users = {
   list: () => request.get('users'),
   details: (id: string) => request.get(`users/${id}`),
-  create: (values: any) => request.post('users', values),
+  create: (values: any) => request.post('add-user', values),
   update: (values: any) => request.put('users', values),
+  updatePassword: (values: any) => request.put('update-password', values),
   delete: (id: string) => request.delete(`users/${id}`),
 }
 

@@ -18,7 +18,15 @@ export interface ICreateTenantInput {
   businessName: string;
   address: string;
   contact: string;
-  slotId: string;
-  startDate: string;
-  endDate: string;
+  slotId?: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+export interface  IUpdateTenantInput {
+  firstName: string;
+  lastName: string;
+  businessName: string;
+  address: string;
+  contact: string;
 }

@@ -7,7 +7,6 @@ import { createAnnouncementAsync, fetchAnnouncementDetailsAsync, updateAnnouncem
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { Form } from "semantic-ui-react";
-
 import FormPage from "../../app/layouts/components/pages/FormPage";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
 import FormTextArea from "../../app/layouts/components/form/FormTextArea";
@@ -17,12 +16,9 @@ import FormButtonContainer from "../../app/layouts/components/form/FormButtonCon
 
 const AnnouncementForm = () => {
 
-    const [announcement, setAnnouncement] = useState<IAnnouncement>({
-        id: "",
-        title: "",
-        message: "",
-        dateCreated: ""
-    })
+    const [announcement, setAnnouncement] = useState<IAnnouncement>(
+        { id: "", title: "", message: "", dateCreated: "" }
+    )
 
     const { announcement: announcementData, isFetchingDetails, isSaving } = useAppSelecter(state => state.announcement);
     const dispatch = useAppDispatch();
@@ -37,10 +33,12 @@ const AnnouncementForm = () => {
         if (id && announcementData) setAnnouncement(announcementData)
     }, [id, announcementData])
 
-    const validationSchema = Yup.object({
-        title: Yup.string().required("Subject is required."),
-        message: Yup.string().required("Message is required."),
-    })
+    const validationSchema = Yup.object(
+        {
+            title: Yup.string().required("Subject is required."),
+            message: Yup.string().required("Message is required."),
+        }
+    )
 
     const onSubmit = async (values: any) => {
         if (id) await dispatch(updateAnnouncementDetailsAsync(values));
