@@ -20,3 +20,8 @@ export interface ITenantContractPhotoInput {
   id: string;
   file: File;
 }
+
+export interface IContractPhotos {
+  id: string;
+  url: string;
+}

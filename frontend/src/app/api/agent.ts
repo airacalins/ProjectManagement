@@ -107,6 +107,7 @@ const Tenant = {
     bodyFormData.append('file', values.file);
     return request.fileUpload('tenants/upload-contract-photo', bodyFormData)
   },
+  getContractPhotos: (id: string) => request.get(`tenants/get-contract-photo/${id}`),
 };
 
 const Users = {

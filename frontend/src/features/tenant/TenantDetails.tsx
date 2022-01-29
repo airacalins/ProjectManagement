@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { dateFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchTenantDetailsAsync, uploadTenantContractPhoto } from "./tenantSlice";
+import { fetchTenantDetailsAsync, getTenantContractPhoto, uploadTenantContractPhoto } from "./tenantSlice";
 
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
@@ -17,13 +17,19 @@ const TenantDetails = () => {
 
     const { id } = useParams<{ id: string }>();
 
-    const { tenant, isFetchingDetails } = useAppSelecter(state => state.tenant);
+    const { tenant, isFetchingDetails, contractPhotos } = useAppSelecter(state => state.tenant);
     const dispatch = useAppDispatch();
     const [files, setFiles] = useState<File[]>([]);
 
     useEffect(() => {
         if(id) dispatch(fetchTenantDetailsAsync(id));
     }, [])
+
+    
+
+    useEffect(() => {
+        if(tenant) dispatch(getTenantContractPhoto(tenant.contract?.id!));
+    }, [tenant])
 
     if (isFetchingDetails || !tenant) return (<LoadingComponent content="Loading tenant..." />)
 
@@ -38,20 +44,8 @@ const TenantDetails = () => {
  
   const upload = () => {
     files.forEach(async (file) => {
-    //   const formData = new FormData();
-    //   formData.append('file', file);
-    //   formData.append('upload_preset', uploadPreset);
-    //   axios({
-    //     url: uploadURL,
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/x-www-form-urlencoded"
-    //     },
-    //     data: formData
-    //   })
-    //   .then(res => console.log(res))
-    //   .catch(err => console.log(err))
         await dispatch(uploadTenantContractPhoto({id: tenant.contract?.id!, file}))
+        dispatch(getTenantContractPhoto(tenant.contract?.id!))
     })
   }
   

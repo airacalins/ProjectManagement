@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
 import { ICreateTenantInput, ITenant, IUpdateTenantInput } from "../../app/models/tenant";
-import { ITenantContractPhotoInput } from "../../app/models/tenantContract";
+import { IContractPhotos, ITenantContractPhotoInput } from "../../app/models/tenantContract";
 
 export interface ITenantState {
   tenants: ITenant[];
@@ -9,6 +9,7 @@ export interface ITenantState {
   tenant?: ITenant;
   isFetchingDetails: boolean;
   isSaving: boolean;
+  contractPhotos: IContractPhotos[]
 }
 
 const initialState: ITenantState = {
@@ -16,7 +17,8 @@ const initialState: ITenantState = {
   isFetching: false,
   tenant: undefined,
   isFetchingDetails: false,
-  isSaving: false
+  isSaving: false,
+  contractPhotos:[]
 }
 
 export const fetchTenantsAsync = createAsyncThunk<ITenant[]>(
@@ -63,6 +65,18 @@ export const uploadTenantContractPhoto = createAsyncThunk<any, ITenantContractPh
     }
   }
 )
+
+export const getTenantContractPhoto = createAsyncThunk<any, string>(
+  'tenants/getTenantContractPhoto',
+  async (model, thunkAPI) => {
+    try {
+      return await agent.Tenant.getContractPhotos(model);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
 
 export const updateTenantDetailsAsync = createAsyncThunk<ITenant, IUpdateTenantInput>(
   'tenants/updateTenantDetailsAsync',
@@ -113,6 +127,11 @@ export const tenantSlice = createSlice({
     });
     builder.addCase(createTenantsAsync.rejected, (state, action) => {
       state.isSaving = false;
+    });
+
+    
+    builder.addCase(getTenantContractPhoto.fulfilled, (state, action) => {
+      state.contractPhotos = action.payload;
     });
   })
 })
