@@ -214,7 +214,7 @@ namespace API.Controllers
     }
 
     [HttpPost("upload-contract-photo")]
-    public async Task<ActionResult> UploadTenantContractPhoto(TenantContractPhotoDto input)
+    public async Task<ActionResult> UploadTenantContractPhoto([FromForm] TenantContractPhotoDto input)
     {
       var tenantContract = await _context.TenantContracts.FindAsync(input.Id);
 
