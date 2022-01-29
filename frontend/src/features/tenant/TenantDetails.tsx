@@ -20,7 +20,7 @@ const TenantDetails = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchTenantDetailsAsync(id));
+        if(id) dispatch(fetchTenantDetailsAsync(id));
     }, [])
 
     if (isFetchingDetails || !tenant) return (<LoadingComponent content="Loading tenant..." />)

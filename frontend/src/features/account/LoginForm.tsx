@@ -1,7 +1,16 @@
+import { FieldValues } from 'react-hook-form';
 import { Button, Form, Header, Image, Segment } from 'semantic-ui-react'
+import { useAppDispatch } from '../../app/store/configureStore';
+import { signInUserAsync } from './accountSlice';
 // import ContainerHome from '../../app/layouts/components/container/ContainerHome'
 
 const LoginForm = () => {
+    
+    const dispatch = useAppDispatch();
+    const submitForm = async (data: FieldValues) => {
+      await dispatch(signInUserAsync(data));
+    }
+  
     return (
         <div>
             <>

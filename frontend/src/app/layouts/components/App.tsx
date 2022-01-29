@@ -1,4 +1,4 @@
-import { Route, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
 import Announcement from "../../../features/announcement/Announcement";
@@ -29,17 +29,9 @@ import TenantUpdateForm from "../../../features/tenant/TenantUpdateForm";
 import { useAppDispatch } from "../../store/configureStore";
 import { useCallback, useEffect, useState } from "react";
 import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";
-
-
-<<<<<<< Updated upstream
-=======
-import { useAppDispatch } from "../../store/configureStore";
-import { useCallback, useEffect, useState } from "react";
-import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";
+import PrivateRoute from "./PrivateRoute";
 import UserDetails from "../../../features/user/UserDetails";
 
-
->>>>>>> Stashed changes
 function App() {
   const location = useLocation();
 
@@ -64,7 +56,44 @@ function App() {
 
   return (
     <>
-      <Route exact path="/" component={Home} />
+      <Routes>
+        <Route path='/' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path='/account/:id/details' element={<PrivateRoute><Account /></PrivateRoute>} />
+        <Route path='/map' element={<PrivateRoute><Map /></PrivateRoute>} />
+
+        <Route path='/announcements' element={<PrivateRoute><Announcement /></PrivateRoute>} />
+        <Route path={'/announcements/create'} element={<PrivateRoute><AnnouncementForm /></PrivateRoute>} />
+        <Route path={'/announcements/:id/manage'} element={<PrivateRoute><AnnouncementForm /></PrivateRoute>} />
+        <Route path='/announcements/:id/details' element={<PrivateRoute><AnnouncementDetails /></PrivateRoute>} />
+
+        <Route path={'/invoices'} element={<PrivateRoute><Payment /></PrivateRoute>} />
+        <Route path={'/invoice/:sort'} element={<PrivateRoute><Payment /></PrivateRoute>} />
+        <Route path='/invoices/:id/details' element={<PrivateRoute><PaymentDetails /></PrivateRoute>} />
+
+        <Route path='/mode-of-payments' element={<PrivateRoute><ModeOfPayment /></PrivateRoute>} />
+        <Route path={'/mode-of-payments/create'} element={<PrivateRoute><ModeOfPaymentForm /></PrivateRoute>} />
+        <Route path={"/mode-of-payments/:id/manage"} element={<PrivateRoute><ModeOfPaymentForm /></PrivateRoute>} />
+        <Route path='/mode-of-payments/:id/details' element={<PrivateRoute><ModeOfPaymentDetails /></PrivateRoute>} />
+
+        <Route path='/reports' element={<PrivateRoute><Report /></PrivateRoute>} />
+
+        <Route path={'/slots'} element={<PrivateRoute><Slot /></PrivateRoute>} />
+        <Route path={'/slots/create'} element={<PrivateRoute><SlotForm /></PrivateRoute>} />
+        <Route path={'/slots/:id/manage'} element={<PrivateRoute><SlotForm /></PrivateRoute>} />
+        <Route path='/slots/:id/details' element={<PrivateRoute><SlotDetails /></PrivateRoute>} />
+
+        <Route path='/tenants' element={<PrivateRoute><Tenant /></PrivateRoute>} />
+        <Route path={'/tenants/create'} element={<PrivateRoute><TenantForm /></PrivateRoute>} />
+        <Route path={'/tenants/:slotId/create'} element={<PrivateRoute><TenantForm /></PrivateRoute>} />
+        <Route path='/tenants/:id/manage' element={<PrivateRoute><TenantUpdateForm /></PrivateRoute>} />
+        <Route path='/tenants/:id/details' element={<PrivateRoute><TenantDetails /></PrivateRoute>} />
+
+        <Route path="/users" element={<PrivateRoute><User /></PrivateRoute>} />
+        <Route path="/users/:id/details" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
+        <Route path="/users/create" element={<PrivateRoute><UserForm /></PrivateRoute>} />
+        <Route path='/login' element={<LoginForm />} />
+      </Routes>
+      {/* <Route exact path="/" component={Home} />
 
       <Route
         path={"/(.+)"}
@@ -75,6 +104,9 @@ function App() {
             </Col>
 
             <Col className="app__content p-0">
+              <Routes>
+                
+              </Routes>
               <Route path='/login' exact component={LoginForm} />
               <Route path='/account/:id/details' exact component={Account} />
               <Route path='/dashboard' exact component={Dashboard} />
@@ -107,8 +139,8 @@ function App() {
               <Route path="/users/create" exact component={UserForm} />
             </Col>
           </Row>
-        )}
-      />
+        )} */}
+      {/* /> */}
     </>
   );
 }

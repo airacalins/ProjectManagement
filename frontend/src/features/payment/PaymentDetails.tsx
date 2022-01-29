@@ -26,7 +26,7 @@ const PaymentDetails = () => {
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-        dispatch(fetchInvoiceDetailsAsync(id));
+        if(id) dispatch(fetchInvoiceDetailsAsync(id));
     }, [])
 
     const totalAmountPaid = useMemo(() => !!invoice && !!invoice.payments ? invoice.payments.reduce((previousValue, currentValue) => previousValue + currentValue.amount, 0) : 0, [invoice]);

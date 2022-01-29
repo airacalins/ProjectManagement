@@ -19,7 +19,7 @@ const SlotDetails = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchSlotDetailsAsync(id));
+    if(id) dispatch(fetchSlotDetailsAsync(id));
   }, [])
 
   if (isFetchingDetails || !slot) return (<LoadingComponent content="Loading slot details..." />)
