@@ -9,14 +9,15 @@ import { store } from './app/store/configureStore';
 import history from './app/utils/history';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CustomRouter from './app/layouts/components/CustomRouter';
 
 
 ReactDOM.render(
 
   <Provider store={store}>
-    <Router history={history}>
+    <CustomRouter history={history}>
       <App />
-    </Router>
+    </CustomRouter>
   </Provider>,
 
   document.getElementById('root')

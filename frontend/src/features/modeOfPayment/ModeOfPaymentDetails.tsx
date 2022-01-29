@@ -18,12 +18,14 @@ const ModeOfPaymentDetails = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchModeOfPaymentDetailsAsync(id));
+        if(id) dispatch(fetchModeOfPaymentDetailsAsync(id));
     }, [])
 
     const handleDelete = async () => {
-        await dispatch(deleteModeOfPaymentDetailsAsync(id));
-        history.push('/mode-of-payments')
+        if(id) { 
+            await dispatch(deleteModeOfPaymentDetailsAsync(id));
+            history.push('/mode-of-payments')
+        }
     }
 
     if (isFetchingDetails || !modeOfPayment) return (<LoadingComponent content="Loading mode of payment details..." />)

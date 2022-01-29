@@ -11,10 +11,9 @@ namespace API.Entities
         public Guid? PhotoId { get; set; }
         public Photo? Photo { get; set; }
         public bool IsEnabled { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
+        public string FirstName { get; set; } = default!;
+        public string LastName { get; set; } = default!;
+        public string Phone { get; set; } = default!;
+        public string Address { get; set; } = default!;
     }
 }

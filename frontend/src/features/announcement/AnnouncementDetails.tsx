@@ -19,12 +19,14 @@ const AnnouncementDetails = () => {
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-        dispatch(fetchAnnouncementDetailsAsync(id));
+        if(id) dispatch(fetchAnnouncementDetailsAsync(id));
     }, [])
 
     const handleDelete = async () => {
-        await dispatch(deleteAnnouncementDetailsAsync(id));
-        history.push('/announcements')
+        if(id) {
+            await dispatch(deleteAnnouncementDetailsAsync(id));
+            history.push('/announcements')
+        }
     }
 
     if (isFetchingDetails || !announcement) return (<LoadingComponent content="Loading announcement details..." />)

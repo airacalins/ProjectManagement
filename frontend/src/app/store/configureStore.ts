@@ -1,10 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+
 import { accountSlice } from "../../features/account/accountSlice";
 import { announcementSlice } from "../../features/announcement/announcementSlice";
 import { dashboardSlice } from "../../features/dashboard/DashboardSlice";
-import { modeOfPaymentSlice } from "../../features/modeOfPayment/modeOfPaymentSlice";
 import { invoiceSlice } from "../../features/payment/invoiceSlice";
+import { modeOfPaymentSlice } from "../../features/modeOfPayment/modeOfPaymentSlice";
 import { slotSlice } from "../../features/slot/slotSlice";
 import { tenantSlice } from "../../features/tenant/tenantSlice";
 import { userSlice } from "../../features/user/UserSlice";
