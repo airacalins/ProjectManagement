@@ -26,7 +26,6 @@ const TenantDetails = () => {
     }, [])
 
     
-
     useEffect(() => {
         if(tenant) dispatch(getTenantContractPhoto(tenant.contract?.id!));
     }, [tenant])

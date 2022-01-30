@@ -234,7 +234,7 @@ namespace API.Controllers
       return Ok();
     }
 
-    [HttpGet("get-contract-photo")]
+    [HttpGet("get-contract-photo/{id}")]
     public async Task<ActionResult<List<TenantContractImagesDto>>> GetTenantContractPhoto(Guid id)
     {
       var tenantContract = await _context.TenantContracts.FindAsync(id);
@@ -243,7 +243,7 @@ namespace API.Controllers
       {
         return NotFound("Tenant contract not found.");
       }
-      var result = _context.TenantContractPhotos.Include(i => i.Photo).Where(i => i.TenantContractId == id)
+      var result = await _context.TenantContractPhotos.Include(i => i.Photo).Where(i => i.TenantContractId == id)
       .Select(i => new TenantContractImagesDto
       {
         Id = i.Id,
