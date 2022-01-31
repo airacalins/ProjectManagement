@@ -41,6 +41,8 @@ namespace API.Controllers
         BusinessName = i.BusinessName,
         DateCreated = i.DateCreated,
         Address = i.Address,
+        TenantUniqueId = i.TenantUniqueId,
+        IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
         Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ? 
           i.TenantContracts.Select(t => new SlotContractDto
           {
@@ -52,7 +54,7 @@ namespace API.Controllers
             StartDate = t.StartDate,
             EndDate = t.EndDate,
             NextBillingDate = t.NextPaymentDate,
-            Status = t.Status
+            Status = t.Status,
           }).FirstOrDefault() : null
       });
       return Ok(result);
@@ -73,6 +75,8 @@ namespace API.Controllers
         BusinessName = i.BusinessName,
         DateCreated = i.DateCreated,
         Address = i.Address,
+        TenantUniqueId = i.TenantUniqueId,
+        IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
         Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ? 
           i.TenantContracts.Select(t => new SlotContractDto
           {

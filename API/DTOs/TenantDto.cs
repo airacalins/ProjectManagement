@@ -15,5 +15,7 @@ namespace API.DTOs
         public string Address { get; set; } = default!;
         public DateTimeOffset DateCreated { get; set; }
         public SlotContractDto? Contract { get; set; }
+        public string TenantUniqueId { get; set; }
+        public bool IsActive { get; set; }
     }
 }
