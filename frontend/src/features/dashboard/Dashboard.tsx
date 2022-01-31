@@ -67,27 +67,28 @@ const Dashboard = () => {
     if (isFetchingDashboard) return (<LoadingComponent content="Loading dashboard..." />)
 
     return (
-        <div>
-            <MainPage
-                title="Dashboard"
-                content={
-                    <Row className="mx-3">
-                        {
-                            dashboardCardInfos.map(i =>
-                                <Col lg={4}>
-                                    <DashboardCard
-                                        title={i.total}
-                                        subtitle={i.name}
-                                        icon={i.icon}
-                                        navigateTo={i.navigateTo}
-                                    />
-                                </Col>
-                            )
-                        }
-                    </Row>
-                }
-            />
-        </div>
+        <div className="mb-5">
+            <h4 className="page__title w-100 d-flex align-items-center px-4">
+                Dashboard
+            </h4>
+
+            <div className="px-5 py-4" >
+                <Row className="mb-3">
+                    {
+                        dashboardCardInfos.map(i =>
+                            <Col lg={4}>
+                                <DashboardCard
+                                    title={i.total}
+                                    subtitle={i.name}
+                                    icon={i.icon}
+                                    navigateTo={i.navigateTo}
+                                />
+                            </Col>
+                        )
+                    }
+                </Row>
+            </div>
+        </div >
     )
 }
 
