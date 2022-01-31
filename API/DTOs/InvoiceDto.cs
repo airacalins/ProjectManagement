@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Enums;
 
 namespace API.DTOs
 {
@@ -20,5 +21,6 @@ namespace API.DTOs
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public string InvoiceNumber { get; set; } = default!;
+        public InvoiceStatus InvoiceStatus { get; set; }
     }
 }

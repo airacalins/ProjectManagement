@@ -161,7 +161,7 @@ namespace API.Controllers
         DateCreated = DateTimeOffset.UtcNow,
         DueDate = newContract.NextPaymentDate,
         InvoiceNumber = uniqueId,
-        InvoiceStatus = InvoiceStatus.Pending
+        InvoiceStatus = InvoiceStatus.Unpaid
       };
 
       _context.Invoices.Add(invoice);

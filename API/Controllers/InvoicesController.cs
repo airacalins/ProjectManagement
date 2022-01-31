@@ -59,9 +59,9 @@ namespace API.Controllers
         }),
         InvoiceItems = i.InvoiceItems.Select(j => new InvoiceItemDto
         {
-            Id = j.Id,
-            Amount = j.Amount,
-            Description = j.Description
+          Id = j.Id,
+          Amount = j.Amount,
+          Description = j.Description
         }),
         DateCreated = i.DateCreated,
         DueDate = i.DueDate
@@ -107,9 +107,9 @@ namespace API.Controllers
         }),
         InvoiceItems = i.InvoiceItems.Select(j => new InvoiceItemDto
         {
-            Id = j.Id,
-            Amount = j.Amount,
-            Description = j.Description
+          Id = j.Id,
+          Amount = j.Amount,
+          Description = j.Description
         }),
         DateCreated = i.DateCreated,
         DueDate = i.DueDate
@@ -118,7 +118,7 @@ namespace API.Controllers
     }
 
     [HttpPut("update-payment-status")]
-    public async Task<ActionResult<InvoiceDto>> UpdatePaymentStatus(UpdateInvoicePaymentDto input)
+    public async Task<ActionResult> UpdatePaymentStatus(UpdateInvoicePaymentDto input)
     {
       var payment = await _context.Payments.FindAsync(input.Id);
       if (payment == null)
@@ -128,39 +128,24 @@ namespace API.Controllers
 
       await _context.SaveChangesAsync();
 
-      var invoice = await _context.Invoices
-      .Include(i => i.InvoiceItems)
-      .Include(i => i.Tenant)
-      .Include(i => i.TenantContract)
-      .Include(i => i.Unit)
-      .Include(i => i.Payments)
-      .Where(i => i.Id == payment.InvoiceId)
-      .OrderByDescending(i => i.DateCreated)
-      .Select(i => new InvoiceDto
+      var invoice = await _context.Invoices.FindAsync(payment.InvoiceId);
+
+      var totalPayments = await _context.Payments.Where(i => i.InvoiceId == payment.InvoiceId)
+      .Where(i => i.Status == PaymentStatus.Approved)
+      .SumAsync(i => i.Amount);
+
+      var amountToPay = await _context.InvoiceItems.Where(i => i.InvoiceId == payment.InvoiceId)
+      .SumAsync(i => i.Amount);
+    
+      if (totalPayments > 0) {
+        invoice.InvoiceStatus = totalPayments >= amountToPay ? InvoiceStatus.Paid : InvoiceStatus.PartiallyPaid;
+      }
+      else 
       {
-        Id = i.Id,
-        SlotNumber = i.Unit.SlotNumber,
-        TenantId = i.TenantId,
-        FirstName = i.Tenant.FirstName,
-        LastName = i.Tenant.LastName,
-        Phone = i.Tenant.Phone,
-        BusinessName = i.Tenant.BusinessName,
-        Amount = i.InvoiceItems.Sum(s => s.Amount),
-        Payments = i.Payments.Select(p => new InvoicePaymentDto
-        {
-          Id = p.Id,
-          Status = p.Status,
-          BankName = p.ModeOfPayment != null ? p.ModeOfPayment.BankName : string.Empty,
-          AccountName = p.ModeOfPayment != null ? p.ModeOfPayment.AccountName : string.Empty,
-          AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
-          DateCreated = p.DateCreated,
-          Amount = p.Amount,
-          ReferenceNumber = p.ReferenceNumber
-        }),
-        DateCreated = i.DateCreated,
-        DueDate = i.DueDate
-      }).FirstOrDefaultAsync();
-      return Ok(invoice);
+        invoice.InvoiceStatus = InvoiceStatus.Unpaid;
+      }
+
+      return Ok();
     }
 
     [HttpPost("payment")]
@@ -178,6 +163,9 @@ namespace API.Controllers
       .FirstOrDefaultAsync();
       if (invoice == null)
         return NotFound("Invoice not found");
+
+      invoice.InvoiceStatus = InvoiceStatus.Pending;
+      await _context.SaveChangesAsync();
 
       var payment = new Payment
       {
