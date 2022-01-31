@@ -99,13 +99,10 @@ namespace API.Controllers
       if (user == null)
         return NotFound("User not found");
 
-      user.IsEnabled = input.IsEnabled;
       user.FirstName = input.FirstName;
       user.LastName = input.LastName;
       user.Phone = input.Phone;
-      user.Email = input.Email;
       user.Address = input.Address;
-      user.UserName = string.IsNullOrEmpty(input.Username) ? input.Username : user.UserName;
 
       await _context.SaveChangesAsync();
 
