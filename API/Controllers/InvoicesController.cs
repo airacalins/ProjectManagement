@@ -46,6 +46,7 @@ namespace API.Controllers
         BusinessName = i.Tenant.BusinessName,
         Amount = i.InvoiceItems.Sum(s => s.Amount),
         InvoiceNumber = i.InvoiceNumber,
+        InvoiceStatus = i.InvoiceStatus,
         Payments = i.Payments.Select(p => new InvoicePaymentDto
         {
           Id = p.Id,
@@ -94,6 +95,7 @@ namespace API.Controllers
         BusinessName = i.Tenant.BusinessName,
         Amount = i.InvoiceItems.Sum(s => s.Amount),
         InvoiceNumber = i.InvoiceNumber,
+        InvoiceStatus = i.InvoiceStatus,
         Payments = i.Payments.Select(p => new InvoicePaymentDto
         {
           Id = p.Id,
