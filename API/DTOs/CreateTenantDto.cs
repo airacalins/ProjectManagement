@@ -14,6 +14,7 @@ namespace API.DTOs
         public string BusinessName {get; set; }
         public string Address { get; set; }
         public string Contact { get; set; }
+        public double AdvancePayment { get; set; }
         
         
         [DataType(DataType.Date)]

@@ -16,6 +16,7 @@ namespace API.DTOs
         public string SlotNumber { get; set; }
         public double Amount { get; set; }
         public IEnumerable<InvoicePaymentDto> Payments { get; set; }
+        public IEnumerable<InvoiceItemDto> InvoiceItems { get; set; }
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public string InvoiceNumber { get; set; } = default!;

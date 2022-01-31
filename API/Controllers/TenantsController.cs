@@ -43,7 +43,7 @@ namespace API.Controllers
         Address = i.Address,
         TenantUniqueId = i.TenantUniqueId,
         IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
-        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ? 
+        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ?
           i.TenantContracts.Select(t => new SlotContractDto
           {
             Id = t.Id,
@@ -77,7 +77,7 @@ namespace API.Controllers
         Address = i.Address,
         TenantUniqueId = i.TenantUniqueId,
         IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
-        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ? 
+        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ?
           i.TenantContracts.Select(t => new SlotContractDto
           {
             Id = t.Id,
@@ -106,10 +106,10 @@ namespace API.Controllers
       {
         return NotFound("Unit not found.");
       }
-  
+
       var isValidTenantUniqueId = false;
       var tenantUniqueId = string.Empty;
-      while(!isValidTenantUniqueId)
+      while (!isValidTenantUniqueId)
       {
         tenantUniqueId = _randomStringService.GetRandomString().ToUpper();
         isValidTenantUniqueId = !(await _context.Tenants.AnyAsync(i => i.TenantUniqueId == tenantUniqueId));
@@ -147,39 +147,39 @@ namespace API.Controllers
       await _context.SaveChangesAsync();
 
       var invoice = new Invoice
-        {
-          TenantId = newContract.TenantId,
-          TenantContractId = newContract.Id,
-          UnitId = newContract.UnitId,
-          DateCreated = DateTimeOffset.UtcNow,
-          DueDate = newContract.NextPaymentDate
-        };
+      {
+        TenantId = newContract.TenantId,
+        TenantContractId = newContract.Id,
+        UnitId = newContract.UnitId,
+        DateCreated = DateTimeOffset.UtcNow,
+        DueDate = newContract.NextPaymentDate
+      };
 
-        _context.Invoices.Add(invoice);
-        await _context.SaveChangesAsync();
+      _context.Invoices.Add(invoice);
+      await _context.SaveChangesAsync();
 
-        var invoiceItem = new InvoiceItem
-        {
-          InvoiceId = invoice.Id,
-          Description = "Rental Fee",
-          Amount = newContract.Price
-        };
+      var advancePayment = new InvoiceItem
+      {
+        InvoiceId = invoice.Id,
+        Description = "Advance Payment",
+        Amount = newContract.Price
+      };
+      _context.InvoiceItems.Add(advancePayment);
 
-        var depositInvoiceItem = new InvoiceItem
-        {
-          InvoiceId = invoice.Id,
-          Description = "Deposit Fee",
-          Amount = newContract.Price
-        };
+      var depositInvoiceItem = new InvoiceItem
+      {
+        InvoiceId = invoice.Id,
+        Description = "Deposit Fee",
+        Amount = newContract.Price
+      };
 
-        _context.InvoiceItems.Add(invoiceItem);
-        _context.InvoiceItems.Add(depositInvoiceItem);
-        await _context.SaveChangesAsync();
+      _context.InvoiceItems.Add(depositInvoiceItem);
+      await _context.SaveChangesAsync();
 
       return Ok();
     }
 
-    
+
     [HttpPut]
     public async Task<ActionResult> UpdateTenant(UpdateTenantDto input)
     {
@@ -189,13 +189,13 @@ namespace API.Controllers
       {
         return NotFound("Tenant not found.");
       }
-      
-        tenant.FirstName = input.FirstName;
-        tenant.LastName = input.LastName;
-        tenant.Phone = input.Contact;
-        tenant.BusinessName = input.BusinessName ?? string.Empty;
-        tenant.Address = input.Address;
-        
+
+      tenant.FirstName = input.FirstName;
+      tenant.LastName = input.LastName;
+      tenant.Phone = input.Contact;
+      tenant.BusinessName = input.BusinessName ?? string.Empty;
+      tenant.Address = input.Address;
+
       await _context.SaveChangesAsync();
       return Ok();
     }
@@ -211,7 +211,7 @@ namespace API.Controllers
       }
 
       tenantContract.EndDate = input.EndDate;
-        
+
       await _context.SaveChangesAsync();
 
       return Ok();
@@ -228,12 +228,13 @@ namespace API.Controllers
       }
 
       var photo = await _photoService.UploadPhoto(input.File);
-      _context.TenantContractPhotos.Add(new TenantContractPhoto {
+      _context.TenantContractPhotos.Add(new TenantContractPhoto
+      {
         PhotoId = photo.Id,
         TenantContractId = tenantContract.Id,
         DateCreated = DateTimeOffset.UtcNow
       });
-        
+
       await _context.SaveChangesAsync();
 
       return Ok();
