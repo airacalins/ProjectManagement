@@ -101,13 +101,13 @@ const Tenant = {
   details: (id: string) => request.get(`tenants/${id}`),
   create: (values: ICreateTenantInput) => request.post('tenants', values),
   update: (values: any) => request.put('tenants', values),
+  getContractPhotos: (id: string) => request.get(`tenants/get-contract-photo/${id}`),
   uploadContract: (values: any) => {
     const bodyFormData = new FormData();
     bodyFormData.append('id', values.id);
     bodyFormData.append('file', values.file);
     return request.fileUpload('tenants/upload-contract-photo', bodyFormData)
   },
-  getContractPhotos: (id: string) => request.get(`tenants/get-contract-photo/${id}`),
 };
 
 const Users = {

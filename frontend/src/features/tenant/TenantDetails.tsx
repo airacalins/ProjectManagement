@@ -46,6 +46,7 @@ const TenantDetails = () => {
         await dispatch(uploadTenantContractPhoto({id: tenant.contract?.id!, file}))
         dispatch(getTenantContractPhoto(tenant.contract?.id!))
     })
+    setFiles([]);
   }
   
     return (

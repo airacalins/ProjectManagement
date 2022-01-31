@@ -12,8 +12,9 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [Route("[controller]")]
-    public class DashboardController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DashboardController : ControllerBase
     {
         private readonly PropertyManagementContext _context;
         public DashboardController(PropertyManagementContext context)

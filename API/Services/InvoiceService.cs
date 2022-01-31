@@ -20,10 +20,11 @@ namespace API.Services
 
     public async Task GenerateInvoice()
     {
+      var invoiceDate = DateTimeOffset.UtcNow.AddDays(-5);
       var contracts = await _context.TenantContracts
       .Include(i => i.Tenant)
       .Where(i => i.Status == TenantContractStatus.Active)
-      .Where(i => i.NextPaymentDate < DateTimeOffset.UtcNow).ToListAsync();
+      .Where(i => i.NextPaymentDate < invoiceDate).ToListAsync();
 
       foreach (var contract in contracts)
       {
