@@ -123,7 +123,7 @@ const TenantForm = () => {
     return (
         <FormPage
             title={!!id ? "Update Tenant" : "New Tenant"}
-            backNavigationLink="/tenants"
+            backNavigationLink={slotId ? "/map" : "/tenants"}
             form={
                 <Formik
                     validationSchema={validationSchema}

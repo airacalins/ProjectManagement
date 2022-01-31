@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
- 
+
 const baseStyle = {
   flex: 1,
   display: 'flex',
@@ -16,26 +16,26 @@ const baseStyle = {
   outline: 'none',
   transition: 'border .24s ease-in-out'
 };
- 
+
 const activeStyle = {
   borderColor: '#2196f3'
 };
- 
+
 const acceptStyle = {
   borderColor: '#00e676'
 };
- 
+
 const rejectStyle = {
   borderColor: '#ff1744'
 };
- 
+
 const thumbsContainer: any = {
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
   marginTop: 16
 };
- 
+
 const thumb: any = {
   display: 'inline-flex',
   borderRadius: 2,
@@ -47,26 +47,26 @@ const thumb: any = {
   padding: 4,
   boxSizing: 'border-box'
 };
- 
+
 const thumbInner = {
   display: 'flex',
   minWidth: 0,
   overflow: 'hidden'
 };
- 
+
 const img = {
   display: 'block',
   width: 'auto',
   height: '100%'
 };
- 
- 
+
+
 interface IImageUpload {
-files: File[],
-onDrop: (acceptedFiles: File[]) => void
+  files: File[],
+  onDrop: (acceptedFiles: File[]) => void
 }
- 
-const ImageUpload: React.FC<IImageUpload> = ({ files, onDrop}) => {
+
+const ImageUpload: React.FC<IImageUpload> = ({ files, onDrop }) => {
   const {
     getRootProps,
     getInputProps,
@@ -77,7 +77,7 @@ const ImageUpload: React.FC<IImageUpload> = ({ files, onDrop}) => {
     accept: 'image/*',
     onDrop: onDrop
   });
- 
+
   const style: any = useMemo(() => ({
     ...baseStyle,
     ...(isDragActive ? activeStyle : {}),
@@ -88,7 +88,7 @@ const ImageUpload: React.FC<IImageUpload> = ({ files, onDrop}) => {
     isDragAccept,
     isDragReject
   ]);
- 
+
   const thumbs = files.map((file: any) => (
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
@@ -100,23 +100,25 @@ const ImageUpload: React.FC<IImageUpload> = ({ files, onDrop}) => {
       </div>
     </div>
   ));
- 
+
   useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach((file: any) => URL.revokeObjectURL(file.preview));
   }, [files]);
- 
+
   return (
     <div className="container">
+
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
       </div>
+
       <aside style={thumbsContainer}>
         {thumbs}
       </aside>
     </div>
   );
 }
- 
+
 export default ImageUpload;

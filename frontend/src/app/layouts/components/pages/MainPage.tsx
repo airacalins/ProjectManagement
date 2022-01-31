@@ -11,7 +11,7 @@ const MainPage: React.FC<Props> = ({ title, content }) => {
         <div>
             <h4 className="page__title d-flex align-items-center px-4 mb-3">{title}</h4>
 
-            <div className="pb-5">
+            <div className="pb-5 px-5" >
                 {content}
             </div>
         </div >

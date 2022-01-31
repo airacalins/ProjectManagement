@@ -10,35 +10,50 @@ import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import CustomTable from "../../app/layouts/components/table/CustomTable";
-import { Label } from "semantic-ui-react";
+import { Label, Select } from 'semantic-ui-react';
 
 const Tenant = () => {
     const [searchKey, setSearchKey] = useState('');
     const { tenants, isFetching: isFetchingTenants } = useAppSelecter(state => state.tenant);
+    const [selectedStatus, setSelectedStatus] = useState<boolean | undefined>(true);
 
     const dispatch = useAppDispatch();
 
     const data = useMemo(() => {
+        let searchResult = tenants;
         if (!!searchKey) {
-            return tenants.filter(i => i.firstName.toLowerCase().includes(searchKey.toLowerCase())
+            searchResult = tenants.filter(i => i.firstName.toLowerCase().includes(searchKey.toLowerCase())
                 || i.lastName.toLowerCase().includes(searchKey.toLowerCase())
                 || i.businessName.toLowerCase().includes(searchKey.toLowerCase())
                 || i.phone.toLowerCase().includes(searchKey.toLowerCase())
                 || (!!i.contract && i.contract?.slotNumber.toLowerCase().includes(searchKey.toLowerCase())));
         }
-        return tenants;
-    }, [tenants, searchKey])
+
+        if (!!selectedStatus) {
+            searchResult = searchResult.filter(i => i.isActive === selectedStatus)
+        }
+
+        return searchResult;
+    }, [tenants, searchKey, selectedStatus])
 
     useEffect(() => {
         dispatch(fetchTenantsAsync());
     }, [])
 
     const columns = [
+        { title: 'Account Number' },
         { title: 'Full Name' },
         { title: 'Business Name' },
         { title: 'Contact Number' },
         { title: 'Slot' },
+        { title: 'Status' },
         { title: '' },
+    ]
+
+    const tenantstatusOptions = [
+        { text: "All", value: undefined },
+        { text: "Active", value: true },
+        { text: "Not active", value: false }
     ]
 
     if (isFetchingTenants) return <LoadingComponent content="Loading Tenants..." />
@@ -53,6 +68,16 @@ const Tenant = () => {
                     buttonTitle="Add Tenant"
                     navigateTo="/tenants/create"
                     columns={columns}
+                    tableControls={
+                        <Select
+                            options={tenantstatusOptions}
+                            value={selectedStatus}
+                            onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as boolean : undefined)}
+                            name="slotId"
+                            placeholder="Select status"
+                            label="Tenant Status"
+                        />
+                    }
                     rows=
                     {
                         !data.length ?
@@ -65,6 +90,9 @@ const Tenant = () => {
                             ]
                             :
                             data.map(tenant => <TableRow key={tenant.id}>
+                                <TableCell align="center">
+                                    {tenant.tenantUniqueId}
+                                </TableCell>
 
                                 <TableCell align="center">
                                     {`${tenant.firstName} ${tenant.lastName}`}

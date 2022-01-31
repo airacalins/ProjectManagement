@@ -8,9 +8,13 @@ interface Props {
     onClick?: () => void
 }
 
-const NavMenuItem = ({ name, icon, navigateTo, onClick = () => {} }: Props) => {
+const NavMenuItem = ({ name, icon, navigateTo, onClick = () => { } }: Props) => {
     return (
-        <Nav.Link onClick={onClick} className="navMenu__text navMenu__text--hover d-flex text-light align-items-center px-4 w-100 my-1" as={Link} to={navigateTo}>
+        <Nav.Link
+            onClick={onClick}
+            className="navMenu__text navMenu__text--hover d-flex text-light align-items-center px-4 w-100 my-1"
+            as={Link}
+            to={navigateTo}>
             {icon}
             {name}
         </Nav.Link>

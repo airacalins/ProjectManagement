@@ -1,8 +1,9 @@
 
 import { useEffect } from "react";
+import { Badge, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Grid, Header, Label, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
+import MainPage from "../../app/layouts/components/pages/MainPage";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchSlotsAsync } from "../slot/slotSlice";
 
@@ -19,28 +20,41 @@ const Map = () => {
     if (isFetchingSlots) return (<LoadingComponent content="Loading available slots..." />)
 
     return (
-        <></>
-        // <ContainerPage>
-        //     <Segment padded="very" textAlign="left">
-        //         <Header as="h1" content="Slot Locator" />
-        //         <img src="/maximarket-map.png" alt="" style={{ width: "100%" }} />
-        //     </Segment>
+        <>
+            <MainPage
+                title="Locator"
+                content={
+                    <img
+                        className="p-3"
+                        src="/maximarket-map.png"
+                        alt=""
+                        style={{ backgroundColor: "white", width: "100%" }}
+                    />
+                }
+            />
 
-        //     <Segment padded="very" style={{ marginTop: "50px" }} textAlign="left">
-        //         <Header as="h1" content="Available Slots" />
-        //         <Grid columns="12" stretched style={{ marginTop: "25px" }}>
-        //             {
-        //                 slots.map(s =>
-        //                     <Grid.Column>
-        //                         <Label as={Link} to={`tenants/${s.id}/create`} content={s.slotNumber} size="large" color="teal" />
-        //                     </Grid.Column>
-        //                 )
-        //             }
-        //         </Grid>
+            <MainPage
+                title="Available Slots"
+                content={
+                    <Row className="bg-light p-5" style={{ marginTop: "25px" }}>
+                        {
+                            slots.map(s =>
+                                <Col className="my-2" lg={1}>
+                                    <Badge
+                                        as={Link}
+                                        to={`/tenants/${s.id}/create`}
+                                        className="badge__primary p-3"
+                                    >
+                                        {s.slotNumber}
+                                    </Badge>
+                                </Col>
+                            )
+                        }
+                    </Row>
+                }
+            />
+        </>
 
-        //     </Segment>
-
-        // </ContainerPage >
     )
 }
 
