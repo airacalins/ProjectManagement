@@ -9,5 +9,6 @@ namespace API.DTOs
     {
         public Guid Id { get; set; }
         public string Url { get; set; } = default!;
+        public DateTimeOffset DateCreated { get; set; }
     }
 }

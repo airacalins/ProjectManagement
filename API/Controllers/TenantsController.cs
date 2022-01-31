@@ -230,7 +230,8 @@ namespace API.Controllers
       var photo = await _photoService.UploadPhoto(input.File);
       _context.TenantContractPhotos.Add(new TenantContractPhoto {
         PhotoId = photo.Id,
-        TenantContractId = tenantContract.Id
+        TenantContractId = tenantContract.Id,
+        DateCreated = DateTimeOffset.UtcNow
       });
         
       await _context.SaveChangesAsync();
@@ -251,7 +252,8 @@ namespace API.Controllers
       .Select(i => new TenantContractImagesDto
       {
         Id = i.PhotoId,
-        Url = i.Photo.Url
+        Url = i.Photo.Url,
+        DateCreated = i.DateCreated
       })
       .ToListAsync();
       return Ok(result);

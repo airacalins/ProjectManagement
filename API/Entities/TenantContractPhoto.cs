@@ -12,5 +12,6 @@ namespace API.Entities
         public TenantContract TenantContract { get; set; }
         public Guid PhotoId { get; set; }
         public Photo Photo { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
     }
 }
