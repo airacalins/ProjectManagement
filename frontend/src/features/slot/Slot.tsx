@@ -14,8 +14,10 @@ import CustomTable from "../../app/layouts/components/table/CustomTable";
 import { currencyFormatter } from "../../app/layouts/formatter/common";
 import { getSlotStatusColor, getSlotStatusText } from "../../app/utils/common";
 import { SlotStatus } from "../../app/models/slot";
+import { useParams } from "react-router-dom";
 
 const Slot = () => {
+  const { filter } = useParams<{ filter: string }>()
   const [searchKey, setSearchKey] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<SlotStatus | undefined>(undefined);
   const { slots, isFetching: isFetchingSlots } = useAppSelecter(state => state.slot);
@@ -38,6 +40,29 @@ const Slot = () => {
   useEffect(() => {
     dispatch(fetchSlotsAsync());
   }, [])
+
+  useEffect(() => {
+    switch (filter) {
+      case "available":
+        setSelectedStatus(SlotStatus.Available);
+        break;
+
+      case "rented":
+        setSelectedStatus(SlotStatus.Rented);
+        break;
+      case "reserved":
+        setSelectedStatus(SlotStatus.Reserved);
+        break;
+      case "underMaintenance":
+        setSelectedStatus(SlotStatus.UnderMaintenance);
+        break;
+      case "archived":
+        setSelectedStatus(SlotStatus.Archived);
+        break;
+      default:
+        setSelectedStatus(undefined)
+    }
+  })
 
   const columns = [
     { title: 'Slot Number' },
@@ -74,8 +99,7 @@ const Slot = () => {
               value={selectedStatus}
               onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as SlotStatus : undefined)}
               name="slotId"
-              placeholder="Slot Number"
-              label="Slot Number"
+              placeholder="Slot status"
             />
           }
           rows=

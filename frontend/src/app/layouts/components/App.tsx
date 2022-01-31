@@ -76,6 +76,7 @@ function App() {
           <Route path='/reports' element={<Report />} />
 
           <Route path={'/slots'} element={<Slot />} />
+          <Route path={'/slots/:filter'} element={<Slot />} />
           <Route path={'/slots/create'} element={<SlotForm />} />
           <Route path={'/slots/:id/manage'} element={<SlotForm />} />
           <Route path='/slots/:id/details' element={<SlotDetails />} />
