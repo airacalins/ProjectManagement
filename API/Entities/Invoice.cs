@@ -21,5 +21,6 @@ namespace API.Entities
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public InvoiceStatus InvoiceStatus { get; set; }
+        public string InvoiceNumber { get; set; } = default!;
     }
 }

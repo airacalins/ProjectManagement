@@ -22,5 +22,6 @@ namespace API.Entities
         public double Amount { get; set; }
         public Guid? PhotoId { get; set; }
         public Photo? Photo { get; set; }
+        public string ReferenceNumber { get; set; } = default!;
     }
 }

@@ -11,15 +11,24 @@ namespace API.Services
 {
   public class InvoiceService
   {
+    private readonly RandomStringService _randomStringService;
 
     private readonly PropertyManagementContext _context;
-    public InvoiceService(PropertyManagementContext context)
+    public InvoiceService(PropertyManagementContext context, RandomStringService randomStringService)
     {
+      _randomStringService = randomStringService;
       _context = context;
     }
 
     public async Task GenerateInvoice()
     {
+      var isValidUniqueId = false;
+      var uniqueId = string.Empty;
+      while(!isValidUniqueId)
+      {
+        uniqueId = _randomStringService.GetRandomString(6).ToUpper();
+        isValidUniqueId = !(await _context.Invoices.AnyAsync(i => i.InvoiceNumber == uniqueId));
+      }
       var invoiceDate = DateTimeOffset.UtcNow.AddDays(-5);
       var contracts = await _context.TenantContracts
       .Include(i => i.Tenant)
@@ -34,7 +43,8 @@ namespace API.Services
           TenantContractId = contract.Id,
           UnitId = contract.UnitId,
           DateCreated = DateTimeOffset.UtcNow,
-          DueDate = contract.NextPaymentDate
+          DueDate = contract.NextPaymentDate,
+          InvoiceNumber = uniqueId
         };
 
         _context.Invoices.Add(invoice);

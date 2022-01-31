@@ -18,5 +18,6 @@ namespace API.DTOs
         public IEnumerable<InvoicePaymentDto> Payments { get; set; }
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset DueDate { get; set; }
+        public string InvoiceNumber { get; set; } = default!;
     }
 }
