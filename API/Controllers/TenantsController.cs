@@ -63,42 +63,13 @@ namespace API.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<TenantDto>> GetTenant(Guid id)
     {
-      var tenants = await _context.Tenants.Include(i => i.TenantContracts).ThenInclude(i => i.Unit)
-      .ToListAsync();
-
-      var tenantsDto = tenants.Select(i => new TenantDto
-      {
-        Id = i.Id,
-        FirstName = i.FirstName,
-        LastName = i.LastName,
-        Phone = i.Phone,
-        BusinessName = i.BusinessName,
-        DateCreated = i.DateCreated,
-        Address = i.Address,
-        TenantUniqueId = i.TenantUniqueId,
-        IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
-        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ?
-          i.TenantContracts.Select(t => new SlotContractDto
-          {
-            Id = t.Id,
-            SlotId = t.UnitId,
-            SlotNumber = t.Unit.SlotNumber,
-            Size = t.Unit.Size,
-            Price = t.Unit.Price,
-            StartDate = t.StartDate,
-            EndDate = t.EndDate,
-            NextBillingDate = t.NextPaymentDate,
-            Status = t.Status
-          }).FirstOrDefault() : null
-      });
-
-      var tenant = tenantsDto.FirstOrDefault(i => i.Id == id);
+      var tenant = await GetTenantDetails(id);
       return Ok(tenant);
     }
 
 
     [HttpPost]
-    public async Task<ActionResult> AddTenant(CreateTenantDto input)
+    public async Task<ActionResult<TenantDto>> AddTenant(CreateTenantDto input)
     {
       var unit = await _context.Units.FindAsync(input.SlotId);
 
@@ -185,9 +156,43 @@ namespace API.Controllers
       _context.InvoiceItems.Add(depositInvoiceItem);
       await _context.SaveChangesAsync();
 
-      return Ok();
+      var newTenant = await GetTenantDetails(tenant.Id);
+      return Ok(newTenant);
     }
 
+    private async Task<TenantDto> GetTenantDetails(Guid id)
+    {
+      var tenants = await _context.Tenants.Include(i => i.TenantContracts).ThenInclude(i => i.Unit)
+      .ToListAsync();
+
+      var tenantsDto = tenants.Select(i => new TenantDto
+      {
+        Id = i.Id,
+        FirstName = i.FirstName,
+        LastName = i.LastName,
+        Phone = i.Phone,
+        BusinessName = i.BusinessName,
+        DateCreated = i.DateCreated,
+        Address = i.Address,
+        TenantUniqueId = i.TenantUniqueId,
+        IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
+        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ?
+          i.TenantContracts.Select(t => new SlotContractDto
+          {
+            Id = t.Id,
+            SlotId = t.UnitId,
+            SlotNumber = t.Unit.SlotNumber,
+            Size = t.Unit.Size,
+            Price = t.Unit.Price,
+            StartDate = t.StartDate,
+            EndDate = t.EndDate,
+            NextBillingDate = t.NextPaymentDate,
+            Status = t.Status
+          }).FirstOrDefault() : null
+      });
+
+      return tenantsDto.FirstOrDefault(i => i.Id == id);
+    }
 
     [HttpPut]
     public async Task<ActionResult> UpdateTenant(UpdateTenantDto input)

@@ -68,7 +68,7 @@ namespace API.Controllers
     }
 
     [HttpPost("add-user")]
-    public async Task<ActionResult> Register(RegisterDto registerDto)
+    public async Task<ActionResult<ApplicationUserDto>> Register(RegisterDto registerDto)
     {
       var user = new User { UserName = registerDto.Username };
       user.IsEnabled = true;
@@ -89,7 +89,21 @@ namespace API.Controllers
       }
 
       await _userManager.AddToRoleAsync(user, "User");
-      return Ok();
+
+      
+      var newUser = await _context.Users.Include(i => i.Photo)
+      .Select(i => new ApplicationUserDto
+      {
+        Id = i.Id,
+        IsEnabled = i.IsEnabled,
+        FirstName = i.FirstName,
+        LastName = i.LastName,
+        Phone = i.Phone,
+        Email = i.Email,
+        Address = i.Address,
+        Username = i.UserName
+      }).FirstOrDefaultAsync(i => i.Id == user.Id);
+      return Ok(newUser);
     }
 
     [HttpPut]
