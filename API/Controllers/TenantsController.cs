@@ -250,11 +250,35 @@ namespace API.Controllers
       var result = await _context.TenantContractPhotos.Include(i => i.Photo).Where(i => i.TenantContractId == id)
       .Select(i => new TenantContractImagesDto
       {
-        Id = i.Id,
+        Id = i.PhotoId,
         Url = i.Photo.Url
       })
       .ToListAsync();
       return Ok(result);
+    }
+
+    [HttpDelete("delete-contract-photo/{id}")]
+    public async Task<ActionResult> DeletePhoto(Guid id)
+    {
+      var contractPhoto = await _context.TenantContractPhotos.FirstOrDefaultAsync(i => i.PhotoId == id);
+
+      if (contractPhoto == null)
+      {
+        return NotFound("Contract photo not found.");
+      }
+
+      _context.TenantContractPhotos.Remove(contractPhoto);
+      await _context.SaveChangesAsync();
+
+      var photo = await _context.Photos.FirstOrDefaultAsync(i => i.Id == id);
+
+      if (photo != null)
+      {
+        _context.Photos.Remove(photo);
+        await _context.SaveChangesAsync();
+      }
+
+      return Ok();
     }
 
     [HttpDelete("terminate-contract/{id}")]
@@ -266,8 +290,6 @@ namespace API.Controllers
       {
         return NotFound("Tenant not found.");
       }
-        
-      await _context.SaveChangesAsync();
 
       var tenantContract = await _context.TenantContracts.FirstOrDefaultAsync(i => i.TenantId == id);
 
