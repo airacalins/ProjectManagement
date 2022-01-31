@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchInvoicesAsync } from "./invoiceSlice";
 import history from '../../app/utils/history';
 import moment from "moment";
 
@@ -15,6 +14,7 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import { IInvoice, PaymentStatus } from "../../app/models/invoice";
 import { useParams } from "react-router-dom";
+import { fetchInvoicesAsync } from "./invoiceSlice";
 
 const Payment = () => {
   const { filter } = useParams<{ filter: string }>()
