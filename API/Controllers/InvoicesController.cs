@@ -105,6 +105,12 @@ namespace API.Controllers
           Amount = p.Amount,
           ReferenceNumber = p.ReferenceNumber
         }),
+        InvoiceItems = i.InvoiceItems.Select(j => new InvoiceItemDto
+        {
+            Id = j.Id,
+            Amount = j.Amount,
+            Description = j.Description
+        }),
         DateCreated = i.DateCreated,
         DueDate = i.DueDate
       }).FirstOrDefaultAsync();

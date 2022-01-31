@@ -47,7 +47,7 @@ const LoginForm = () => {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
                                 <FormTextInput label="Username" name="username" placeholder="Username" />
-                                <FormTextInput label="Password" name="password" placeholder="Password" />
+                                <FormTextInput type="password" label="Password" name="password" placeholder="Password" />
                                 <FormButtonContainer>
                                     <AddButton title="Login" disabled={!isValid} />
                                 </FormButtonContainer>
