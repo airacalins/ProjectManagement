@@ -21,3 +21,18 @@
     color: white !important;
   }
 }
+
+.badge {
+  &__primary {
+    background-color: $secondary !important;
+    color: white;
+    text-decoration: none;
+  }
+
+  &__primary:hover {
+    background-color: $primary;
+    color: white;
+  }
+
+
+}

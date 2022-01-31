@@ -9,6 +9,8 @@ export interface ITenant {
   businessName: string;
   address: string;
   contract?: SlotContract;
+  isActive: boolean,
+  tenantUniqueId: string
 }
 
 export interface ICreateTenantInput {

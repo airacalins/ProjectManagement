@@ -13,6 +13,7 @@ export interface ICreateUserInput {
 
 export interface IApplicationUsers {
   id: string,
+  username: string,
   isEnabled: true,
   firstName: string,
   lastName: string,

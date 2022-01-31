@@ -3,15 +3,15 @@ import { useParams } from "react-router-dom";
 import { dateFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchTenantDetailsAsync, getTenantContractPhoto, uploadTenantContractPhoto } from "./tenantSlice";
+import DownloadIcon from '@mui/icons-material/Download';
 
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
-import CustomTable from "../../app/layouts/components/table/CustomTable";
-import MainPage from "../../app/layouts/components/pages/MainPage";
 import ImageUpload from "../../app/layouts/image-upload/ImageUpload";
+import FunctionalButton from "../../app/layouts/components/buttons/FunctionalButton";
 
 const TenantDetails = () => {
 
@@ -22,33 +22,33 @@ const TenantDetails = () => {
     const [files, setFiles] = useState<File[]>([]);
 
     useEffect(() => {
-        if(id) dispatch(fetchTenantDetailsAsync(id));
+        if (id) dispatch(fetchTenantDetailsAsync(id));
     }, [])
 
-    
     useEffect(() => {
-        if(tenant) dispatch(getTenantContractPhoto(tenant.contract?.id!));
+        if (tenant) dispatch(getTenantContractPhoto(tenant.contract?.id!));
     }, [tenant])
 
     if (isFetchingDetails || !tenant) return (<LoadingComponent content="Loading tenant..." />)
 
     const { businessName, firstName, lastName, address, phone, contract } = tenant
 
- 
-  const onDrop = (acceptedFiles: File[]) => {
-    setFiles(acceptedFiles.map(file => Object.assign(file, {
-      preview: URL.createObjectURL(file)
-    })));
-  }
- 
-  const upload = () => {
-    files.forEach(async (file) => {
-        await dispatch(uploadTenantContractPhoto({id: tenant.contract?.id!, file}))
-        dispatch(getTenantContractPhoto(tenant.contract?.id!))
-    })
-    setFiles([]);
-  }
-  
+
+    const onDrop = (acceptedFiles: File[]) => {
+        setFiles(acceptedFiles.map(file => Object.assign(file, {
+            preview: URL.createObjectURL(file)
+        })));
+    }
+
+    const upload = () => {
+        files.forEach(async (file) => {
+            await dispatch(uploadTenantContractPhoto({ id: tenant.contract?.id!, file }))
+            dispatch(getTenantContractPhoto(tenant.contract?.id!))
+        })
+        setFiles([]);
+    }
+
+
     return (
         <>
             <DetailsPage
@@ -77,9 +77,11 @@ const TenantDetails = () => {
                         <DetailItem title="Amount" value={contract?.price} />
                         <DetailItem title="Contract" value="" />
                         <FormButtonContainer>
-                            
-                        <ImageUpload files={files} onDrop={onDrop}/>
-                        <button onClick={() => upload()}>Upload</button>
+
+                            <ImageUpload files={files} onDrop={onDrop} />
+                            <img />
+                            <FunctionalButton title="Upload" onClick={() => upload()} />
+                            <FunctionalButton icon={<DownloadIcon />} title="Download" onClick={() => { }} />
                             <NavigationButton title="Terminate Contract" navigateTo="/" />
                         </FormButtonContainer>
                     </>
