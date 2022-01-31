@@ -25,6 +25,13 @@ const Report = () => {
 
 
     return (
+        <MainPage
+            title='Reports'
+            content={
+                <></>
+            }
+        />
+
         // <MainPage
         //     title="Reports"
         //     content={
@@ -49,7 +56,6 @@ const Report = () => {
         //         </Formik>
         //     }
         // />
-        <></>
     );
 }
 

@@ -26,7 +26,7 @@ const PaymentDetails = () => {
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
-        if(id) dispatch(fetchInvoiceDetailsAsync(id));
+        if (id) dispatch(fetchInvoiceDetailsAsync(id));
     }, [])
 
     const totalAmountPaid = useMemo(() => !!invoice && !!invoice.payments ? invoice.payments.reduce((previousValue, currentValue) => previousValue + currentValue.amount, 0) : 0, [invoice]);
@@ -101,61 +101,61 @@ const PaymentDetails = () => {
                             navigateTo="/invoices/create"
                             columns={columns}
                             rows={
-                                // !payments.length ?
-                                //     [
-                                //         <TableRow>
-                                //             <TableCell align="center" colSpan={8}>
-                                //                 No payments...
-                                //             </TableCell>
-                                //         </TableRow>
-                                //     ]
-                                //     :
-                                payments.map(payment =>
-                                    <>
-                                        <TableRow key={payment.id}>
-
-                                            <TableCell align="center">
-                                                {moment(payment.dateCreated).format("MMM DD, YYYY")}
-                                            </TableCell>
-
-                                            <TableCell align="center">
-                                                {payment.bankName}
-                                            </TableCell>
-
-                                            <TableCell align="center">
-                                                {payment.accountName}
-                                            </TableCell>
-
-                                            <TableCell align="center">
-                                                {payment.accountNumber}
-                                            </TableCell>
-
-                                            <TableCell align="center">
-                                                {currencyFormatter(payment.amount)}
-                                            </TableCell>
-
-                                            <TableCell align="center">
-                                                <a>
-                                                    <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
-                                                </a>
-                                            </TableCell>
-
-                                            <TableCell align="center">
-                                                <Label content={getPaymentStatusText(payment.status)} color={getPaymentStatusColor(payment.status)} />
-                                            </TableCell>
-
-                                            <TableCell align="center">
-                                                {
-                                                    !(payment.status === PaymentStatus.Approved || payment.status === PaymentStatus.Declined) &&
-                                                    <>
-                                                        <UpdateButton title="Approved" color="orange" onClick={() => updateStatus(payment.id, true)} />
-                                                        <UpdateButton title="Declined" color="red" onClick={() => updateStatus(payment.id, false)} />
-                                                    </>
-                                                }
+                                !payments.length ?
+                                    [
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={columns.length}>
+                                                No data
                                             </TableCell>
                                         </TableRow>
-                                    </>
-                                )
+                                    ]
+                                    :
+                                    payments.map(payment =>
+                                        <>
+                                            <TableRow key={payment.id}>
+
+                                                <TableCell align="center">
+                                                    {moment(payment.dateCreated).format("MMM DD, YYYY")}
+                                                </TableCell>
+
+                                                <TableCell align="center">
+                                                    {payment.bankName}
+                                                </TableCell>
+
+                                                <TableCell align="center">
+                                                    {payment.accountName}
+                                                </TableCell>
+
+                                                <TableCell align="center">
+                                                    {payment.accountNumber}
+                                                </TableCell>
+
+                                                <TableCell align="center">
+                                                    {currencyFormatter(payment.amount)}
+                                                </TableCell>
+
+                                                <TableCell align="center">
+                                                    <a>
+                                                        <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
+                                                    </a>
+                                                </TableCell>
+
+                                                <TableCell align="center">
+                                                    <Label content={getPaymentStatusText(payment.status)} color={getPaymentStatusColor(payment.status)} />
+                                                </TableCell>
+
+                                                <TableCell align="center">
+                                                    {
+                                                        !(payment.status === PaymentStatus.Approved || payment.status === PaymentStatus.Declined) &&
+                                                        <>
+                                                            <UpdateButton title="Approved" color="orange" onClick={() => updateStatus(payment.id, true)} />
+                                                            <UpdateButton title="Declined" color="red" onClick={() => updateStatus(payment.id, false)} />
+                                                        </>
+                                                    }
+                                                </TableCell>
+                                            </TableRow>
+                                        </>
+                                    )
                             }
                         />
 
