@@ -10,12 +10,15 @@ import history from './app/utils/history';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CustomRouter from './app/layouts/components/CustomRouter';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 ReactDOM.render(
 
   <Provider store={store}>
     <CustomRouter history={history}>
+      <ToastContainer />
       <App />
     </CustomRouter>
   </Provider>,

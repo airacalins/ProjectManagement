@@ -95,10 +95,10 @@ const TenantForm = () => {
     if (isFetchingTenants) return (<LoadingComponent content="Loading tenants and slot..." />)
 
     const handleResult = (data: any) => {
-        if (!!data.payload.error) {
+        if (!!data.payload.errors) {
             console.log('error')
         } else {
-            history.push(`/tenants/${(data.payload as any).id}/details`)
+            history.push(`/tenants/${!!id ? id :( data.payload as any).id}/details`)
         }
     }
 
@@ -114,8 +114,7 @@ const TenantForm = () => {
                 businessName: values.businessName,
                 address: values.address,
                 contact: values.contact,
-            }));
-            history.push(`/tenants/${id}/details`)
+            })).then(handleResult);;
 
         } else {
             await dispatch(createTenantsAsync({
@@ -124,9 +123,7 @@ const TenantForm = () => {
                 endDate: futureDate(),
                 slotId: !!slotId ? slotId : values.slotId
             })).then(handleResult);
-
         }
-        history.push('/tenants')
     }
 
     return (

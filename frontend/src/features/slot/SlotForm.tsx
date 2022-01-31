@@ -51,17 +51,16 @@ const SlotForm = () => {
     if (isFetchingDetails) return (<LoadingComponent content="Loading slot..." />)
 
     const handleResult = (data: any) => {
-        if (!!data.payload.error) {
+        if (!!data.payload.errors) {
             console.log('error')
         } else {
-            history.push(`/slots/${(data.payload as any).id}/details`)
+            history.push(`/slots/${!!id ? id :( data.payload as any).id}/details`)
         }
     }
 
     const onSubmit = async (values: any) => {
         if (id) {
-            await dispatch(updateSlotDetailsAsync(values));
-            history.push(`/slots/${id}/details`)
+            await dispatch(updateSlotDetailsAsync(values)).then(handleResult);
         } else {
             await dispatch(createSlotAsync(values)).then(handleResult);
         }

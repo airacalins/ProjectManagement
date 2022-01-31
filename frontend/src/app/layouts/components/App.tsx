@@ -27,6 +27,7 @@ import TenantUpdateForm from "../../../features/tenant/TenantUpdateForm";
 import User from "../../../features/user/User";
 import UserDetails from "../../../features/user/UserDetails";
 import UserForm from "../../../features/user/UserForm";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();

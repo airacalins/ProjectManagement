@@ -43,17 +43,16 @@ const ModeOfPaymentForm = () => {
     })
 
     const handleResult = (data: any) => {
-        if (!!data.payload.error) {
+        if (!!data.payload.errors) {
             console.log('error')
         } else {
-            history.push(`/mode-of-payments/${(data.payload as any).id}/details`)
+            history.push(`/mode-of-payments/${!!id ? id :( data.payload as any).id}/details`)
         }
     }
 
     const onSubmit = async (values: any) => {
         if (id) {
-            await dispatch(updateModeOfPaymentDetailsAsync(values));
-            history.push(`/mode-of-payments/${id}/details`)
+            await dispatch(updateModeOfPaymentDetailsAsync(values)).then(handleResult);
         }
         else await dispatch(createModeOfPaymentAsync(values)).then(handleResult);
     }

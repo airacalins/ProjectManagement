@@ -74,6 +74,7 @@ const TenantDetails = () => {
                 title="Contract"
                 content={
                     <>
+                        <DetailItem title="Slot Number" value={dateFormatter(contract?.slotNumber)} />
                         <DetailItem title="Start Date" value={dateFormatter(contract?.startDate)} />
                         <DetailItem title="End Date" value={dateFormatter(contract?.endDate)} />
                         <DetailItem title="Amount" value={contract?.price} />

@@ -22,11 +22,13 @@ axios.interceptors.response.use(
     const { data, status } = error.response!;
     switch (status) {
       case 400:
+        console.log(data)
         if (data.errors) {
           const modelStateErrors: string[] = [];
           for (const key in data.errors) {
             if (data.errors[key]) {
               modelStateErrors.push(data.errors[key]);
+              toast.error(data.errors[key][0]);
             }
           }
           throw modelStateErrors.flat();
@@ -37,7 +39,7 @@ axios.interceptors.response.use(
         toast.error(data.title || 'Unauthorized');
         break;
       case 500:
-        history.push('/server-error');
+        toast.error('Server error');
         break;
       default:
         break;

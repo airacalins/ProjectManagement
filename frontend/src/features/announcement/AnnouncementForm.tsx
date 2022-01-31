@@ -41,17 +41,16 @@ const AnnouncementForm = () => {
     )
 
     const handleResult = (data: any) => {
-        if (!!data.payload.error) {
+        if (!!data.payload.errors) {
             console.log('error')
         } else {
-            history.push(`/announcements/${(data.payload as any).id}/details`)
+            history.push(`/announcements/${!!id ? id :( data.payload as any).id}/details`)
         }
     }
 
     const onSubmit = async (values: any) => {
         if (id) {
-            await dispatch(updateAnnouncementDetailsAsync(values));
-            history.push(`/announcements/${id}/details`)
+            await dispatch(updateAnnouncementDetailsAsync(values)).then(handleResult);
         }
         else await dispatch(createAnnouncementAsync(values)).then(handleResult);
     }

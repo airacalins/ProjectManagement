@@ -59,17 +59,16 @@ const UserForm = () => {
     })
 
     const handleResult = (data: any) => {
-        if (!!data.payload.error) {
+        if (!!data.payload.errors) {
             console.log('error')
         } else {
-            history.push(`/users/${(data.payload as IApplicationUser).id}/details`)
+            history.push(`/users/${!!id ? id :( data.payload as IApplicationUser).id}/details`)
         }
     }
 
     const onSubmit = async (values: any) => {
         if (!!userData) {
             await dispatch(updateUserDetailsAsync(values)).then(handleResult);
-            history.push(`/users/${id}/details`)
         } else {
             await dispatch(createUserAsync(values)).then(handleResult);
         }

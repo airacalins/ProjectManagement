@@ -11,6 +11,7 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 import { Label, Select } from 'semantic-ui-react';
+import { toast } from "react-toastify";
 
 const Tenant = () => {
     const [searchKey, setSearchKey] = useState('');
