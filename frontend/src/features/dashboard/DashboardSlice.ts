@@ -3,20 +3,20 @@ import agent from "../../app/api/agent";
 import { IDashboard } from "../../app/models/dashboard";
 
 export interface IDashboardState {
-  dashboard: IDashboard[];
+  dashboard?: IDashboard;
   isFetching: boolean;
   isFetchingDetails: boolean;
   isSaving: boolean;
 }
 
 const initialState: IDashboardState = {
-  dashboard: [],
+  dashboard: undefined,
   isFetching: false,
   isFetchingDetails: false,
   isSaving: false
 }
 
-export const fetchDashboardAsync = createAsyncThunk<IDashboard[]>(
+export const fetchDashboardAsync = createAsyncThunk<IDashboard>(
   'dashboard/fetchDashboardAsync',
   async (_, thunkAPI) => {
     try {

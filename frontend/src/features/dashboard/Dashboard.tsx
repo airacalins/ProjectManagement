@@ -22,7 +22,14 @@ const Dashboard = () => {
         dispatch(fetchDashboardAsync());
     }, [])
 
-    // const { slots, availableSlots, rentedSlots, tenants, unpaidInvoices, latePayments, pendingPayments } = dashboardData
+    const dashboardCardInfos = [
+        { name: "AVAILABLE SLOTS", total: `${dashboardData?.availableSlots} / ${dashboardData?.slots}`, icon: <StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/slots" },
+        { name: "RENTED SLOTS", total: dashboardData?.rentedSlots, icon: <StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/dashboard" },
+        { name: "TENANTS", total: dashboardData?.tenants, icon: <StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/dashboard" },
+        { name: "UNPAID INVOICES", total: dashboardData?.unpaidInvoices, icon: <StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/dashboard" },
+        { name: "LATE PAYMENTS", total: dashboardData?.latePayments, icon: <AssignmentLateOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/payments" },
+        { name: "PENDING PAYMENTS", total: dashboardData?.pendingPayments, icon: <PendingActionsOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/slots" }
+    ]
 
     if (isFetchingDashboard) return (<LoadingComponent content="Loading dashboard..." />)
 
@@ -32,41 +39,18 @@ const Dashboard = () => {
                 title="Dashboard"
                 content={
                     <Row className="mx-3">
-                        <Col lg={6}>
-                            <DashboardCard
-                                title={""}
-                                subtitle="SLOTS"
-                                icon={<StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
-                                navigateTo="/slots"
-                            />
-                        </Col>
-
-                        <Col lg={6}>
-                            <DashboardCard
-                                title={""}
-                                subtitle="TENANTS"
-                                icon={<GroupOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
-                                navigateTo="/tenants"
-                            />
-                        </Col>
-
-                        <Col lg={6}>
-                            <DashboardCard
-                                title={""}
-                                subtitle="PENDING PAYMENTS"
-                                icon={<PendingActionsOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
-                                navigateTo="/payments"
-                            />
-                        </Col>
-
-                        <Col lg={6}>
-                            <DashboardCard
-                                title={""}
-                                subtitle="LATE PAYMENTS"
-                                icon={<AssignmentLateOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />}
-                                navigateTo="/payments"
-                            />
-                        </Col>
+                        {
+                            dashboardCardInfos.map(i =>
+                                <Col lg={4}>
+                                    <DashboardCard
+                                        title={i.total}
+                                        subtitle={i.name}
+                                        icon={i.icon}
+                                        navigateTo={i.navigateTo}
+                                    />
+                                </Col>
+                            )
+                        }
                     </Row>
                 }
             />
