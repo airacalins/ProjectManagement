@@ -146,13 +146,22 @@ namespace API.Controllers
       _context.TenantContracts.Add(newContract);
       await _context.SaveChangesAsync();
 
+      var isValidUniqueId = false;
+      var uniqueId = string.Empty;
+      while(!isValidUniqueId)
+      {
+        uniqueId = _randomStringService.GetRandomString(6).ToUpper();
+        isValidUniqueId = !(await _context.Invoices.AnyAsync(i => i.InvoiceNumber == uniqueId));
+      }
       var invoice = new Invoice
       {
         TenantId = newContract.TenantId,
         TenantContractId = newContract.Id,
         UnitId = newContract.UnitId,
         DateCreated = DateTimeOffset.UtcNow,
-        DueDate = newContract.NextPaymentDate
+        DueDate = newContract.NextPaymentDate,
+        InvoiceNumber = uniqueId,
+        InvoiceStatus = InvoiceStatus.Pending
       };
 
       _context.Invoices.Add(invoice);
