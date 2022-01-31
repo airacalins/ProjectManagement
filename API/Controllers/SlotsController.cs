@@ -54,13 +54,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UnitDto>> AddSlot(UnitDto input)
+        public async Task<ActionResult<UnitDto>> AddSlot(CreateUnitDto input)
         {
             var unit = new Unit{
                 SlotNumber = input.SlotNumber,
                 Size = input.Size,
                 Price = input.Price,
-                SlotStatus = input.Status
+                SlotStatus = SlotStatus.Available
             };
             _context.Units.Add(unit);
             await _context.SaveChangesAsync();

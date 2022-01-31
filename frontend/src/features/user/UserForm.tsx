@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ICreateUserInput, IUpdateUserInput, IUser } from '../../app/models/user';
+import { IApplicationUser, ICreateUserInput, IUpdateUserInput, IUser } from '../../app/models/user';
 import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import * as Yup from 'yup';
 import { createUserAsync, fetchUserDetailsAsync, updateUserDetailsAsync } from './UserSlice';
@@ -11,6 +11,7 @@ import FormTextInput from '../../app/layouts/components/form/FormTextInput';
 import FormButtonContainer from '../../app/layouts/components/form/FormButtonContainer';
 import AddButton from '../../app/layouts/components/buttons/AddButton';
 import { useParams } from 'react-router-dom';
+import { PayloadAction } from '@reduxjs/toolkit/dist/createAction';
 
 const UserForm = () => {
     const { id } = useParams<{ id: string }>();
@@ -57,11 +58,20 @@ const UserForm = () => {
         address: Yup.string().required("Address is required"),
     })
 
+    const handleResult = (data: any) => {
+        if (!!data.payload.error) {
+            console.log('error')
+        } else {
+            history.push(`/users/${(data.payload as IApplicationUser).id}/details`)
+        }
+    }
+
     const onSubmit = async (values: any) => {
         if (!!userData) {
-            await dispatch(updateUserDetailsAsync(values));
+            await dispatch(updateUserDetailsAsync(values)).then(handleResult);
+            history.push(`/users/${id}/details`)
         } else {
-            await dispatch(createUserAsync(values));
+            await dispatch(createUserAsync(values)).then(handleResult);
         }
     }
 
@@ -79,7 +89,7 @@ const UserForm = () => {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
                                 {!userData && <FormTextInput label="Username" name="username" placeholder="Username" />}
-                                {!userData && <FormTextInput label="Password" name="password" placeholder="Password" />}
+                                {!userData && <FormTextInput type='password' label="Password" name="password" placeholder="Password" />}
                                 <FormTextInput label="First Name" name="firstName" placeholder="First Name" />
                                 <FormTextInput label="Last Name" name="lastName" placeholder="Last Name" />
                                 <FormTextInput label="Contact Number" name="phone" placeholder="Contact Number" />

@@ -42,10 +42,20 @@ const ModeOfPaymentForm = () => {
         accountNumber: Yup.string().required("Account number is required."),
     })
 
+    const handleResult = (data: any) => {
+        if (!!data.payload.error) {
+            console.log('error')
+        } else {
+            history.push(`/mode-of-payments/${(data.payload as any).id}/details`)
+        }
+    }
+
     const onSubmit = async (values: any) => {
-        if (id) await dispatch(updateModeOfPaymentDetailsAsync(values));
-        else await dispatch(createModeOfPaymentAsync(values));
-        history.push('/mode-of-payments')
+        if (id) {
+            await dispatch(updateModeOfPaymentDetailsAsync(values));
+            history.push(`/mode-of-payments/${id}/details`)
+        }
+        else await dispatch(createModeOfPaymentAsync(values)).then(handleResult);
     }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading mode of payments..." />)

@@ -40,10 +40,20 @@ const AnnouncementForm = () => {
         }
     )
 
+    const handleResult = (data: any) => {
+        if (!!data.payload.error) {
+            console.log('error')
+        } else {
+            history.push(`/announcements/${(data.payload as any).id}/details`)
+        }
+    }
+
     const onSubmit = async (values: any) => {
-        if (id) await dispatch(updateAnnouncementDetailsAsync(values));
-        else await dispatch(createAnnouncementAsync(values));
-        history.push('/announcements')
+        if (id) {
+            await dispatch(updateAnnouncementDetailsAsync(values));
+            history.push(`/announcements/${id}/details`)
+        }
+        else await dispatch(createAnnouncementAsync(values)).then(handleResult);
     }
 
     if (isFetchingDetails) return (<LoadingComponent content="Loading announcements..." />)

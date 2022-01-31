@@ -94,6 +94,14 @@ const TenantForm = () => {
 
     if (isFetchingTenants) return (<LoadingComponent content="Loading tenants and slot..." />)
 
+    const handleResult = (data: any) => {
+        if (!!data.payload.error) {
+            console.log('error')
+        } else {
+            history.push(`/tenants/${(data.payload as any).id}/details`)
+        }
+    }
+
     const onSubmit = async (values: ICreateTenantInput) => {
         if (!values.firstName)
             return;
@@ -107,6 +115,7 @@ const TenantForm = () => {
                 address: values.address,
                 contact: values.contact,
             }));
+            history.push(`/tenants/${id}/details`)
 
         } else {
             await dispatch(createTenantsAsync({
@@ -114,7 +123,7 @@ const TenantForm = () => {
                 startDate: new Date(),
                 endDate: futureDate(),
                 slotId: !!slotId ? slotId : values.slotId
-            }));
+            })).then(handleResult);
 
         }
         history.push('/tenants')
