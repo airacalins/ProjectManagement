@@ -46,14 +46,14 @@ const UserForm = () => {
         password: Yup.string().required("Password is required"),
         firstName: Yup.string().required("First Name is required"),
         lastName: Yup.string().required("Last Name is required"),
-        contactNumber: Yup.string().required("Contact Number is required"),
+        phone: Yup.string().required("Contact Number is required"),
         address: Yup.string().required("Address is required"),
     })
 
     const updtEvalidationSchema = Yup.object({
         firstName: Yup.string().required("First Name is required"),
         lastName: Yup.string().required("Last Name is required"),
-        contactNumber: Yup.string().required("Contact Number is required"),
+        phone: Yup.string().required("Contact Number is required"),
         address: Yup.string().required("Address is required"),
     })
 
@@ -83,7 +83,7 @@ const UserForm = () => {
                                 {!id && <FormTextInput label="Password" name="password" placeholder="Password" />}
                                 <FormTextInput label="First Name" name="firstName" placeholder="First Name" />
                                 <FormTextInput label="Last Name" name="lastName" placeholder="Last Name" />
-                                <FormTextInput label="Contact Number" name="contactNumber" placeholder="Contact Number" />
+                                <FormTextInput label="Contact Number" name="phone" placeholder="Contact Number" />
                                 <FormTextInput label="Address" name="address" placeholder="Address" />
 
                                 <FormButtonContainer>
