@@ -62,7 +62,7 @@ const Slot = () => {
       default:
         setSelectedStatus(undefined)
     }
-  })
+  }, [filter])
 
   const columns = [
     { title: 'Slot Number' },

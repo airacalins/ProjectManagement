@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
-import { IApplicationUsers, IUpdateUserPasswordInput, IUser } from "../../app/models/user";
+import { IApplicationUser, IUpdateUserPasswordInput, IUser } from "../../app/models/user";
 
 export interface IUserState {
-  users: IApplicationUsers[];
+  users: IApplicationUser[];
   user?: IUser;
   isFetching: boolean;
   isFetchingDetails: boolean;
@@ -18,7 +18,7 @@ const initialState: IUserState = {
   isSaving: false
 }
 
-export const fetchUsersAsync = createAsyncThunk<IApplicationUsers[]>(
+export const fetchUsersAsync = createAsyncThunk<IApplicationUser[]>(
   'users/fetchUserssAsync',
   async (_, thunkAPI) => {
     try {

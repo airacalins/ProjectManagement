@@ -86,9 +86,10 @@ const TenantForm = () => {
     const validationSchema = Yup.object({
         firstName: Yup.string().required("First Name is required."),
         lastName: Yup.string().required("Last Name is required."),
+        businessName: Yup.string().required("Business name is required."),
         address: Yup.string().required("Address is required."),
-        contact: Yup.string().required("Contact Number is required."),
-        startDate: Yup.string().required("Start date is required."),
+        contact: Yup.string().required("Contact number is required."),
+        startDate: Yup.string().required("End date is required."),
         endDate: Yup.string().required("End date is required."),
     })
 
@@ -146,8 +147,8 @@ const TenantForm = () => {
                                 <FormTextInput name="businessName" placeholder="Business Name" label="Business Name" />
                                 <FormTextInput name="address" placeholder="Address" label="Address" />
                                 <FormTextInput name="contact" placeholder="Contact Number" label="Contact Number" />
-                                {!id && <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />}
-                                {!id && <FormDateInput name="endDate" placeholderText="End date" label="End Date" />}
+                                <FormDateInput name="startDate" placeholderText="Start date" label="Start Date" />
+                                <FormDateInput name="endDate" placeholderText="End date" label="End Date" />
 
                                 <FormButtonContainer>
                                     <AddButton loading={isSaving} disabled={!isValid} />
