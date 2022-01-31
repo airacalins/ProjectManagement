@@ -29,6 +29,7 @@ namespace API.Controllers
     public async Task<ActionResult<List<ApplicationUserDto>>> GetAll()
     {
       var users = await _context.Users.Include(i => i.Photo)
+      .Where(i => i.IsEnabled)
       .OrderBy(i => i.UserName)
       .Select(i => new ApplicationUserDto
       {
@@ -50,6 +51,7 @@ namespace API.Controllers
     public async Task<ActionResult<ApplicationUserDto>> GetOne(string id)
     {
       var user = await _context.Users.Include(i => i.Photo)
+      .Where(i => i.IsEnabled)
       .OrderBy(i => i.UserName)
       .Select(i => new ApplicationUserDto
       {
@@ -91,7 +93,7 @@ namespace API.Controllers
     }
 
     [HttpPut]
-    public async Task<ActionResult<ApplicationUserDto>> UpdateSlot(ApplicationUserDto input)
+    public async Task<ActionResult<ApplicationUserDto>> Update(ApplicationUserDto input)
     {
       var user = await _context.Users.FindAsync(input.Id);
       if (user == null)
