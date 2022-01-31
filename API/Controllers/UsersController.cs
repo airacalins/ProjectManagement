@@ -38,7 +38,6 @@ namespace API.Controllers
         FirstName = i.FirstName,
         LastName = i.LastName,
         Phone = i.Phone,
-        Email = i.Email,
         Address = i.Address,
         Username = i.UserName
       }).ToListAsync();
@@ -60,7 +59,6 @@ namespace API.Controllers
         FirstName = i.FirstName,
         LastName = i.LastName,
         Phone = i.Phone,
-        Email = i.Email,
         Address = i.Address,
         Username = i.UserName
       }).FirstOrDefaultAsync(i => i.Id == id);
@@ -99,7 +97,6 @@ namespace API.Controllers
         FirstName = i.FirstName,
         LastName = i.LastName,
         Phone = i.Phone,
-        Email = i.Email,
         Address = i.Address,
         Username = i.UserName
       }).FirstOrDefaultAsync(i => i.Id == user.Id);

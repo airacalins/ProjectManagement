@@ -28,7 +28,7 @@ const UserForm = () => {
     }, [])
 
     useEffect(() => {
-        if (id && userData) setUser(prev => {
+        if (userData) setUser(prev => {
             return {
                 ...prev,
                 id: userData.id,
@@ -39,7 +39,7 @@ const UserForm = () => {
                 address: userData.address
             }
         })
-    }, [id, userData])
+    }, [userData])
 
     const validationSchema = Yup.object({
         username: Yup.string().required("Username is required"),
@@ -58,29 +58,28 @@ const UserForm = () => {
     })
 
     const onSubmit = async (values: any) => {
-        if (!!id) {
+        if (!!userData) {
             await dispatch(updateUserDetailsAsync(values));
         } else {
             await dispatch(createUserAsync(values));
         }
-        history.push('/users')
     }
 
     return (
         <FormPage
-            title={id ? "Update User" : "Add User"}
+            title={userData ? "Update User" : "Add User"}
             backNavigationLink="/users"
             form={
                 <Formik
-                    validationSchema={!id ? validationSchema : updtEvalidationSchema}
+                    validationSchema={!userData ? validationSchema : updtEvalidationSchema}
                     enableReinitialize
                     initialValues={user}
                     onSubmit={values => onSubmit(values)}>
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                {!id && <FormTextInput label="Username" name="username" placeholder="Username" />}
-                                {!id && <FormTextInput label="Password" name="password" placeholder="Password" />}
+                                {!userData && <FormTextInput label="Username" name="username" placeholder="Username" />}
+                                {!userData && <FormTextInput label="Password" name="password" placeholder="Password" />}
                                 <FormTextInput label="First Name" name="firstName" placeholder="First Name" />
                                 <FormTextInput label="Last Name" name="lastName" placeholder="Last Name" />
                                 <FormTextInput label="Contact Number" name="phone" placeholder="Contact Number" />

@@ -118,6 +118,7 @@ export const userSlice = createSlice({
       state.isSaving = true;
     });
     builder.addCase(createUserAsync.fulfilled, (state, action) => {
+      state.user = action.payload;
       state.isSaving = false;
     });
     builder.addCase(createUserAsync.rejected, (state, action) => {
