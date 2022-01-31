@@ -8,10 +8,10 @@ interface Props {
 
 const MainPage: React.FC<Props> = ({ title, content }) => {
     return (
-        <div>
-            <h4 className="page__title d-flex align-items-center px-4 mb-3">{title}</h4>
+        <div className="mb-5">
+            <h4 className="page__title w-100 d-flex align-items-center px-4">{title}</h4>
 
-            <div className="pb-5 px-5" >
+            <div className="page__container px-5 py-4 mx-5" >
                 {content}
             </div>
         </div >
