@@ -7,7 +7,6 @@ import FormTextInput from '../../app/layouts/components/form/FormTextInput';
 import DetailItem from '../../app/layouts/components/items/DetailItem';
 import DetailsPage from '../../app/layouts/components/pages/DetailsPage';
 import FormPage from '../../app/layouts/components/pages/FormPage';
-import { IUpdateUserPasswordInput } from '../../app/models/user';
 import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import { fetchUserDetailsAsync, updateUserPasswordAsync } from '../user/UserSlice';
 import * as Yup from 'yup';

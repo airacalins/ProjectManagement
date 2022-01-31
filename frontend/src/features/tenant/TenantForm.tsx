@@ -64,7 +64,6 @@ const TenantForm = () => {
             })
     }, [slotId, slotsLoaded])
 
-
     useEffect(() => {
         if (id) dispatch(fetchTenantDetailsAsync(id));
     }, [id])
