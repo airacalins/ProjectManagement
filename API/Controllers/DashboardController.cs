@@ -29,9 +29,10 @@ namespace API.Controllers
             var availableSlots = slots.Where(i => i.SlotStatus == SlotStatus.Available).Count();
             var rentedSlots = slots.Where(i => i.SlotStatus == SlotStatus.Rented).Count();
             var tenants = await _context.TenantContracts.Where(i => i.Status == TenantContractStatus.Active).CountAsync();
-            var invoices = await _context.Invoices.Where(i => i.InvoiceStatus != InvoiceStatus.Paid).ToListAsync();
-            var latePayments = invoices.Where(i => i.InvoiceStatus != InvoiceStatus.Pending).Where(i => i.DueDate <= DateTimeOffset.UtcNow).Count();
+            var invoices = await _context.Invoices.ToListAsync();
+            var latePayments = invoices.Where(i => i.InvoiceStatus == InvoiceStatus.Unpaid ).Where(i => i.DueDate <= DateTimeOffset.UtcNow).Count();
             var pending = invoices.Where(i => i.InvoiceStatus == InvoiceStatus.Pending).Count();
+            var unpaidInvoices = invoices.Where(i => i.InvoiceStatus == InvoiceStatus.Unpaid).Count();
 
             var dashboardData = new DashboardDto
             {
@@ -39,7 +40,7 @@ namespace API.Controllers
                 AvailableSlots = availableSlots,
                 RentedSlots = rentedSlots,
                 Tenants = tenants,
-                UnpaidInvoices = invoices.Count(),
+                UnpaidInvoices = unpaidInvoices,
                 LatePayments = latePayments,
                 PendingPayments = pending
             };
