@@ -11,7 +11,7 @@ interface Props {
 
 const DashboardCard: React.FC<Props> = ({ title, subtitle, icon, navigateTo }) => {
     return (
-        <NavLink href={navigateTo} className='dashboard-card__component d-flex align-items-center justify-content-between py-3 px-5 my-2' >
+        <NavLink href={navigateTo} className='dashboard-card__component border d-flex align-items-center justify-content-between py-3 px-5 my-3' >
             <div className="dashboard-card__text">
                 <h1>{title}</h1>
                 <p>{subtitle}</p>

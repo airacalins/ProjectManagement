@@ -8,12 +8,14 @@ import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import { deleteUserDetailsAsync, fetchUserDetailsAsync, fetchUsersAsync, updateUserDetailsAsync } from './UserSlice';
 import LoadingComponent from '../../app/layouts/components/loading/LoadingComponent';
 import DeleteButton from '../../app/layouts/components/buttons/DeleteButton';
-import UpdateButton from '../../app/layouts/components/buttons/UpdateButton';
 import { Label } from 'semantic-ui-react';
+import NavigationButton from '../../app/layouts/components/buttons/NavigationButton';
+import { useParams } from 'react-router-dom';
 
 const User = () => {
+    const { id } = useParams<{ id: string }>();
     const [searchKey, setSearchKey] = useState('');
-    const { users, user, isFetching: isFetchingUsers, isSaving } = useAppSelecter(state => state.user);
+    const { users, isFetching: isFetchingUsers, isSaving } = useAppSelecter(state => state.user);
 
     const dispatch = useAppDispatch();
 
@@ -91,6 +93,7 @@ const User = () => {
                                     </TableCell>
 
                                     <TableCell align="right">
+                                        <NavigationButton title="Edit" navigateTo={`/users/${user.id}/manage`} />
                                         <DeleteButton onClick={() => handleDelete(user.id)} loading={isSaving} />
                                     </TableCell>
                                 </TableRow>

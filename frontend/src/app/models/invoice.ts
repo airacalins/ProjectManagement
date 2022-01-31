@@ -32,8 +32,6 @@ export interface IInvoiceItem {
   amount: number
 }
 
-
-
 export interface IUpdatePaymentStatusModel {
   id: string,
   isApproved: boolean

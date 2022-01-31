@@ -90,6 +90,7 @@ function App() {
           <Route path="/users" element={<User />} />
           <Route path="/users/:id/details" element={<UserDetails />} />
           <Route path="/users/create" element={<UserForm />} />
+          <Route path="/users/:id/manage" element={<UserForm />} />
         </Route>
 
         <Route path='/login' element={<LoginForm />} />
