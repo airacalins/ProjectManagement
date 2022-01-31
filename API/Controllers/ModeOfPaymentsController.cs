@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ModeOfPayment>>> GetModeOfPayments()
         {
-            var modeOfPayments = await _context.ModeOfPayments.Where(i => !i.IsArchived).ToListAsync();
+            var modeOfPayments = await _context.ModeOfPayments.OrderBy(i => i.BankName).Where(i => !i.IsArchived).ToListAsync();
             return Ok(modeOfPayments);
         }
 
