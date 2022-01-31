@@ -1,5 +1,5 @@
 import { SemanticCOLORS } from "semantic-ui-react";
-import { PaymentStatus } from "../models/invoice";
+import { InvoiceStatus, PaymentStatus } from "../models/invoice";
 import { SlotStatus } from "../models/slot";
 
 export const getSlotStatusText = (slotStatus: SlotStatus) => {
@@ -40,6 +40,26 @@ export const getPaymentStatusColor = (paymentStatus: PaymentStatus) => {
     case PaymentStatus.Pending: return "yellow";
     case PaymentStatus.Approved: return "blue";
     case PaymentStatus.Declined: return "red";
+    default: return "red";
+  }
+}
+
+export const getInvoiceStatusText = (status: InvoiceStatus) => {
+  switch (status) {
+    case InvoiceStatus.Unpaid: return "Unpaid";
+    case InvoiceStatus.Pending: return "Pending Payment";
+    case InvoiceStatus.Paid: return "Paid";
+    case InvoiceStatus.PartiallyPaid: return "Partially Paid";
+    default: return "NA";
+  }
+}
+
+export const getInvoiceStatusColor = (status: InvoiceStatus) => {
+  switch (status) {
+    case InvoiceStatus.Unpaid: return "red";
+    case InvoiceStatus.Pending: return "yellow";
+    case InvoiceStatus.Paid: return "blue";
+    case InvoiceStatus.PartiallyPaid: return "orange";
     default: return "red";
   }
 }

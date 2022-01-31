@@ -11,7 +11,8 @@ export interface IInvoice {
   invoiceItems: IInvoiceItem[],
   dateCreated: Date,
   dueDate: Date,
-  invoiceNumber: string
+  invoiceNumber: string,
+  invoiceStatus: InvoiceStatus
 }
 
 export interface IPayment {
@@ -43,4 +44,11 @@ export enum PaymentStatus {
   Pending,
   Approved,
   Declined
+}
+
+export enum InvoiceStatus {
+  Unpaid,
+  Pending,
+  PartiallyPaid,
+  Paid
 }

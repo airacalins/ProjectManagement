@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchInvoiceDetailsAsync, updateInvoicePaymentStatusAsync } from "./invoiceSlice";
-import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
+import { getInvoiceStatusColor, getInvoiceStatusText, getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
 import { currencyFormatter } from "../../app/layouts/formatter/common";
 import { Label } from "semantic-ui-react";
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
@@ -51,14 +51,7 @@ const PaymentDetails = () => {
         slotNumber,
     } = invoice
 
-    const status = () => {
-        if (!payments || !payments.length) {
-            return <Label content="Unpaid" color="red" />
-        }
-        else
-            return <Label content={getPaymentStatusText(payments[0].status)} color={getPaymentStatusColor(payments[0].status)} />
-    }
-
+    const status = () => <Label content={getInvoiceStatusText(invoice.invoiceStatus)} color={getInvoiceStatusColor(invoice.invoiceStatus)} />
     const updateStatus = async (id: string, isApproved: boolean) => {
         await dispatch(updateInvoicePaymentStatusAsync({ id, isApproved }))
     }

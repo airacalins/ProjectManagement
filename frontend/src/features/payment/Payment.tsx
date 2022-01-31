@@ -8,12 +8,12 @@ import { Label, Select } from "semantic-ui-react";
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
-import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
+import { getInvoiceStatusColor, getInvoiceStatusText, getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
 
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
-import { PaymentStatus } from "../../app/models/invoice";
+import { IInvoice, PaymentStatus } from "../../app/models/invoice";
 import { useParams } from "react-router-dom";
 
 const Payment = () => {
@@ -58,13 +58,7 @@ const Payment = () => {
     }
   }, [filter])
 
-  const status = (payments: any) => {
-    if (!payments || !payments.length) {
-      return <Label content="Unpaid" color="red" />
-    }
-    else
-      return <Label content={getPaymentStatusText(payments[0].status)} color={getPaymentStatusColor(payments[0].status)} />
-  }
+  const status = (invoice: IInvoice) => <Label content={getInvoiceStatusText(invoice.invoiceStatus)} color={getInvoiceStatusColor(invoice.invoiceStatus)} />
 
   const columns = [
     { title: 'Invoice no.' },
@@ -138,7 +132,7 @@ const Payment = () => {
                   </TableCell>
 
                   <TableCell align="center">
-                    {status(i.payments)}
+                    {status(i)}
                   </TableCell>
 
                   <TableCell align="right">
