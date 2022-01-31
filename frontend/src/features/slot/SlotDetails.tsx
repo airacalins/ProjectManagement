@@ -11,6 +11,8 @@ import FormButtonContainer from "../../app/layouts/components/form/FormButtonCon
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
 import { Label } from "semantic-ui-react";
+import DeleteButton from "../../app/layouts/components/buttons/DeleteButton";
+import history from "../../app/utils/history";
 
 const SlotDetails = () => {
 
@@ -25,8 +27,9 @@ const SlotDetails = () => {
 
   if (isFetchingDetails || !slot) return (<LoadingComponent content="Loading slot details..." />)
 
-  const onDelete = () => {
+  const handleDelete = () => {
     if (id) dispatch(deleteSlotDetailsAsync(id));
+    history.push('/slots')
   }
 
   return (
@@ -40,10 +43,12 @@ const SlotDetails = () => {
             <DetailItem title="Slot Number" value={slot.slotNumber} />
             <DetailItem title="Size" value={`${slot.size} sqm.`} />
             <DetailItem title="Rental Fee" value={slot.price ? currencyFormatter(slot.price) : "Not Configured"} />
-            <DetailItem title="Next Billing Date" value={getSlotStatusText(slot.status)} />
-            <DetailItem title="Next Billing Date" value={<Label content={getSlotStatusText(slot.status)} color={getSlotStatusColor(slot.status)}></Label>} />
             <FormButtonContainer>
               <NavigationButton title="Edit" navigateTo={`/slots/${id}/manage`} />
+              {
+                !slot.tenantContract &&
+                <DeleteButton onClick={handleDelete} loading={isSaving} />
+              }
             </FormButtonContainer>
           </>
         }

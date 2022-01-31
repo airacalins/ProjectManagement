@@ -11,7 +11,7 @@ export interface ICreateUserInput {
   phone: string,
 }
 
-export interface IApplicationUsers {
+export interface IApplicationUser {
   id: string,
   username: string,
   isEnabled: true,

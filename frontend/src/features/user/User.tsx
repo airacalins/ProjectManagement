@@ -5,13 +5,15 @@ import MainPage from '../../app/layouts/components/pages/MainPage';
 import CustomTable from '../../app/layouts/components/table/CustomTable';
 import history from '../../app/utils/history';
 import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
-import { deleteUserDetailsAsync, fetchUsersAsync } from './UserSlice';
+import { deleteUserDetailsAsync, fetchUserDetailsAsync, fetchUsersAsync, updateUserDetailsAsync } from './UserSlice';
 import LoadingComponent from '../../app/layouts/components/loading/LoadingComponent';
 import DeleteButton from '../../app/layouts/components/buttons/DeleteButton';
+import UpdateButton from '../../app/layouts/components/buttons/UpdateButton';
+import { Label } from 'semantic-ui-react';
 
 const User = () => {
     const [searchKey, setSearchKey] = useState('');
-    const { users, isFetching: isFetchingUsers, isSaving } = useAppSelecter(state => state.user);
+    const { users, user, isFetching: isFetchingUsers, isSaving } = useAppSelecter(state => state.user);
 
     const dispatch = useAppDispatch();
 
@@ -34,16 +36,17 @@ const User = () => {
         { title: 'Full Name' },
         { title: 'Contact Number' },
         { title: 'Address' },
+        { title: 'Status' },
         { title: '' },
     ]
 
     const handleDelete = async (id: string) => {
         await dispatch(deleteUserDetailsAsync(id));
         history.push("/users");
+        dispatch(fetchUsersAsync())
     }
 
     if (isFetchingUsers || isSaving) return <LoadingComponent content="Loading users..." />
-
 
     return (
         <MainPage
@@ -81,6 +84,10 @@ const User = () => {
 
                                     <TableCell align="center">
                                         {user.address}
+                                    </TableCell>
+
+                                    <TableCell align="center">
+                                        {user.isEnabled ? <Label color='blue' content="Active" /> : <Label color='red' content="Deactivated" />}
                                     </TableCell>
 
                                     <TableCell align="right">
