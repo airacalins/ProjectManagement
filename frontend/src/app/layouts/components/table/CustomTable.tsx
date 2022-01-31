@@ -21,9 +21,10 @@ interface CustomTableProps {
   buttonTitle?: string,
   navigateTo?: string,
   tableControls?: React.ReactNode;
+  noPagination?: boolean
 }
 
-const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, navigateTo, tableControls }: CustomTableProps) => {
+const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, navigateTo, tableControls, noPagination = false }: CustomTableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -79,9 +80,7 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
 
 
       <TableContainer component={Paper}>
-
         <Table sx={{ minWidth: 500 }}>
-
           <TableHead>
             <TableRow>
               {columns.map((column, index) => (
@@ -104,26 +103,29 @@ const CustomTable = ({ columns, rows, searchValue, onSearch, buttonTitle, naviga
             )}
           </TableBody>
 
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[10, 15, 25, { label: 'All', value: -1 }]}
-                colSpan={columns.length}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                ActionsComponent={CustomTablePagination}
-              />
-            </TableRow>
-          </TableFooter>
+          {
+            !noPagination &&
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[10, 15, 25, { label: 'All', value: -1 }]}
+                  colSpan={columns.length}
+                  count={rows.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'rows per page',
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={CustomTablePagination}
+                />
+              </TableRow>
+            </TableFooter>
+          }
 
         </Table>
       </TableContainer>

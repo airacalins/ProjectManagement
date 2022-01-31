@@ -67,6 +67,7 @@ const Payment = () => {
   }
 
   const columns = [
+    { title: 'Invoice no.' },
     { title: 'Tenant' },
     { title: 'Slot Number' },
     { title: 'Rental Fee' },
@@ -113,33 +114,38 @@ const Payment = () => {
                 </TableRow>
               ]
               :
-              data.map(i => <TableRow key={i.id}>
+              data.map(i =>
+                <TableRow key={i.id}>
 
-                <TableCell align="center">
-                  {`${i.firstName} ${i.lastName}`}
-                </TableCell>
+                  <TableCell align="center">
+                    {i.invoiceNumber}
+                  </TableCell>
 
-                <TableCell align="center">
-                  {i.slotNumber}
-                </TableCell>
+                  <TableCell align="center">
+                    {`${i.firstName} ${i.lastName}`}
+                  </TableCell>
 
-                <TableCell align="center">
-                  {i.amount}
-                </TableCell>
+                  <TableCell align="center">
+                    {i.slotNumber}
+                  </TableCell>
 
-                <TableCell align="center">
-                  {moment(i.dueDate).format("MMM Do YY")}
-                </TableCell>
+                  <TableCell align="center">
+                    {i.amount}
+                  </TableCell>
 
-                <TableCell align="center">
-                  {status(i.payments)}
-                </TableCell>
+                  <TableCell align="center">
+                    {moment(i.dueDate).format("MMM DD, YYYY")}
+                  </TableCell>
 
-                <TableCell align="right">
-                  <NavigateNextOutlinedIcon onClick={() => history.push(`/invoices/${i.id}/details`)} />
-                </TableCell>
+                  <TableCell align="center">
+                    {status(i.payments)}
+                  </TableCell>
 
-              </TableRow>
+                  <TableCell align="right">
+                    <NavigateNextOutlinedIcon onClick={() => history.push(`/invoices/${i.id}/details`)} />
+                  </TableCell>
+
+                </TableRow>
               )
           }
         />

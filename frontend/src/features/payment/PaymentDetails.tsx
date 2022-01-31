@@ -3,12 +3,16 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchInvoiceDetailsAsync, updateInvoicePaymentStatusAsync } from "./invoiceSlice";
 import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
-import { currencyFormatter, dateFormatter } from "../../app/layouts/formatter/common";
+import { currencyFormatter } from "../../app/layouts/formatter/common";
 import { Label } from "semantic-ui-react";
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import moment from "moment";
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
 
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 import DetailItem from "../../app/layouts/components/items/DetailItem";
@@ -17,6 +21,7 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import MainPage from "../../app/layouts/components/pages/MainPage";
 import UpdateButton from "../../app/layouts/components/buttons/UpdateButton";
 import { PaymentStatus } from "../../app/models/invoice";
+import { Paper, TableHead } from "@mui/material";
 
 const PaymentDetails = () => {
 
@@ -38,6 +43,8 @@ const PaymentDetails = () => {
         businessName,
         dueDate,
         firstName,
+        invoiceItems,
+        invoiceNumber,
         lastName,
         payments,
         phone,
@@ -56,8 +63,7 @@ const PaymentDetails = () => {
         await dispatch(updateInvoicePaymentStatusAsync({ id, isApproved }))
     }
 
-
-    const columns = [
+    const paymentTableColumn = [
         { title: 'Date' },
         { title: 'Mode of Payment' },
         { title: 'Account Name' },
@@ -68,6 +74,9 @@ const PaymentDetails = () => {
         { title: '' },
     ]
 
+    if (!invoice)
+        return <LoadingComponent content="Loading invoice..." />
+
     return (
         <>
             <DetailsPage
@@ -75,36 +84,118 @@ const PaymentDetails = () => {
                 backNavigationLink="/invoices"
                 content={
                     <>
+                        <DetailItem title="Invoice Number" value={invoiceNumber} />
                         <DetailItem title="Status" value={status()} />
                         <DetailItem title="Slot Number" value={slotNumber} />
                         <DetailItem title="Name" value={`${firstName} ${lastName}`} />
                         <DetailItem title="Contact Number" value={phone} />
                         <DetailItem title="Business Name" value={businessName} />
-                        <DetailItem title="Rental Fee" value={currencyFormatter(amount)} />
                         <DetailItem title="Due Date" value={moment(dueDate).format("MMM DD, YYYY")} />
                     </>
                 }
             />
 
+            <DetailsPage
+                content=
+                {
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 500 }}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left" style={{ fontSize: 14 }} >
+                                        Description
+                                    </TableCell>
+
+                                    <TableCell align="right" style={{ fontSize: 14 }} >
+                                        Amount
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+
+                            <TableBody>
+                                {
+                                    invoiceItems.map(i =>
+                                        <TableRow>
+                                            <TableCell>
+                                                {i.description}
+                                            </TableCell>
+
+                                            <TableCell align="right">
+                                                {currencyFormatter(i.amount)}
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                }
+
+                                <TableRow>
+                                    <TableCell align="right">
+                                        <p className="font__bold">Total</p>
+                                    </TableCell>
+
+                                    <TableCell align="right">
+                                        <p className="font__bold">{currencyFormatter(amount)}</p>
+                                    </TableCell>
+                                </TableRow>
+
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                }
+
+            // {
+            //     <>
+            //         <CustomTable
+            //             noPagination
+            //             columns={invoiceTableColumn}
+            //             rows={
+            //                 invoiceItems.map(i =>
+            //                     <>
+            //                         <TableRow key={id}>
+
+            //                             <TableCell align="left">
+            //                                 {i.description}
+            //                             </TableCell>
+
+            //                             <TableCell className="w-25" align="center">
+            //                                 {currencyFormatter(i.amount)}
+            //                             </TableCell>
+            //                         </TableRow>
+            //                     </>
+            //                 )
+            //             }
+            //         />
+            //         <DetailItem title="Total" value={amount} />
+            //         <DetailItem title="Balance" value={"amount"} />
+            //     </>
+            // }
+            />
+
+            {/* <div className="page__container px-5 py-4 mt-4">
+                {
+                    invoiceItems && invoiceItems.map(i =>
+                        <DetailItem title={`${i.description}:`} value={currencyFormatter(i.amount)} />
+                    )
+                }
+                <DetailItem title="Total:" value={currencyFormatter(amount)} />
+
+                <DetailItem title="Total Amount Paid:" value={currencyFormatter(totalAmountPaid)} />
+                <DetailItem title="Balance:" value={currencyFormatter(invoice.amount - totalAmountPaid)} />
+            </div> */}
+
             <MainPage
                 title="Payment"
                 content={
                     <>
-                        <div className="page__container px-5 py-4 mx-5 mt-4">
-                            <DetailItem title="Total Amount Paid" value={totalAmountPaid} />
-                            <DetailItem title="Balance" value={invoice.amount - totalAmountPaid} />
-                        </div>
-
                         <CustomTable
                             // searchValue={searchKey}
                             // onSearch={(value: string) => setSearchKey(value)}
                             navigateTo="/invoices/create"
-                            columns={columns}
+                            columns={paymentTableColumn}
                             rows={
                                 !payments.length ?
                                     [
                                         <TableRow>
-                                            <TableCell align="center" colSpan={columns.length}>
+                                            <TableCell align="center" colSpan={paymentTableColumn.length}>
                                                 No data
                                             </TableCell>
                                         </TableRow>
