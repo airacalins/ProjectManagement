@@ -22,6 +22,8 @@ import MainPage from "../../app/layouts/components/pages/MainPage";
 import UpdateButton from "../../app/layouts/components/buttons/UpdateButton";
 import { PaymentStatus } from "../../app/models/invoice";
 import { Paper, TableHead } from "@mui/material";
+import { Col, Row } from "react-bootstrap";
+import './PaymentDetails.scss';
 
 const PaymentDetails = () => {
 
@@ -77,103 +79,69 @@ const PaymentDetails = () => {
                 backNavigationLink="/invoices"
                 content={
                     <>
-                        <DetailItem title="Invoice Number" value={invoiceNumber} />
-                        <DetailItem title="Status" value={status()} />
-                        <DetailItem title="Slot Number" value={slotNumber} />
-                        <DetailItem title="Name" value={`${firstName} ${lastName}`} />
-                        <DetailItem title="Contact Number" value={phone} />
-                        <DetailItem title="Business Name" value={businessName} />
-                        <DetailItem title="Due Date" value={moment(dueDate).format("MMM DD, YYYY")} />
+                        <Row>
+                            <Col>
+                                <DetailItem title="Name" value={`${firstName} ${lastName}`} />
+                                <DetailItem title="Business Name" value={businessName} />
+                                <DetailItem title="Contact Number" value={phone} />
+                            </Col>
+
+                            <Col>
+                                <div className="payment-details__header-right">
+                                    <DetailItem rightText title="Invoice Number" value={invoiceNumber} />
+                                    <DetailItem rightText title="Due Date" value={moment(dueDate).format("MMM DD, YYYY")} />
+                                    <DetailItem rightText title="Status" value={status()} />
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <div className="payment-details__title">Rental Payment For Slot Number {slotNumber}</div>
+                        </Row>
+                        <Row>
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 500 }}>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell align="left" style={{ fontSize: 14 }} >
+                                                Description
+                                            </TableCell>
+
+                                            <TableCell align="right" style={{ fontSize: 14 }} >
+                                                Amount
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+
+                                    <TableBody>
+                                        {
+                                            invoiceItems.map(i =>
+                                                <TableRow>
+                                                    <TableCell>
+                                                        {i.description}
+                                                    </TableCell>
+
+                                                    <TableCell align="right">
+                                                        {currencyFormatter(i.amount)}
+                                                    </TableCell>
+                                                </TableRow>
+                                            )
+                                        }
+
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Row>
+                        <Row>
+                            <Col></Col>
+                            <Col>
+                                <div className="payment-details__footer-right">
+                                    <DetailItem rightText title="Total" value={currencyFormatter(amount)} />
+                                </div>
+                            </Col>
+                        </Row>
                     </>
                 }
             />
-
-            <DetailsPage
-                content=
-                {
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 500 }}>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="left" style={{ fontSize: 14 }} >
-                                        Description
-                                    </TableCell>
-
-                                    <TableCell align="right" style={{ fontSize: 14 }} >
-                                        Amount
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-
-                            <TableBody>
-                                {
-                                    invoiceItems.map(i =>
-                                        <TableRow>
-                                            <TableCell>
-                                                {i.description}
-                                            </TableCell>
-
-                                            <TableCell align="right">
-                                                {currencyFormatter(i.amount)}
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                }
-
-                                <TableRow>
-                                    <TableCell align="right">
-                                        <p className="font__bold">Total</p>
-                                    </TableCell>
-
-                                    <TableCell align="right">
-                                        <p className="font__bold">{currencyFormatter(amount)}</p>
-                                    </TableCell>
-                                </TableRow>
-
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                }
-
-            // {
-            //     <>
-            //         <CustomTable
-            //             noPagination
-            //             columns={invoiceTableColumn}
-            //             rows={
-            //                 invoiceItems.map(i =>
-            //                     <>
-            //                         <TableRow key={id}>
-
-            //                             <TableCell align="left">
-            //                                 {i.description}
-            //                             </TableCell>
-
-            //                             <TableCell className="w-25" align="center">
-            //                                 {currencyFormatter(i.amount)}
-            //                             </TableCell>
-            //                         </TableRow>
-            //                     </>
-            //                 )
-            //             }
-            //         />
-            //         <DetailItem title="Total" value={amount} />
-            //         <DetailItem title="Balance" value={"amount"} />
-            //     </>
-            // }
-            />
-
-            {/* <div className="page__container px-5 py-4 mt-4">
-                {
-                    invoiceItems && invoiceItems.map(i =>
-                        <DetailItem title={`${i.description}:`} value={currencyFormatter(i.amount)} />
-                    )
-                }
-                <DetailItem title="Total:" value={currencyFormatter(amount)} />
-
-                <DetailItem title="Total Amount Paid:" value={currencyFormatter(totalAmountPaid)} />
-                <DetailItem title="Balance:" value={currencyFormatter(invoice.amount - totalAmountPaid)} />
-            </div> */}
 
             <MainPage
                 title="Payment"

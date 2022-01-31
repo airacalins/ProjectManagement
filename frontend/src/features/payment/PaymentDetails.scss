@@ -1,0 +1,14 @@
+.payment-details {
+  &__title {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  &__header-right {
+    text-align: right;
+  }
+
+  &__footer-right {
+    text-align: right;
+    margin-right: 15px;
+  }
+}
