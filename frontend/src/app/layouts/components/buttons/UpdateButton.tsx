@@ -13,9 +13,7 @@ interface Props {
 
 const UpdateButton: React.FC<Props> = ({ title, loading, disabled, color, onClick }) => {
     return (
-
         <Button
-            className="button__primary"
             content={title}
             loading={loading}
             disabled={disabled}

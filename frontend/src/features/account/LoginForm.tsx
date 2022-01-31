@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import FormTextInput from '../../app/layouts/components/form/FormTextInput';
 import FormButtonContainer from '../../app/layouts/components/form/FormButtonContainer';
 import AddButton from '../../app/layouts/components/buttons/AddButton';
+import { fetchDashboardAsync } from '../dashboard/DashboardSlice';
 
 const LoginForm = () => {
     const [account, setAccount] = useState<IAccount>(
@@ -31,6 +32,7 @@ const LoginForm = () => {
 
     const onSubmit = async (data: FieldValues) => {
         await dispatch(signInUserAsync(data));
+        await dispatch(fetchDashboardAsync())
         history.push('/');
     }
 

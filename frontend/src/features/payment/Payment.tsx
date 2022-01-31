@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { fetchInvoicessAsync } from "./invoiceSlice";
+import { fetchInvoicesAsync } from "./invoiceSlice";
 import history from '../../app/utils/history';
 import moment from "moment";
 
@@ -36,7 +36,7 @@ const Payment = () => {
   }, [invoices, searchKey])
 
   useEffect(() => {
-    dispatch(fetchInvoicessAsync());
+    dispatch(fetchInvoicesAsync());
   }, [])
 
   useEffect(() => {

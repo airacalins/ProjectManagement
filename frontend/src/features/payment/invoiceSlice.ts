@@ -18,7 +18,7 @@ const initialState: IInvoiceState = {
   isSaving: false
 }
 
-export const fetchInvoicessAsync = createAsyncThunk<IInvoice[]>(
+export const fetchInvoicesAsync = createAsyncThunk<IInvoice[]>(
   'invoice/fetchInvoicessAsync',
   async (_, thunkAPI) => {
     try {
@@ -81,14 +81,14 @@ export const invoiceSlice = createSlice({
   reducers: {},
 
   extraReducers: (builder => {
-    builder.addCase(fetchInvoicessAsync.pending, (state, action) => {
+    builder.addCase(fetchInvoicesAsync.pending, (state, action) => {
       state.isFetching = true;
     });
-    builder.addCase(fetchInvoicessAsync.fulfilled, (state, action) => {
+    builder.addCase(fetchInvoicesAsync.fulfilled, (state, action) => {
       state.invoices = action.payload;
       state.isFetching = false;
     });
-    builder.addCase(fetchInvoicessAsync.rejected, (state, action) => {
+    builder.addCase(fetchInvoicesAsync.rejected, (state, action) => {
       state.isFetching = false;
     });
 

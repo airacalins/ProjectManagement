@@ -36,17 +36,13 @@ const Map = () => {
             <MainPage
                 title="Available Slots"
                 content={
-                    <Row className="bg-light p-5" style={{ marginTop: "25px" }}>
+                    <Row className="my-5" style={{ backgroundColor: "white", marginTop: "25px" }}>
                         {
                             slots.map(s =>
                                 <Col className="my-2" lg={1}>
-                                    <Badge
-                                        as={Link}
-                                        to={`/tenants/${s.id}/create`}
-                                        className="badge__primary p-3"
-                                    >
-                                        {s.slotNumber}
-                                    </Badge>
+                                    <a href={`/tenants/${s.id}/create`} className="badge__primary p-3 d-flex justify-content-center">
+                                        <p className="badge__text">{s.slotNumber}</p>
+                                    </a>
                                 </Col>
                             )
                         }

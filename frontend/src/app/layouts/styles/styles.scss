@@ -25,9 +25,17 @@
 .badge {
   &__primary {
     background-color: $secondary !important;
-    color: white;
+    border-radius: 10px;
+    cursor: pointer;
     text-decoration: none;
   }
+
+  &__text {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+  }
+    
 
   &__primary:hover {
     background-color: $primary;

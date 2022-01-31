@@ -15,14 +15,14 @@ const FormPage: React.FC<Props> = ({ backNavigationLink, title, form }) => {
         <div className="mb-5">
             {
                 backNavigationLink &&
-                <Button className="page d-flex align-items-center px-4" as={Link} to={backNavigationLink}>
+                <Button className="page d-flex align-items-center px-4 mb-2" as={Link} to={backNavigationLink}>
                     <MenuOpenOutlinedIcon />
                 </Button>
             }
 
             {
                 title &&
-                <h3 className="page__title w-100 d-flex align-items-center px-4">
+                <h3 className="page__title w-100 d-flex align-items-center px-4 mb-2">
                     {title}
                 </h3>
             }
@@ -30,7 +30,7 @@ const FormPage: React.FC<Props> = ({ backNavigationLink, title, form }) => {
             <div className="page__container px-5 py-4 mx-5">
                 {form}
             </div>
-        </div >
+        </div>
     );
 }
 

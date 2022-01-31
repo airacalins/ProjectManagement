@@ -1,8 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
+<<<<<<< Updated upstream
 import { fetchInvoiceDetailsAsync, updateInvoicePaymentStatusAsync } from "./invoiceSlice";
 import { getInvoiceStatusColor, getInvoiceStatusText, getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
+=======
+import { fetchInvoiceDetailsAsync, fetchInvoicesAsync, updateInvoicePaymentStatusAsync } from "./invoiceSlice";
+import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/common";
+>>>>>>> Stashed changes
 import { currencyFormatter } from "../../app/layouts/formatter/common";
 import { Label } from "semantic-ui-react";
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
@@ -58,6 +63,11 @@ const PaymentDetails = () => {
         await dispatch(updateInvoicePaymentStatusAsync({ id, isApproved }))
     }
 
+    const handleApproval = async (id: string) => {
+        updateStatus(id, true)
+        await fetchInvoicesAsync();
+    }
+
     const paymentTableColumn = [
         { title: 'Date' },
         { title: 'Mode of Payment' },
@@ -79,6 +89,7 @@ const PaymentDetails = () => {
                 backNavigationLink="/invoices"
                 content={
                     <>
+<<<<<<< Updated upstream
                         <Row>
                             <Col>
                                 <DetailItem title="Name" value={`${firstName} ${lastName}`} />
@@ -139,6 +150,58 @@ const PaymentDetails = () => {
                                 </div>
                             </Col>
                         </Row>
+=======
+                        <DetailItem title="Invoice Number" value={invoiceNumber} />
+                        <DetailItem title="Status" value={status()} />
+                        <DetailItem title="Slot Number" value={slotNumber} />
+                        <DetailItem title="Name" value={`${firstName} ${lastName}`} />
+                        <DetailItem title="Contact Number" value={phone} />
+                        <DetailItem title="Business Name" value={businessName} />
+                        <DetailItem title="Due Date" value={moment(dueDate).format("MMM DD, YYYY")} />
+
+                        <TableContainer className="my-5" component={Paper}>
+                            <Table sx={{ minWidth: 500 }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell className="w-75" align="left">
+                                            Description
+                                        </TableCell>
+
+                                        <TableCell align="right">
+                                            Amount
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+
+                                <TableBody>
+                                    {
+                                        invoiceItems.map(i =>
+                                            <TableRow>
+                                                <TableCell>
+                                                    {i.description}
+                                                </TableCell>
+
+                                                <TableCell align="right">
+                                                    {currencyFormatter(i.amount)}
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    }
+
+                                    <TableRow>
+                                        <TableCell align="right">
+                                            <p className="font__bold">Total:</p>
+                                        </TableCell>
+
+                                        <TableCell align="right">
+                                            <p className="font__bold">{currencyFormatter(amount)}</p>
+                                        </TableCell>
+                                    </TableRow>
+
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+>>>>>>> Stashed changes
                     </>
                 }
             />
@@ -148,9 +211,8 @@ const PaymentDetails = () => {
                 content={
                     <>
                         <CustomTable
-                            // searchValue={searchKey}
-                            // onSearch={(value: string) => setSearchKey(value)}
                             navigateTo="/invoices/create"
+                            noPagination
                             columns={paymentTableColumn}
                             rows={
                                 !payments.length ?
@@ -187,9 +249,9 @@ const PaymentDetails = () => {
                                                 </TableCell>
 
                                                 <TableCell align="center">
-                                                    <a>
-                                                        <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
-                                                    </a>
+                                                    {/* <a href={payment.photo} target='_blank'  > */}
+                                                    <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
+                                                    {/* </a> */}
                                                 </TableCell>
 
                                                 <TableCell align="center">
@@ -200,7 +262,7 @@ const PaymentDetails = () => {
                                                     {
                                                         !(payment.status === PaymentStatus.Approved || payment.status === PaymentStatus.Declined) &&
                                                         <>
-                                                            <UpdateButton title="Approved" color="orange" onClick={() => updateStatus(payment.id, true)} />
+                                                            <UpdateButton title="Approved" color="blue" onClick={() => handleApproval(payment.id)} />
                                                             <UpdateButton title="Declined" color="red" onClick={() => updateStatus(payment.id, false)} />
                                                         </>
                                                     }
@@ -211,6 +273,22 @@ const PaymentDetails = () => {
                             }
                         />
 
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 500 }}>
+                                <TableBody>
+
+                                    <TableRow>
+                                        <TableCell className="w-75" align="right">
+                                            <p className="font__bold">Balance:</p>
+                                        </TableCell>
+
+                                        <TableCell align="right">
+                                            <p className="font__bold">{currencyFormatter(amount - totalAmountPaid)}</p>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </>
                 }
             />

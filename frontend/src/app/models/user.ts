@@ -9,6 +9,17 @@ export interface ICreateUserInput {
   firstName: string,
   lastName: string,
   phone: string,
+  address: string
+}
+
+export interface IUpdateUserInput {
+  id: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  phone: string,
+  email: string,
+  address: string
 }
 
 export interface IApplicationUser {
