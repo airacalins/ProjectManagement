@@ -4,7 +4,7 @@ import { fetchInvoicessAsync } from "./invoiceSlice";
 import history from '../../app/utils/history';
 import moment from "moment";
 
-import { Label } from "semantic-ui-react";
+import { Label, Select } from "semantic-ui-react";
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
@@ -13,11 +13,14 @@ import { getPaymentStatusColor, getPaymentStatusText } from "../../app/utils/com
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
+import { PaymentStatus } from "../../app/models/invoice";
+import { useParams } from "react-router-dom";
 
 const Payment = () => {
+  const { filter } = useParams<{ filter: string }>()
   const [searchKey, setSearchKey] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState<PaymentStatus | undefined>(undefined);
   const { invoices, isFetching: isFetchingPayments } = useAppSelecter(state => state.invoice);
-
   const dispatch = useAppDispatch();
 
   const data = useMemo(() => {
@@ -28,12 +31,32 @@ const Payment = () => {
         i.lastName.toLowerCase().includes(searchKey.toLowerCase())
       );
     }
+
     return invoices;
   }, [invoices, searchKey])
 
   useEffect(() => {
     dispatch(fetchInvoicessAsync());
   }, [])
+
+  useEffect(() => {
+    switch (filter) {
+      case "pending":
+        setSelectedStatus(PaymentStatus.Pending)
+        break;
+      case "unpaid":
+        setSelectedStatus(PaymentStatus.Unpaid);
+        break
+      case "approved":
+        setSelectedStatus(PaymentStatus.Approved);
+        break;
+      case "declined":
+        setSelectedStatus(PaymentStatus.Declined);
+        break;
+      default:
+        setSelectedStatus(undefined);
+    }
+  }, [filter])
 
   const status = (payments: any) => {
     if (!payments || !payments.length) {
@@ -52,6 +75,15 @@ const Payment = () => {
     { title: '' },
   ]
 
+  const paymentStatusOptions = [
+    { text: "All", value: undefined },
+    { text: getPaymentStatusText(PaymentStatus.Unpaid), value: PaymentStatus.Unpaid },
+    { text: getPaymentStatusText(PaymentStatus.Pending), value: PaymentStatus.Pending },
+    { text: getPaymentStatusText(PaymentStatus.Approved), value: PaymentStatus.Approved },
+    { text: getPaymentStatusText(PaymentStatus.Declined), value: PaymentStatus.Declined },
+
+  ]
+
   if (isFetchingPayments) return <LoadingComponent content="Loading invoices..." />
 
   return (
@@ -62,6 +94,16 @@ const Payment = () => {
           searchValue={searchKey}
           onSearch={(value: string) => setSearchKey(value)}
           columns={columns}
+          tableControls={
+            <Select
+              options={paymentStatusOptions}
+              value={selectedStatus}
+              onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as PaymentStatus : undefined)}
+              name="paymentStatus"
+              placeholder="Payment Status"
+              label="Payment Status"
+            />
+          }
           rows={
             !data.length ?
               [

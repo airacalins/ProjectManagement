@@ -7,6 +7,10 @@ import MainPage from '../../app/layouts/components/pages/MainPage';
 import AddButton from '../../app/layouts/components/buttons/AddButton';
 import FormButtonContainer from '../../app/layouts/components/form/FormButtonContainer';
 import { IDateDurationInput } from '../../app/models/report';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import CustomTable from '../../app/layouts/components/table/CustomTable';
+import { currencyFormatter } from '../../app/layouts/formatter/common';
 
 const Report = () => {
     const [dateDuration, setDateDuration] = useState<IDateDurationInput>({
@@ -23,14 +27,39 @@ const Report = () => {
     //     dispatch
     // }
 
+    const columns = [
+        { title: 'Date' },
+        { title: 'Confirmed Payment' },
+        { title: 'Mode of Payment' },
+    ]
 
     return (
-        <MainPage
-            title='Reports'
-            content={
-                <></>
-            }
-        />
+        //         <MainPage
+        //             title='Reports'
+        //             content={
+        //                 <CustomTable
+        //                     buttonTitle='Daily Reports'
+        //                     columns={columns}
+        //                     rows={
+        //                         <TableRow key="">
+
+        //                             <TableCell align="center">
+        //                                 January 31, 2021
+        //                             </TableCell>
+
+        //                             <TableCell className="w-25" align="center">
+        //                                 {currencyFormatter(10000)}
+        //                             </TableCell>
+
+        //                             <TableCell className="w-50" align="left">
+        //                                 BDO
+        //                             </TableCell>
+
+        //                         </TableRow>
+        //                         )
+        // }
+        //             }
+        // />
 
         // <MainPage
         //     title="Reports"
@@ -56,6 +85,7 @@ const Report = () => {
         //         </Formik>
         //     }
         // />
+        <></>
     );
 }
 

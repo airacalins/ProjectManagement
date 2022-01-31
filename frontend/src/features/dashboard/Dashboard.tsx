@@ -26,12 +26,42 @@ const Dashboard = () => {
     }, [])
 
     const dashboardCardInfos = [
-        { name: "AVAILABLE SLOTS", total: `${dashboardData?.availableSlots} / ${dashboardData?.slots}`, icon: <StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/slots" },
-        { name: "RENTED SLOTS", total: dashboardData?.rentedSlots, icon: <DoDisturbOffOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/dashboard" },
-        { name: "TENANTS", total: dashboardData?.tenants, icon: <AccessibilityIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/dashboard" },
-        { name: "UNPAID INVOICES", total: dashboardData?.unpaidInvoices, icon: <MoneyOffIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/dashboard" },
-        { name: "PENDING PAYMENTS", total: dashboardData?.pendingPayments, icon: <PendingActionsOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/slots" },
-        { name: "LATE PAYMENTS", total: dashboardData?.latePayments, icon: <AssignmentLateOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />, navigateTo: "/payments" },
+        {
+            name: "AVAILABLE SLOTS",
+            total: `${dashboardData?.availableSlots} / ${dashboardData?.slots}`,
+            icon: <StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
+            navigateTo: "/slots"
+        },
+        {
+            name: "RENTED SLOTS",
+            total: dashboardData?.rentedSlots,
+            icon: <DoDisturbOffOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
+            navigateTo: "/slots"
+        },
+        {
+            name: "TENANTS",
+            total: dashboardData?.tenants,
+            icon: <AccessibilityIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
+            navigateTo: "/tenants"
+        },
+        {
+            name: "UNPAID INVOICES",
+            total: dashboardData?.unpaidInvoices,
+            icon: <MoneyOffIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
+            navigateTo: "/invoices/unpaid"
+        },
+        {
+            name: "PENDING PAYMENTS",
+            total: dashboardData?.pendingPayments,
+            icon: <PendingActionsOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
+            navigateTo: "/invoices/pending"
+        },
+        {
+            name: "LATE PAYMENTS",
+            total: dashboardData?.latePayments,
+            icon: <AssignmentLateOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
+            navigateTo: "/invoices/unpaid"
+        },
     ]
 
     if (isFetchingDashboard) return (<LoadingComponent content="Loading dashboard..." />)

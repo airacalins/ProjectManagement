@@ -63,14 +63,15 @@ function App() {
           <Route path={'/announcements/:id/manage'} element={<AnnouncementForm />} />
           <Route path='/announcements/:id/details' element={<AnnouncementDetails />} />
 
-          <Route path={'/invoices'} element={<Payment />} />
-          <Route path={'/invoice/:sort'} element={<Payment />} />
-          <Route path='/invoices/:id/details' element={<PaymentDetails />} />
-
+          <Route path='/mode-of-payments' element={<ModeOfPayment />} />
           <Route path='/mode-of-payments' element={<ModeOfPayment />} />
           <Route path={'/mode-of-payments/create'} element={<ModeOfPaymentForm />} />
           <Route path={"/mode-of-payments/:id/manage"} element={<ModeOfPaymentForm />} />
           <Route path='/mode-of-payments/:id/details' element={<ModeOfPaymentDetails />} />
+
+          <Route path={'/invoices'} element={<Payment />} />
+          <Route path={'/invoices/:filter'} element={<Payment />} />
+          <Route path='/invoices/:id/details' element={<PaymentDetails />} />
 
           <Route path='/reports' element={<Report />} />
 
@@ -92,22 +93,6 @@ function App() {
 
         <Route path='/login' element={<LoginForm />} />
       </Routes>
-      {/* <Route exact path="/" component={Home} />
-
-      <Route
-        path={"/(.+)"}
-        render={() => (
-          <Row className="vh-100">
-            <Col className="app__navigation p-0" lg={2} >
-              <NavMenu />
-            </Col>
-
-            <Col className="app__content p-0">
-              //Route
-            </Col>
-          </Row>
-        )} */}
-      {/* /> */}
     </>
   );
 }

@@ -12,12 +12,14 @@ import LoadingComponent from "../../app/layouts/components/loading/LoadingCompon
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
 import ImageUpload from "../../app/layouts/image-upload/ImageUpload";
 import FunctionalButton from "../../app/layouts/components/buttons/FunctionalButton";
+import ImageFullWidth from "../../app/layouts/components/images/ImageFullWidth";
+import DeleteButton from "../../app/layouts/components/buttons/DeleteButton";
 
 const TenantDetails = () => {
 
     const { id } = useParams<{ id: string }>();
 
-    const { tenant, isFetchingDetails, contractPhotos } = useAppSelecter(state => state.tenant);
+    const { tenant, isFetchingDetails, contractPhotos, isSaving } = useAppSelecter(state => state.tenant);
     const dispatch = useAppDispatch();
     const [files, setFiles] = useState<File[]>([]);
 
@@ -75,14 +77,26 @@ const TenantDetails = () => {
                         <DetailItem title="Start Date" value={dateFormatter(contract?.startDate)} />
                         <DetailItem title="End Date" value={dateFormatter(contract?.endDate)} />
                         <DetailItem title="Amount" value={contract?.price} />
-                        <DetailItem title="Contract" value="" />
-                        <FormButtonContainer>
+                        <DetailItem title="Contract" value={
+                            contractPhotos && contractPhotos.map(i =>
+                                <>
+                                    <NavigationButton title="Terminate Contract" navigateTo="/" />
 
+                                    <>
+                                        <ImageFullWidth url={i.url} />
+                                        <DeleteButton onClick={() => { }} loading={isSaving} />
+                                        <FunctionalButton icon={<DownloadIcon />} title="Download" onClick={() => { }} />
+                                    </>
+                                </>
+
+                            )
+                        }
+                        />
+
+                        <FormButtonContainer>
                             <ImageUpload files={files} onDrop={onDrop} />
                             <img />
                             <FunctionalButton title="Upload" onClick={() => upload()} />
-                            <FunctionalButton icon={<DownloadIcon />} title="Download" onClick={() => { }} />
-                            <NavigationButton title="Terminate Contract" navigateTo="/" />
                         </FormButtonContainer>
                     </>
                 }

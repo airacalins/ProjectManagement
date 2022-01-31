@@ -108,6 +108,7 @@ const Tenant = {
     bodyFormData.append('file', values.file);
     return request.fileUpload('tenants/upload-contract-photo', bodyFormData)
   },
+  deleteTenantContractPhoto: (id: string) => request.delete(`tenants/delete-contract-photo/${id}`)
 };
 
 const Users = {
