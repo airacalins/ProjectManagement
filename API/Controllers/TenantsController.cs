@@ -32,7 +32,7 @@ namespace API.Controllers
       var tenants = await _context.Tenants.Include(i => i.TenantContracts).ThenInclude(i => i.Unit)
       .ToListAsync();
 
-      var result = tenants.Select(i => new TenantDto
+      var result = tenants.OrderBy(i => i.FirstName).Select(i => new TenantDto
       {
         Id = i.Id,
         FirstName = i.FirstName,

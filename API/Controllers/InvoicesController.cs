@@ -34,6 +34,7 @@ namespace API.Controllers
       .Include(i => i.TenantContract)
       .Include(i => i.Unit)
       .Include(i => i.Payments)
+      .OrderByDescending(i => i.DateCreated)
       .Select(i => new InvoiceDto
       {
         Id = i.Id,
@@ -75,6 +76,7 @@ namespace API.Controllers
       .Include(i => i.Unit)
       .Include(i => i.Payments)
       .Where(i => i.Id == id)
+      .OrderByDescending(i => i.DateCreated)
       .Select(i => new InvoiceDto
       {
         Id = i.Id,
@@ -121,6 +123,7 @@ namespace API.Controllers
       .Include(i => i.Unit)
       .Include(i => i.Payments)
       .Where(i => i.Id == payment.InvoiceId)
+      .OrderByDescending(i => i.DateCreated)
       .Select(i => new InvoiceDto
       {
         Id = i.Id,

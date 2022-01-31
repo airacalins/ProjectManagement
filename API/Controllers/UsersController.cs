@@ -29,6 +29,7 @@ namespace API.Controllers
     public async Task<ActionResult<List<ApplicationUserDto>>> GetAll()
     {
       var users = await _context.Users.Include(i => i.Photo)
+      .OrderBy(i => i.UserName)
       .Select(i => new ApplicationUserDto
       {
         Id = i.Id,
@@ -49,6 +50,7 @@ namespace API.Controllers
     public async Task<ActionResult<ApplicationUserDto>> GetOne(string id)
     {
       var user = await _context.Users.Include(i => i.Photo)
+      .OrderBy(i => i.UserName)
       .Select(i => new ApplicationUserDto
       {
         Id = i.Id,
