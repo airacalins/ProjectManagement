@@ -43,7 +43,8 @@ namespace API.Controllers
                 AccountName = input.AccountName,
                 AccountNumber = input.AccountNumber,
                 BankName = input.BankName,
-                IsArchived = false
+                IsArchived = false,
+                IsEnabled = true
             };
             
             _context.ModeOfPayments.Add(newModeOfPayment);

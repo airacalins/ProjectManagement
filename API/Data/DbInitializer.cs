@@ -166,21 +166,24 @@ namespace API.Data
                         BankName = "BDO",
                         AccountName = "Maximo Galutera",
                         AccountNumber = "00191928280",
-                        IsArchived = false
+                        IsArchived = false,
+                        IsEnabled = true
                     },
                     new ModeOfPayment
                     {
                         BankName = "GCASH",
                         AccountName = "Maximo Galutera",
                         AccountNumber = "00191928280",
-                        IsArchived = false
+                        IsArchived = false,
+                        IsEnabled = true
                     },
                     new ModeOfPayment
                     {
                         BankName = "UNIONBANK",
                         AccountName = "Maximo Galutera",
                         AccountNumber = "00191928280",
-                        IsArchived = false
+                        IsArchived = false,
+                        IsEnabled = true
                     }
                 };
 

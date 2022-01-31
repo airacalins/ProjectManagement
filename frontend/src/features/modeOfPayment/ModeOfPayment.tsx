@@ -104,7 +104,7 @@ const ModeOfPayment = () => {
                                     </TableCell>
 
                                     <TableCell align="center">
-                                        <div onClick={() => onUpdate(mop)}>
+                                        <div onClick={() => onUpdate({...mop, isEnabled: mop.isEnabled})}>
                                             {mop.isEnabled ?
                                                 <ToggleOnOutlinedIcon fontSize="medium" /> :
                                                 <ToggleOffOutlinedIcon fontSize="medium" />}
