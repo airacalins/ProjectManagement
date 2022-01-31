@@ -107,8 +107,8 @@ const ImageUpload: React.FC<IImageUpload> = ({ files, onDrop }) => {
   }, [files]);
 
   return (
-    <div className="container">
-
+    <div>
+      <h4 className="page__title d-flex align-items-center mb-3">Upload Contract</h4>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>

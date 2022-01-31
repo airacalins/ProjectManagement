@@ -43,7 +43,6 @@ export const fetchTenantDetailsAsync = createAsyncThunk<ITenant, string>(
   }
 )
 
-
 export const createTenantsAsync = createAsyncThunk<ITenant, ICreateTenantInput>(
   'tenants/createTenantsAsync',
   async (tenant, thunkAPI) => {
@@ -55,6 +54,18 @@ export const createTenantsAsync = createAsyncThunk<ITenant, ICreateTenantInput>(
   }
 )
 
+export const updateTenantDetailsAsync = createAsyncThunk<ITenant, IUpdateTenantInput>(
+  'tenants/updateTenantDetailsAsync',
+  async (tenant, thunkAPI) => {
+    try {
+      return await agent.Tenant.update(tenant);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+// Contract Photo
 export const uploadTenantContractPhoto = createAsyncThunk<any, ITenantContractPhotoInput>(
   'tenants/uploadTenantContractPhoto',
   async (model, thunkAPI) => {
@@ -77,14 +88,13 @@ export const getTenantContractPhoto = createAsyncThunk<any, string>(
   }
 )
 
-
-export const updateTenantDetailsAsync = createAsyncThunk<ITenant, IUpdateTenantInput>(
-  'tenants/updateTenantDetailsAsync',
-  async (tenant, thunkAPI) => {
-    try {
-      return await agent.Tenant.update(tenant);
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue({error: error.data})
+export const deleteTenantContractPhoto = createAsyncThunk<any, string>(
+  '/tenants/deleteTenantContractPhoto',
+  async (id, trunkApi) => {
+    try{
+      return await agent.Tenant.deleteTenantContractPhoto(id);
+    } catch(error: any) {
+      return trunkApi.rejectWithValue({error: error.data})
     }
   }
 )
@@ -132,6 +142,16 @@ export const tenantSlice = createSlice({
     
     builder.addCase(getTenantContractPhoto.fulfilled, (state, action) => {
       state.contractPhotos = action.payload;
+    });
+
+    builder.addCase(deleteTenantContractPhoto.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(deleteTenantContractPhoto.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(deleteTenantContractPhoto.rejected, (state, action) => {
+      state.isSaving = false;
     });
   })
 })

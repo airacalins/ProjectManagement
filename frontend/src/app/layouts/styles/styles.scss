@@ -33,6 +33,11 @@
     background-color: $primary;
     color: white;
   }
+}
 
+.image {
+  &__container {
+    background-color:white, 
+  }
 
 }

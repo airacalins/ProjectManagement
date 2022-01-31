@@ -50,7 +50,7 @@ const Tenant = () => {
         { title: '' },
     ]
 
-    const tenantstatusOptions = [
+    const tenantStatusOptions = [
         { text: "All", value: undefined },
         { text: "Active", value: true },
         { text: "Not active", value: false }
@@ -70,7 +70,7 @@ const Tenant = () => {
                     columns={columns}
                     tableControls={
                         <Select
-                            options={tenantstatusOptions}
+                            options={tenantStatusOptions}
                             value={selectedStatus}
                             onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as boolean : undefined)}
                             name="slotId"
@@ -107,7 +107,15 @@ const Tenant = () => {
                                 </TableCell>
 
                                 <TableCell align="center">
-                                    <Label content={tenant.contract?.slotNumber}></Label>
+                                    {tenant.contract?.slotNumber}
+                                </TableCell>
+
+                                <TableCell align="center">
+                                    {
+                                        tenant.isActive ?
+                                            <Label color="orange" content="Active" /> :
+                                            <Label color="red" content="Not Active" />
+                                    }
                                 </TableCell>
 
                                 <TableCell align="right">
