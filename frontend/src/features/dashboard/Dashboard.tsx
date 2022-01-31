@@ -30,13 +30,13 @@ const Dashboard = () => {
             name: "AVAILABLE SLOTS",
             total: `${dashboardData?.availableSlots} / ${dashboardData?.slots}`,
             icon: <StorefrontOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
-            navigateTo: "/slots"
+            navigateTo: "/slots/available"
         },
         {
             name: "RENTED SLOTS",
             total: dashboardData?.rentedSlots,
             icon: <DoDisturbOffOutlinedIcon sx={{ fontSize: "80px", color: "#234F5B" }} />,
-            navigateTo: "/slots"
+            navigateTo: "/slots/rented"
         },
         {
             name: "TENANTS",

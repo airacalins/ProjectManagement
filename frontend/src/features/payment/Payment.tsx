@@ -101,7 +101,6 @@ const Payment = () => {
               onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as PaymentStatus : undefined)}
               name="paymentStatus"
               placeholder="Payment Status"
-              label="Payment Status"
             />
           }
           rows={
