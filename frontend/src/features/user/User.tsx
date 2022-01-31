@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-
 import MainPage from '../../app/layouts/components/pages/MainPage';
 import CustomTable from '../../app/layouts/components/table/CustomTable';
 import history from '../../app/utils/history';
@@ -31,6 +30,7 @@ const User = () => {
     }, [])
 
     const columns = [
+        { title: 'Username' },
         { title: 'Full Name' },
         { title: 'Contact Number' },
         { title: 'Address' },
@@ -42,7 +42,8 @@ const User = () => {
         history.push("/users");
     }
 
-    if (isFetchingUsers) return <LoadingComponent content="Loading users..." />
+    if (isFetchingUsers || isSaving) return <LoadingComponent content="Loading users..." />
+
 
     return (
         <MainPage
@@ -66,6 +67,10 @@ const User = () => {
                             :
                             data.map(user =>
                                 <TableRow key={user.id}>
+                                    <TableCell align="center">
+                                        {user.username}
+                                    </TableCell>
+
                                     <TableCell align="center">
                                         {`${user.firstName} ${user.lastName}`}
                                     </TableCell>
