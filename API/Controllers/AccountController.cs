@@ -74,6 +74,7 @@ namespace API.Controllers
       var user = await _userManager.FindByNameAsync(User.Identity.Name);
       return new UserDto
       {
+        Id = user.Id,
         Username = user.UserName,
         Photo = user.Photo?.Url ?? string.Empty,
         Token = await _tokenService.GenerateToken(user)
