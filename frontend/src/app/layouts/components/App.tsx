@@ -55,7 +55,7 @@ function App() {
       <Routes>
         <Route path='/' element={<PrivateRoute />}>
           <Route path='/' element={<Dashboard />} />
-          <Route path='/account/:id/details' element={<Account />} />
+          <Route path='/account' element={<Account />} />
           <Route path='/map' element={<Map />} />
 
           <Route path='/announcements' element={<Announcement />} />
