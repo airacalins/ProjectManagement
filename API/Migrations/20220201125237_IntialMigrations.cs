@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class IntialMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,6 +47,7 @@ namespace API.Migrations
                     BankName = table.Column<string>(type: "text", nullable: false),
                     AccountName = table.Column<string>(type: "text", nullable: false),
                     AccountNumber = table.Column<string>(type: "text", nullable: false),
+                    IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     IsArchived = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -76,6 +77,7 @@ namespace API.Migrations
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Phone = table.Column<string>(type: "text", nullable: false),
                     BusinessName = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     TenantUniqueId = table.Column<string>(type: "text", nullable: false)
                 },
@@ -126,6 +128,11 @@ namespace API.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     PhotoId = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Phone = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -303,6 +310,8 @@ namespace API.Migrations
                     UnitId = table.Column<Guid>(type: "uuid", nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     DueDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    InvoiceStatus = table.Column<int>(type: "integer", nullable: false),
+                    InvoiceNumber = table.Column<string>(type: "text", nullable: false),
                     ModeOfPaymentId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -329,6 +338,32 @@ namespace API.Migrations
                         name: "FK_Invoices_Units_UnitId",
                         column: x => x.UnitId,
                         principalTable: "Units",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TenantContractPhotos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantContractId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PhotoId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TenantContractPhotos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TenantContractPhotos_Photos_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TenantContractPhotos_TenantContracts_TenantContractId",
+                        column: x => x.TenantContractId,
+                        principalTable: "TenantContracts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -362,7 +397,11 @@ namespace API.Migrations
                     InvoiceId = table.Column<Guid>(type: "uuid", nullable: false),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    ModeOfPaymentId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ModeOfPaymentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Amount = table.Column<double>(type: "double precision", nullable: false),
+                    PhotoId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ReferenceNumber = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -377,6 +416,12 @@ namespace API.Migrations
                         name: "FK_Payments_ModeOfPayments_ModeOfPaymentId",
                         column: x => x.ModeOfPaymentId,
                         principalTable: "ModeOfPayments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_Photos_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photos",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Payments_Tenants_TenantId",
@@ -397,8 +442,9 @@ namespace API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "08c4f7fc-f7ea-4bbf-b397-f71dc650e120", "9484cb0e-c348-4d21-8929-521c3d43baad", "USER", "USER" },
-                    { "a536e08c-fcd8-4fe1-affc-5562ae89fab4", "f8902f18-de19-40b8-9956-456214c70329", "Admin", "ADMIN" }
+                    { "2407ee55-d815-4296-91c5-5ce56c66a96f", "31786b1c-fd05-4eb8-a0a2-274bc89c46c3", "SYSAD", "SYSAD" },
+                    { "36c2f24d-eb9f-441b-a87d-f3319db07c76", "279dc64d-1431-465d-92ca-7ce1858a16fc", "OWNER", "OWNER" },
+                    { "8de9e57a-ff06-4531-836c-b28c89623904", "0526f404-da1d-4d98-ba7c-9301fe9a73d4", "ADMIN", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -479,6 +525,11 @@ namespace API.Migrations
                 column: "ModeOfPaymentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_PhotoId",
+                table: "Payments",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_TenantId",
                 table: "Payments",
                 column: "TenantId");
@@ -487,6 +538,16 @@ namespace API.Migrations
                 name: "IX_Payments_UnitId",
                 table: "Payments",
                 column: "UnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TenantContractPhotos_PhotoId",
+                table: "TenantContractPhotos",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TenantContractPhotos_TenantContractId",
+                table: "TenantContractPhotos",
+                column: "TenantContractId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TenantContracts_TenantId",
@@ -534,6 +595,9 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "TenantContractPhotos");
 
             migrationBuilder.DropTable(
                 name: "UnitPhotos");

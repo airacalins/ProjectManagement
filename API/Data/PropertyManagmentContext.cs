@@ -31,8 +31,9 @@ namespace API.Data
     {
       base.OnModelCreating(builder);
       builder.Entity<IdentityRole>()
-      .HasData(new IdentityRole { Name = "USER", NormalizedName = "USER" },
-      new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" }
+      .HasData(new IdentityRole { Name = "OWNER", NormalizedName = "OWNER" },
+      new IdentityRole { Name = "SYSAD", NormalizedName = "SYSAD" },
+      new IdentityRole { Name = "ADMIN", NormalizedName = "ADMIN" }
       );
     }
 

@@ -26,7 +26,7 @@ namespace API.Data
           Phone = "09880000555"
         };
         await userManager.CreateAsync(owner, "m_galutera");
-        await userManager.AddToRoleAsync(owner, "Owner");
+        await userManager.AddToRoleAsync(owner, "OWNER");
 
         var systemAdministrator = new User
         {
@@ -39,7 +39,7 @@ namespace API.Data
           Phone = "09123456789"
         };
         await userManager.CreateAsync(systemAdministrator, "s_admin");
-        await userManager.AddToRoleAsync(systemAdministrator, "SystemAdmin");
+        await userManager.AddToRoleAsync(systemAdministrator, "SYSAD");
 
         var admin = new User
         {
@@ -52,7 +52,7 @@ namespace API.Data
           Phone = "09228888999"
         };
         await userManager.CreateAsync(admin, "m_admin");
-        await userManager.AddToRoleAsync(admin, "Admin");
+        await userManager.AddToRoleAsync(admin, "ADMIN");
       }
 
       // Slots data
