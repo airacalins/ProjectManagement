@@ -16,13 +16,15 @@ namespace API.Controllers
   [Route("api/[controller]")]
   public class InvoicesController : ControllerBase
   {
+    private readonly PhotoService _photoService;
 
     private readonly PropertyManagementContext _context;
     private readonly RandomStringService _randomStringService;
-    public InvoicesController(PropertyManagementContext context, RandomStringService randomStringService)
+    public InvoicesController(PropertyManagementContext context, RandomStringService randomStringService, PhotoService photoService)
     {
       _context = context;
       _randomStringService = randomStringService;
+      _photoService = photoService;
     }
 
     [HttpGet]
@@ -151,7 +153,7 @@ namespace API.Controllers
     }
 
     [HttpPost("payment")]
-    public async Task<ActionResult> Payment(CreatePaymentDto input)
+    public async Task<ActionResult> Payment([FromForm]CreatePaymentDto input)
     {
       var isValidUniqueId = false;
       var uniqueId = string.Empty;
@@ -169,6 +171,7 @@ namespace API.Controllers
       invoice.InvoiceStatus = InvoiceStatus.Pending;
       await _context.SaveChangesAsync();
 
+      var photo = await _photoService.UploadPhoto(input.File);
       var payment = new Payment
       {
         TenantId = invoice.TenantId,
@@ -177,7 +180,7 @@ namespace API.Controllers
         Status = PaymentStatus.Pending,
         ModeOfPaymentId = input.ModeOfPaymentId,
         DateCreated = DateTimeOffset.UtcNow,
-        PhotoId = input.PhotoId,
+        PhotoId = photo.Id,
         Amount = input.Amount,
         ReferenceNumber = uniqueId
       };

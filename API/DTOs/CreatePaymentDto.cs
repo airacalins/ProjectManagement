@@ -10,6 +10,6 @@ namespace API.DTOs
         public Guid InvoiceId { get; set; }
         public Guid ModeOfPaymentId { get; set; }
         public double Amount { get; set; }
-        public Guid? PhotoId { get; set; }
+        public IFormFile File { get; set; }
     }
 }
