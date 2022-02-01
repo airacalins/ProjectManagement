@@ -22,13 +22,6 @@ namespace API.Services
 
     public async Task GenerateInvoice()
     {
-      var isValidUniqueId = false;
-      var uniqueId = string.Empty;
-      while(!isValidUniqueId)
-      {
-        uniqueId = _randomStringService.GetRandomString(6).ToUpper();
-        isValidUniqueId = !(await _context.Invoices.AnyAsync(i => i.InvoiceNumber == uniqueId));
-      }
       var invoiceDate = DateTimeOffset.UtcNow.AddDays(-5);
       var contracts = await _context.TenantContracts
       .Include(i => i.Tenant)
@@ -37,6 +30,13 @@ namespace API.Services
 
       foreach (var contract in contracts)
       {
+        var isValidUniqueId = false;
+        var uniqueId = string.Empty;
+        while(!isValidUniqueId)
+        {
+          uniqueId = _randomStringService.GetRandomString(6).ToUpper();
+          isValidUniqueId = !(await _context.Invoices.AnyAsync(i => i.InvoiceNumber == uniqueId));
+        }
         var invoice = new Invoice
         {
           TenantId = contract.TenantId,

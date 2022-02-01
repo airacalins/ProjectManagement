@@ -24,7 +24,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UnitDto>>> GetSlots()
         {
-            var units = await _context.Units.Include(i => i.UnitPhotos).ThenInclude(p => p.Photo)
+            var units = await _context.Units.Where(i => !i.IsArchived).OrderBy(i => i.SlotNumber).Include(i => i.UnitPhotos).ThenInclude(p => p.Photo)
             .Select(i => new UnitDto
             {
                 Id = i.Id,
@@ -56,6 +56,11 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<UnitDto>> AddSlot(CreateUnitDto input)
         {
+            var existingSlot = await _context.Units.AnyAsync(i => i.SlotNumber.ToLower() == input.SlotNumber.ToLower());
+            if (existingSlot) {
+                return BadRequest("Slot number already in use");
+            }
+
             var unit = new Unit{
                 SlotNumber = input.SlotNumber,
                 Size = input.Size,
@@ -71,6 +76,11 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult<UnitDto>> UpdateSlot(UnitDto input)
         {
+            var existingSlot = await _context.Units.AnyAsync(i => i.SlotNumber.ToLower() == input.SlotNumber.ToLower() && i.Id != input.Id);
+            if (existingSlot) {
+                return BadRequest("Slot number already in use");
+            }
+
             var unit = await _context.Units.FindAsync(input.Id);
             if (unit == null)
                 return NotFound("Slot not found");
@@ -95,7 +105,7 @@ namespace API.Controllers
             if (unit.SlotStatus == SlotStatus.Rented || unit.SlotStatus == SlotStatus.Reserved)
                 return NotFound("Can't delete rented or reserved slots");
                       
-            _context.Units.Remove(unit);
+            unit.IsArchived = true;
             await _context.SaveChangesAsync();
 
             return Ok();

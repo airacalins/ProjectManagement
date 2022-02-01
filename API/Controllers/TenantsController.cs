@@ -60,6 +60,41 @@ namespace API.Controllers
       return Ok(result);
     }
 
+    [HttpGet("get-tenants-by-slot/{id}")]
+    public async Task<ActionResult<List<TenantDto>>> GetSlotTenants(Guid id)
+    {
+      var tenants = await _context.Tenants.Include(i => i.TenantContracts).ThenInclude(i => i.Unit)
+      .Where(i => i.TenantContracts.Any(t => t.UnitId == id))
+      .ToListAsync();
+
+      var result = tenants.OrderBy(i => i.DateCreated).Select(i => new TenantDto
+      {
+        Id = i.Id,
+        FirstName = i.FirstName,
+        LastName = i.LastName,
+        Phone = i.Phone,
+        BusinessName = i.BusinessName,
+        DateCreated = i.DateCreated,
+        Address = i.Address,
+        TenantUniqueId = i.TenantUniqueId,
+        IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
+        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ?
+          i.TenantContracts.Select(t => new SlotContractDto
+          {
+            Id = t.Id,
+            SlotId = t.UnitId,
+            SlotNumber = t.Unit.SlotNumber,
+            Size = t.Unit.Size,
+            Price = t.Unit.Price,
+            StartDate = t.StartDate,
+            EndDate = t.EndDate,
+            NextBillingDate = t.NextPaymentDate,
+            Status = t.Status,
+          }).FirstOrDefault() : null
+      });
+      return Ok(result);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<TenantDto>> GetTenant(Guid id)
     {

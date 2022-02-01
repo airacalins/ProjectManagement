@@ -16,5 +16,6 @@ namespace API.Entities
         public double Price { get; set; }
         public ICollection<UnitPhoto> UnitPhotos { get; set; }
         public ICollection<TenantContract> TenantContracts { get; set; }
+        public bool IsArchived { get; set; }
     }
 }
