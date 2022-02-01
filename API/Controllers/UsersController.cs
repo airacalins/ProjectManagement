@@ -30,19 +30,25 @@ namespace API.Controllers
     {
       var users = await _context.Users.Include(i => i.Photo)
       .Where(i => i.IsEnabled)
-      .OrderBy(i => i.UserName)
-      .Select(i => new ApplicationUserDto
-      {
-        Id = i.Id,
-        IsEnabled = i.IsEnabled,
-        FirstName = i.FirstName,
-        LastName = i.LastName,
-        Phone = i.Phone,
-        Address = i.Address,
-        Username = i.UserName
-      }).ToListAsync();
+      .OrderBy(i => i.UserName).ToListAsync();
 
-      return Ok(users);
+      var result = new List<ApplicationUserDto>();
+      foreach(var i in users)
+      {
+        var item = new ApplicationUserDto
+        {
+          Id = i.Id,
+          IsEnabled = i.IsEnabled,
+          FirstName = i.FirstName,
+          LastName = i.LastName,
+          Phone = i.Phone,
+          Address = i.Address,
+          Username = i.UserName,
+          Roles = await _userManager.GetRolesAsync(i)
+        };
+        result.Add(item);
+      }
+      return Ok(result);
     }
 
 
@@ -62,6 +68,13 @@ namespace API.Controllers
         Address = i.Address,
         Username = i.UserName
       }).FirstOrDefaultAsync(i => i.Id == id);
+
+      if (user == null)
+      {
+        return NotFound("User not found");
+      }
+      var currentUser = await _context.Users.FindAsync(id);
+      user.Roles = await _userManager.GetRolesAsync(currentUser);
       return Ok(user);
     }
 
@@ -86,7 +99,15 @@ namespace API.Controllers
         return ValidationProblem();
       }
 
-      await _userManager.AddToRoleAsync(user, "User");
+      var role = "ADMIN";
+      if (!string.IsNullOrEmpty(registerDto.Role) && registerDto.Role.ToLower() == "owner") {
+        role = "OWNER";
+      }
+      
+      if (!string.IsNullOrEmpty(registerDto.Role) && registerDto.Role.ToLower() == "sysad") {
+        role = "SYSAD";
+      }
+      await _userManager.AddToRoleAsync(user, role);
 
       
       var newUser = await _context.Users.Include(i => i.Photo)

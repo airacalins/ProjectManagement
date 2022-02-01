@@ -63,7 +63,7 @@ namespace API.Controllers
         return ValidationProblem();
       }
 
-      await _userManager.AddToRoleAsync(user, "User");
+      await _userManager.AddToRoleAsync(user, "ADMIN");
       return StatusCode(201);
     }
 
