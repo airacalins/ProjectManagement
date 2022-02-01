@@ -110,7 +110,8 @@ const Tenant = {
     return request.fileUpload('tenants/upload-contract-photo', bodyFormData)
   },
   deleteTenantContractPhoto: (id: string) => request.delete(`tenants/delete-contract-photo/${id}`),
-  terminateTenantContract: (id: string) => request.delete(`tenants/terminate-contract/${id}`)
+  terminateTenantContract: (id: string) => request.delete(`tenants/terminate-contract/${id}`),
+  slotTenants: (id: string) => request.get(`tenants/get-tenants-by-slot/${id}`)
 };
 
 const Users = {

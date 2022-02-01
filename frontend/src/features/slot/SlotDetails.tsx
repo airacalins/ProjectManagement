@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { currencyFormatter } from "../../app/layouts/formatter/common";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
-import { deleteSlotDetailsAsync, fetchSlotDetailsAsync } from "./slotSlice";
+import { deleteSlotDetailsAsync, fetchSlotDetailsAsync, fetchSlotTanantsAsync } from "./slotSlice";
 import { getSlotStatusColor, getSlotStatusText } from "../../app/utils/common";
 
 import DetailsPage from "../../app/layouts/components/pages/DetailsPage";
@@ -10,20 +10,49 @@ import DetailItem from "../../app/layouts/components/items/DetailItem";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import NavigationButton from "../../app/layouts/components/buttons/NavigationButton";
-import { Label } from "semantic-ui-react";
+import { Label, Select } from "semantic-ui-react";
 import DeleteButton from "../../app/layouts/components/buttons/DeleteButton";
 import history from "../../app/utils/history";
+import { SlotStatus } from "../../app/models/slot";
+import CustomTable from "../../app/layouts/components/table/CustomTable";
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 
 const SlotDetails = () => {
 
+  const [searchKey, setSearchKey] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState<boolean | undefined>(true);
+
   const { id } = useParams<{ id: string }>();
 
-  const { slot, isFetchingDetails, isSaving } = useAppSelecter(state => state.slot);
+  const { slot, isFetchingDetails, isSaving, tenants } = useAppSelecter(state => state.slot);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (id) dispatch(fetchSlotDetailsAsync(id));
+    if (id) {
+      dispatch(fetchSlotDetailsAsync(id));
+      dispatch(fetchSlotTanantsAsync(id))
+    }
   }, [])
+
+
+  const data = useMemo(() => {
+    let searchResult = tenants;
+    if (!!searchKey) {
+      searchResult = tenants.filter(i => i.firstName.toLowerCase().includes(searchKey.toLowerCase())
+        || i.lastName.toLowerCase().includes(searchKey.toLowerCase())
+        || i.businessName.toLowerCase().includes(searchKey.toLowerCase())
+        || i.phone.toLowerCase().includes(searchKey.toLowerCase())
+        || (!!i.contract && i.contract?.slotNumber.toLowerCase().includes(searchKey.toLowerCase())));
+    }
+
+    if (!!selectedStatus) {
+      searchResult = searchResult.filter(i => i.isActive === selectedStatus)
+    }
+
+    return searchResult;
+  }, [tenants, searchKey, selectedStatus])
 
   if (isFetchingDetails || !slot) return (<LoadingComponent content="Loading slot details..." />)
 
@@ -31,7 +60,21 @@ const SlotDetails = () => {
     if (id) dispatch(deleteSlotDetailsAsync(id));
     history.push('/slots')
   }
+  const columns = [
+    { title: 'Account Number' },
+    { title: 'Full Name' },
+    { title: 'Business Name' },
+    { title: 'Contact Number' },
+    { title: 'Slot' },
+    { title: 'Status' },
+    { title: '' },
+  ]
 
+  const tenantStatusOptions = [
+    { text: "All", value: undefined },
+    { text: "Active", value: true },
+    { text: "Not active", value: false }
+  ]
   return (
     <>
 
@@ -40,13 +83,13 @@ const SlotDetails = () => {
         backNavigationLink="/slots"
         content={
           <>
-            <DetailItem title="Slot Number" value={slot.slotNumber} />
+            <DetailItem title="Slot Number" value={<>{slot.slotNumber} <Label content={getSlotStatusText(slot.status)} color={getSlotStatusColor(slot.status)}></Label></>} />
             <DetailItem title="Size" value={`${slot.size} sqm.`} />
             <DetailItem title="Rental Fee" value={slot.price ? currencyFormatter(slot.price) : "Not Configured"} />
             <FormButtonContainer>
               <NavigationButton title="Edit" navigateTo={`/slots/${id}/manage`} />
               {
-                !slot.tenantContract &&
+                slot.status == SlotStatus.Available &&
                 <DeleteButton onClick={handleDelete} loading={isSaving} />
               }
             </FormButtonContainer>
@@ -55,36 +98,75 @@ const SlotDetails = () => {
       />
 
       <DetailsPage
-        title="Tenant"
-        content={
-          slot.tenantContract ?
-            <>
-              <DetailItem title="Business Name" value={slot.tenantContract?.tenant.businessName} />
-              <DetailItem title="First Name" value={slot.tenantContract?.tenant.firstName} />
-              <DetailItem title="Last Name" value={slot.tenantContract?.tenant.lastName} />
-              <DetailItem title="Address" value={slot.tenantContract?.tenant.address} />
-              <DetailItem title="Contact Number" value={slot.tenantContract?.tenant.phone} />
-            </> :
-            <NavigationButton title="Add Tenant" navigateTo={`/tenants/${slot.id}/create`} />
+        title="Tenants history"
+        content={<>
+          <CustomTable
+            searchValue={searchKey}
+            onSearch={(value: string) => setSearchKey(value)}
+            buttonTitle={slot.status == SlotStatus.Available ? "Add Tenant" : undefined}
+            navigateTo={`/tenants/${slot.id}/create`}
+            columns={columns}
+            tableControls={
+              <Select
+                options={tenantStatusOptions}
+                value={selectedStatus}
+                onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as boolean : undefined)}
+                name="slotId"
+                placeholder="Select status"
+                label="Tenant Status"
+              />
+            }
+            rows=
+            {
+              !data.length ?
+                [
+                  <TableRow>
+                    <TableCell align="center" colSpan={columns.length}>
+                      No data
+                    </TableCell>
+                  </TableRow>
+                ]
+                :
+                data.map(tenant => <TableRow key={tenant.id}>
+                  <TableCell align="center">
+                    {tenant.tenantUniqueId}
+                  </TableCell>
+
+                  <TableCell align="center">
+                    {`${tenant.firstName} ${tenant.lastName}`}
+                  </TableCell>
+
+                  <TableCell align="center">
+                    {tenant.businessName}
+                  </TableCell>
+
+                  <TableCell align="center">
+                    {tenant.phone}
+                  </TableCell>
+
+                  <TableCell align="center">
+                    {tenant.contract?.slotNumber}
+                  </TableCell>
+
+                  <TableCell align="center">
+                    {
+                      tenant.isActive ?
+                        <Label color="orange" content="Active" /> :
+                        <Label color="red" content="Not Active" />
+                    }
+                  </TableCell>
+
+                  <TableCell align="right">
+                    <NavigateNextOutlinedIcon onClick={() => history.push(`/tenants/${tenant.id}/details`)} />
+                  </TableCell>
+
+                </TableRow>
+                )
+            }
+          />
+        </>
         }
       />
-
-      {
-        slot.tenantContract &&
-        <DetailsPage
-          title="Contract"
-          content={
-            <>
-              {/* <DetailItem title="Advance Payment" value={currencyFormatter(slot.tenantContract?.advance)} />
-              <DetailItem title="Deposit" value={currencyFormatter(slot.tenantContract?.deposit)} />
-              <DetailItem title="Contract Price" value={currencyFormatter(slot.tenantContract?.contractPrice)} />
-              <DetailItem title="Contract Start Date" value={dateFormatter(slot.tenantContract?.contractStartDate)} />
-              <DetailItem title="Contract End Date" value={dateFormatter(slot.tenantContract?.contractEndDate)} /> */}
-            </>
-          }
-        />
-      }
-
     </>
   );
 }

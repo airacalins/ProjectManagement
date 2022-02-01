@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import agent from "../../app/api/agent";
 import { ISlot } from "../../app/models/slot";
+import { ITenant } from "../../app/models/tenant";
 
 export interface ISlotState {
   slots: ISlot[];
@@ -8,6 +9,7 @@ export interface ISlotState {
   isFetching: boolean;
   isFetchingDetails: boolean;
   isSaving: boolean;
+  tenants: ITenant[];
 }
 
 const initialState: ISlotState = {
@@ -15,7 +17,8 @@ const initialState: ISlotState = {
   isFetching: false,
   slot: undefined,
   isFetchingDetails: false,
-  isSaving: false
+  isSaving: false,
+  tenants: []
 }
 
 export const fetchSlotsAsync = createAsyncThunk<ISlot[]>(
@@ -52,7 +55,7 @@ export const createSlotAsync = createAsyncThunk<ISlot, ISlot>(
 )
 
 export const updateSlotDetailsAsync = createAsyncThunk<ISlot, ISlot>(
-  'announcements/updateSlotDetailsAsync',
+  'slot/updateSlotDetailsAsync',
   async (slot, thunkAPI) => {
     try {
       return await agent.Slot.update(slot);
@@ -63,10 +66,21 @@ export const updateSlotDetailsAsync = createAsyncThunk<ISlot, ISlot>(
 )
 
 export const deleteSlotDetailsAsync = createAsyncThunk<ISlot, string>(
-  'announcements/deleteSlotDetailsAsync',
+  'slot/deleteSlotDetailsAsync',
   async (id, thunkAPI) => {
     try {
       return await agent.Slot.delete(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({error: error.data})
+    }
+  }
+)
+
+export const fetchSlotTanantsAsync = createAsyncThunk<ITenant[], string>(
+  'slot/fetchSlotTanantsAsync',
+  async (id, thunkAPI) => {
+    try {
+      return await agent.Tenant.slotTenants(id);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({error: error.data})
     }
@@ -134,6 +148,15 @@ export const slotSlice = createSlice({
     });
     builder.addCase(deleteSlotDetailsAsync.rejected, (state, action) => {
       state.isSaving = false;
+    });
+
+    
+    builder.addCase(fetchSlotTanantsAsync.pending, (state, action) => {
+    });
+    builder.addCase(fetchSlotTanantsAsync.fulfilled, (state, action) => {
+      state.tenants = action.payload;
+    });
+    builder.addCase(fetchSlotTanantsAsync.rejected, (state, action) => {
     });
   })
 })
