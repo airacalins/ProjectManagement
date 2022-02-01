@@ -77,7 +77,8 @@ namespace API.Controllers
         Id = user.Id,
         Username = user.UserName,
         Photo = user.Photo?.Url ?? string.Empty,
-        Token = await _tokenService.GenerateToken(user)
+        Token = await _tokenService.GenerateToken(user),
+        Roles = await _userManager.GetRolesAsync(user)
       };
     }
 
