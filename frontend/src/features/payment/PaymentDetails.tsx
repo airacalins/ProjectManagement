@@ -84,21 +84,22 @@ const PaymentDetails = () => {
                 backNavigationLink="/invoices"
                 content={
                     <>
-                        <Row>
-                            <Col>
-                                <DetailItem title="Name" value={`${firstName} ${lastName}`} />
-                                <DetailItem title="Business Name" value={businessName} />
-                                <DetailItem title="Contact Number" value={phone} />
-                            </Col>
+                        <div className="d-flex my-5">
+                            <div className="w-75">
+                                <DetailItem title="Name" value={`${firstName} ${lastName}`} space={2} />
+                                <DetailItem title="Business Name" value={businessName} space={2} />
+                                <DetailItem title="Contact Number" value={phone} space={2} />
+                            </div>
 
-                            <Col>
-                                <div className="payment-details__header-right">
-                                    <DetailItem rightText title="Invoice Number" value={invoiceNumber} />
-                                    <DetailItem rightText title="Due Date" value={moment(dueDate).format("MMM DD, YYYY")} />
-                                    <DetailItem rightText title="Status" value={status()} />
-                                </div>
-                            </Col>
-                        </Row>
+                            <div className="w-25">
+                                <DetailItem title="Invoice Number" value={invoiceNumber} space={6} />
+                                <DetailItem title="Due Date" value={moment(dueDate).format("MMM DD, YYYY")} space={6} />
+                                <DetailItem title="Status" value={status()} space={6} />
+                            </div>
+                        </div>
+
+
+
                         <Row>
                             <div className="payment-details__title">Rental Payment For Slot Number {slotNumber}</div>
                         </Row>
@@ -140,7 +141,7 @@ const PaymentDetails = () => {
                             <Col></Col>
                             <Col>
                                 <div className="payment-details__footer-right">
-                                    <DetailItem rightText title="Total" value={currencyFormatter(amount)} />
+                                    <DetailItem title="Total" value={currencyFormatter(amount)} />
                                 </div>
                             </Col>
                         </Row>

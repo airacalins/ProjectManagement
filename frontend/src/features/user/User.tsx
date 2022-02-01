@@ -11,6 +11,8 @@ import DeleteButton from '../../app/layouts/components/buttons/DeleteButton';
 import { Label } from 'semantic-ui-react';
 import NavigationButton from '../../app/layouts/components/buttons/NavigationButton';
 import { useParams } from 'react-router-dom';
+import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
+
 
 const User = () => {
     const { id } = useParams<{ id: string }>();
@@ -38,15 +40,8 @@ const User = () => {
         { title: 'Full Name' },
         { title: 'Contact Number' },
         { title: 'Address' },
-        { title: 'Status' },
         { title: '' },
     ]
-
-    const handleDelete = async (id: string) => {
-        await dispatch(deleteUserDetailsAsync(id));
-        history.push("/users");
-        dispatch(fetchUsersAsync())
-    }
 
     if (isFetchingUsers || isSaving) return <LoadingComponent content="Loading users..." />
 
@@ -88,14 +83,10 @@ const User = () => {
                                         {user.address}
                                     </TableCell>
 
-                                    <TableCell align="center">
-                                        {user.isEnabled ? <Label color='blue' content="Active" /> : <Label color='red' content="Deactivated" />}
+                                    <TableCell align="right">
+                                        <NavigateNextOutlinedIcon onClick={() => history.push(`/users/${user.id}/details`)} />
                                     </TableCell>
 
-                                    <TableCell align="right">
-                                        <NavigationButton title="Edit" navigateTo={`/users/${user.id}/manage`} />
-                                        <DeleteButton onClick={() => handleDelete(user.id)} loading={isSaving} />
-                                    </TableCell>
                                 </TableRow>
                             )
                     }
