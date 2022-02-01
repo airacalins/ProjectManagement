@@ -43,10 +43,10 @@ const ModeOfPaymentForm = () => {
     })
 
     const handleResult = (data: any) => {
-        if (!!data.payload.errors) {
+        if (!!data.error) {
             console.log('error')
         } else {
-            history.push(`/mode-of-payments/${!!id ? id :( data.payload as any).id}/details`)
+            history.push(`/mode-of-payments/${!!id ? id : (data.payload as any).id}/details`)
         }
     }
 

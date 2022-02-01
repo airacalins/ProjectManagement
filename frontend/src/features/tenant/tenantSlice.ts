@@ -9,6 +9,7 @@ export interface ITenantState {
   tenant?: ITenant;
   isFetchingDetails: boolean;
   isSaving: boolean;
+  isFetchingPhotos: boolean;
   contractPhotos: IContractPhotos[]
 }
 
@@ -18,7 +19,8 @@ const initialState: ITenantState = {
   tenant: undefined,
   isFetchingDetails: false,
   isSaving: false,
-  contractPhotos:[]
+  contractPhotos:[],
+  isFetchingPhotos: false
 }
 
 export const fetchTenantsAsync = createAsyncThunk<ITenant[]>(
@@ -99,6 +101,17 @@ export const deleteTenantContractPhoto = createAsyncThunk<any, string>(
   }
 )
 
+export const terminateTenantContract = createAsyncThunk<any, string>(
+  '/tenants/terminateTenantContract',
+  async (id, trunkApi) => {
+    try{
+      return await agent.Tenant.terminateTenantContract(id);
+    } catch(error: any) {
+      return trunkApi.rejectWithValue({error: error.data})
+    }
+  }
+)
+
 export const tenantSlice = createSlice({
   name: 'tenant',
   initialState,
@@ -139,9 +152,18 @@ export const tenantSlice = createSlice({
       state.isSaving = false;
     });
 
-    
+
+    builder.addCase(getTenantContractPhoto.pending, (state, action) => {
+      state.isFetchingPhotos = true;
+    });
+
     builder.addCase(getTenantContractPhoto.fulfilled, (state, action) => {
       state.contractPhotos = action.payload;
+      state.isFetchingPhotos = false;
+    });
+    
+    builder.addCase(getTenantContractPhoto.rejected, (state, action) => {
+      state.isFetchingPhotos = false;
     });
 
     builder.addCase(deleteTenantContractPhoto.pending, (state, action) => {
@@ -151,6 +173,16 @@ export const tenantSlice = createSlice({
       state.isSaving = false;
     });
     builder.addCase(deleteTenantContractPhoto.rejected, (state, action) => {
+      state.isSaving = false;
+    });
+
+    builder.addCase(terminateTenantContract.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(terminateTenantContract.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(terminateTenantContract.rejected, (state, action) => {
       state.isSaving = false;
     });
   })

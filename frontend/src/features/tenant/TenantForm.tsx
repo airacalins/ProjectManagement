@@ -95,10 +95,10 @@ const TenantForm = () => {
     if (isFetchingTenants) return (<LoadingComponent content="Loading tenants and slot..." />)
 
     const handleResult = (data: any) => {
-        if (!!data.payload.errors) {
+        if (!!data.error) {
             console.log('error')
         } else {
-            history.push(`/tenants/${!!id ? id :( data.payload as any).id}/details`)
+            history.push(`/tenants/${!!id ? id : (data.payload as any).id}/details`)
         }
     }
 

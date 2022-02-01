@@ -24,4 +24,5 @@ export interface ITenantContractPhotoInput {
 export interface IContractPhotos {
   id: string;
   url: string;
+  dateCreated: string
 }

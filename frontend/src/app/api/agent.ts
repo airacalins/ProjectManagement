@@ -22,7 +22,6 @@ axios.interceptors.response.use(
     const { data, status } = error.response!;
     switch (status) {
       case 400:
-        console.log(data)
         if (data.errors) {
           const modelStateErrors: string[] = [];
           for (const key in data.errors) {
@@ -110,7 +109,8 @@ const Tenant = {
     bodyFormData.append('file', values.file);
     return request.fileUpload('tenants/upload-contract-photo', bodyFormData)
   },
-  deleteTenantContractPhoto: (id: string) => request.delete(`tenants/delete-contract-photo/${id}`)
+  deleteTenantContractPhoto: (id: string) => request.delete(`tenants/delete-contract-photo/${id}`),
+  terminateTenantContract: (id: string) => request.delete(`tenants/terminate-contract/${id}`)
 };
 
 const Users = {
