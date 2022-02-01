@@ -62,7 +62,7 @@ const UserForm = () => {
         if (!!data.payload.errors) {
             console.log('error')
         } else {
-            history.push(`/users/${!!id ? id :( data.payload as IApplicationUser).id}/details`)
+            history.push(`/users/${!!id ? id : (data.payload as IApplicationUser).id}/details`)
         }
     }
 
