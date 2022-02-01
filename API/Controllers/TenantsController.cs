@@ -309,6 +309,9 @@ namespace API.Controllers
       }
 
       var tenantContract = await _context.TenantContracts.FirstOrDefaultAsync(i => i.TenantId == id);
+      var slot = await _context.Units.FindAsync(tenantContract.UnitId);
+      slot.SlotStatus = SlotStatus.Available;
+      await _context.SaveChangesAsync();
 
       if (tenantContract != null)
       {
