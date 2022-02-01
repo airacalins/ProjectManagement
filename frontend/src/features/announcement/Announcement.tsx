@@ -59,11 +59,11 @@ const Announcement = () => {
                             data.map(announcement =>
                                 <TableRow key={announcement.id}>
 
-                                    <TableCell align="center">
+                                    <TableCell align="left">
                                         {moment(announcement.dateCreated).format("MMM DD, YYYY")}
                                     </TableCell>
 
-                                    <TableCell className="w-25" align="center">
+                                    <TableCell className="w-25" align="left">
                                         {announcement.title}
                                     </TableCell>
 
@@ -74,7 +74,7 @@ const Announcement = () => {
                                     <TableCell align="right">
                                         <NavigateNextOutlinedIcon onClick={() => history.push(`/announcements/${announcement.id}/details`)} />
                                     </TableCell>
-                                </TableRow>
+                                </TableRow >
                             )
                     }
                 />

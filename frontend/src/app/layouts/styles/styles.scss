@@ -11,6 +11,27 @@
 }
 
 .form {
+
+  &__title {
+    background-color: white;
+    color: $primary;
+    font-weight: bold;
+    height: 80px;
+  }
+
+  &__container {
+      background-color: white;
+  }
+
+  &__label {
+      font-weight: bold;
+      margin-top: 10px;
+  }
+
+  &__input {
+      width:300px !important;
+  }
+
   &__button-container {
     margin-left: 150px;
   }
@@ -21,6 +42,7 @@
     color: white !important;
   }
 }
+
 
 .badge {
   &__primary {
