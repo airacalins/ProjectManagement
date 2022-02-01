@@ -10,6 +10,7 @@ namespace API.DTOs
     {
         public Guid Id { get; set; }
         public Guid TenantId { get; set; }
+        public string TenantUniqueId { get; set; }
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
         public string Phone { get; set; } = default!;

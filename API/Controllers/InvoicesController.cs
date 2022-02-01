@@ -49,6 +49,7 @@ namespace API.Controllers
         Amount = i.InvoiceItems.Sum(s => s.Amount),
         InvoiceNumber = i.InvoiceNumber,
         InvoiceStatus = i.InvoiceStatus,
+        TenantUniqueId = i.Tenant.TenantUniqueId,
         Payments = i.Payments.Select(p => new InvoicePaymentDto
         {
           Id = p.Id,
@@ -73,6 +74,52 @@ namespace API.Controllers
       return Ok(invoices);
     }
 
+    [HttpGet("get-tenant-invoice-by-account-number/{id}")]
+    public async Task<ActionResult<List<InvoiceDto>>> Get(string id)
+    {
+      var invoices = await _context.Invoices
+      .Include(i => i.InvoiceItems)
+      .Include(i => i.Tenant)
+      .Include(i => i.TenantContract)
+      .Include(i => i.Unit)
+      .Include(i => i.Payments)
+      .OrderByDescending(i => i.DateCreated)
+      .Select(i => new InvoiceDto
+      {
+        Id = i.Id,
+        SlotNumber = i.Unit.SlotNumber,
+        TenantId = i.TenantId,
+        FirstName = i.Tenant.FirstName,
+        LastName = i.Tenant.LastName,
+        TenantUniqueId = i.Tenant.TenantUniqueId,
+        Phone = i.Tenant.Phone,
+        BusinessName = i.Tenant.BusinessName,
+        Amount = i.InvoiceItems.Sum(s => s.Amount),
+        InvoiceNumber = i.InvoiceNumber,
+        InvoiceStatus = i.InvoiceStatus,
+        Payments = i.Payments.Select(p => new InvoicePaymentDto
+        {
+          Id = p.Id,
+          Status = p.Status,
+          BankName = p.ModeOfPayment != null ? p.ModeOfPayment.BankName : string.Empty,
+          AccountName = p.ModeOfPayment != null ? p.ModeOfPayment.AccountName : string.Empty,
+          AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
+          DateCreated = p.DateCreated,
+          Amount = p.Amount,
+          ReferenceNumber = p.ReferenceNumber
+        }),
+        InvoiceItems = i.InvoiceItems.Select(j => new InvoiceItemDto
+        {
+          Id = j.Id,
+          Amount = j.Amount,
+          Description = j.Description
+        }),
+        DateCreated = i.DateCreated,
+        DueDate = i.DueDate
+      }).Where(i => i.TenantUniqueId.ToLower() == id.ToLower()).ToListAsync();
+
+      return Ok(invoices);
+    }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<InvoiceDto>> GetOne(Guid id)
@@ -98,6 +145,7 @@ namespace API.Controllers
         Amount = i.InvoiceItems.Sum(s => s.Amount),
         InvoiceNumber = i.InvoiceNumber,
         InvoiceStatus = i.InvoiceStatus,
+        TenantUniqueId = i.Tenant.TenantUniqueId,
         Payments = i.Payments.Select(p => new InvoicePaymentDto
         {
           Id = p.Id,
