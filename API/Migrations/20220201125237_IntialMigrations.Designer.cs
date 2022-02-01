@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(PropertyManagementContext))]
-    [Migration("20220129152137_RemovePasswordComplexity")]
-    partial class RemovePasswordComplexity
+    [Migration("20220201125237_IntialMigrations")]
+    partial class IntialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,6 +60,10 @@ namespace API.Migrations
 
                     b.Property<DateTimeOffset>("DueDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("InvoiceStatus")
                         .HasColumnType("integer");
@@ -161,6 +165,10 @@ namespace API.Migrations
 
                     b.Property<Guid?>("PhotoId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ReferenceNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -282,6 +290,30 @@ namespace API.Migrations
                     b.ToTable("TenantContracts");
                 });
 
+            modelBuilder.Entity("API.Entities.TenantContractPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PhotoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantContractId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("TenantContractId");
+
+                    b.ToTable("TenantContractPhotos");
+                });
+
             modelBuilder.Entity("API.Entities.Unit", b =>
                 {
                     b.Property<Guid>("Id")
@@ -347,7 +379,6 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -447,16 +478,23 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b33a5c11-6802-4801-a1f4-a2bd934ba727",
-                            ConcurrencyStamp = "85882901-4657-4b30-a98f-64da777ca3bf",
-                            Name = "USER",
-                            NormalizedName = "USER"
+                            Id = "36c2f24d-eb9f-441b-a87d-f3319db07c76",
+                            ConcurrencyStamp = "279dc64d-1431-465d-92ca-7ce1858a16fc",
+                            Name = "OWNER",
+                            NormalizedName = "OWNER"
                         },
                         new
                         {
-                            Id = "597c9ea1-826d-4410-bc1c-409b55dd4866",
-                            ConcurrencyStamp = "bbc36d5d-c64b-4620-8be6-a809dfa89f8b",
-                            Name = "Admin",
+                            Id = "2407ee55-d815-4296-91c5-5ce56c66a96f",
+                            ConcurrencyStamp = "31786b1c-fd05-4eb8-a0a2-274bc89c46c3",
+                            Name = "SYSAD",
+                            NormalizedName = "SYSAD"
+                        },
+                        new
+                        {
+                            Id = "8de9e57a-ff06-4531-836c-b28c89623904",
+                            ConcurrencyStamp = "0526f404-da1d-4d98-ba7c-9301fe9a73d4",
+                            Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });
                 });
@@ -669,6 +707,25 @@ namespace API.Migrations
                     b.Navigation("Unit");
                 });
 
+            modelBuilder.Entity("API.Entities.TenantContractPhoto", b =>
+                {
+                    b.HasOne("API.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.TenantContract", "TenantContract")
+                        .WithMany("TenantContractPhotos")
+                        .HasForeignKey("TenantContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("TenantContract");
+                });
+
             modelBuilder.Entity("API.Entities.UnitPhoto", b =>
                 {
                     b.HasOne("API.Entities.Photo", "Photo")
@@ -763,6 +820,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Tenant", b =>
                 {
                     b.Navigation("TenantContracts");
+                });
+
+            modelBuilder.Entity("API.Entities.TenantContract", b =>
+                {
+                    b.Navigation("TenantContractPhotos");
                 });
 
             modelBuilder.Entity("API.Entities.Unit", b =>
