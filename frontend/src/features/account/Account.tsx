@@ -13,23 +13,25 @@ import * as Yup from 'yup';
 import LoadingComponent from '../../app/layouts/components/loading/LoadingComponent';
 import { Message } from 'semantic-ui-react';
 import history from '../../app/utils/history';
-
+import { fetchCurrentUserAsync } from './accountSlice';
+import { previousDay } from 'date-fns';
 
 const Account = () => {
     const [password, setPassword] = useState(
         { newPassword: "", verifyPassword: "" }
     )
-
     const [showPasswordNotMatchError, setShowPasswordNotMatchError] = useState(false);
-
+    const { user } = useAppSelecter(state => state.account);
     const { user: userData, isFetchingDetails, isSaving } = useAppSelecter(state => state.user);
     const dispatch = useAppDispatch();
 
-    const { id } = useParams<{ id: string }>();
+    const getCurrentUser = async () => {
+        if (!!user && !!user.id) await dispatch(fetchUserDetailsAsync(user.id))
+    }
 
     useEffect(() => {
-        if (!!id) dispatch(fetchUserDetailsAsync(id));
-    }, [])
+        getCurrentUser()
+    }, [user?.id])
 
     const validationSchema = Yup.object(
         {
@@ -46,13 +48,11 @@ const Account = () => {
             return;
         }
 
-        await dispatch(updateUserPasswordAsync({ id: id!, password: newPassword }));
-        history.push(`/users/${id}/details`)
-
+        await dispatch(updateUserPasswordAsync({ id: userData?.id!, password: newPassword }));
+        setPassword({ newPassword: "", verifyPassword: "" })
     }
 
-    if (isFetchingDetails) return (<LoadingComponent content="Loading announcements..." />)
-
+    if (isFetchingDetails && !userData) return (<LoadingComponent content="Loading announcements..." />)
 
     return (
         <>
@@ -60,10 +60,11 @@ const Account = () => {
                 title='Account'
                 content={
                     <>
-                        <DetailItem title="First Name" value="Hardcoded" />
-                        <DetailItem title="Last Name" value="Hardcoded" />
-                        <DetailItem title="Address" value="Hardcoded" />
-                        <DetailItem title="Contact Number" value="Hardcoded" />
+                        <DetailItem title="Username" value={userData?.username} />
+                        <DetailItem title="First Name" value={userData?.firstName} />
+                        <DetailItem title="Last Name" value={userData?.lastName} />
+                        <DetailItem title="Contact Number" value={userData?.phone} />
+                        <DetailItem title="Address" value={userData?.address} />
                     </>
                 }
             />
@@ -75,14 +76,14 @@ const Account = () => {
                         {showPasswordNotMatchError && <Message>Password and new password must be the same.</Message>}
                         <Formik
                             validationSchema={validationSchema}
-                            enableReinitialize
                             initialValues={password}
+                            enableReinitialize={true}
                             onSubmit={values => onSubmit(values)}>
                             {
                                 ({ handleSubmit, isValid }) => (
                                     <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                        <FormTextInput label="New Password" name="newPassword" placeholder="Subject" />
-                                        <FormTextInput label="Verify Password" name="verifyPassword" placeholder="Verify Password" />
+                                        <FormTextInput type="password" label="New Password" name="newPassword" placeholder="Password" />
+                                        <FormTextInput type="password" label="Verify Password" name="verifyPassword" placeholder="Verify Password" />
                                         <FormButtonContainer>
                                             <AddButton loading={isSaving} disabled={!isValid} />
                                         </FormButtonContainer>

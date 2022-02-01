@@ -118,7 +118,7 @@ const Users = {
   details: (id: string) => request.get(`users/${id}`),
   create: (values: any) => request.post('users/add-user', values),
   update: (values: any) => request.put('users', values),
-  updatePassword: (values: any) => request.put('update-password', values),
+  updatePassword: (values: any) => request.put('users/update-password', values),
   delete: (id: string) => request.delete(`users/${id}`),
 }
 

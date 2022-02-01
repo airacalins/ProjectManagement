@@ -147,6 +147,17 @@ export const userSlice = createSlice({
     builder.addCase(deleteUserDetailsAsync.rejected, (state, action) => {
       state.isSaving = false;
     });
+
+
+    builder.addCase(updateUserPasswordAsync.pending, (state, action) => {
+      state.isSaving = true;
+    });
+    builder.addCase(updateUserPasswordAsync.fulfilled, (state, action) => {
+      state.isSaving = false;
+    });
+    builder.addCase(updateUserPasswordAsync.rejected, (state, action) => {
+      state.isSaving = false;
+    });
   })
 })
 

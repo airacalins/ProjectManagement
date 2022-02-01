@@ -98,53 +98,49 @@ const PaymentDetails = () => {
                             </div>
                         </div>
 
+                        <div className="payment-details__title">Rental Payment For Slot Number {slotNumber}</div>
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 500 }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell className="w-75" align="left" style={{ fontSize: 14 }} >
+                                            Description
+                                        </TableCell>
 
+                                        <TableCell align="right" style={{ fontSize: 14 }} >
+                                            Amount
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
 
-                        <Row>
-                            <div className="payment-details__title">Rental Payment For Slot Number {slotNumber}</div>
-                        </Row>
-                        <Row>
-                            <TableContainer component={Paper}>
-                                <Table sx={{ minWidth: 500 }}>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell align="left" style={{ fontSize: 14 }} >
-                                                Description
-                                            </TableCell>
+                                <TableBody>
+                                    {
+                                        invoiceItems.map(i =>
+                                            <TableRow>
+                                                <TableCell>
+                                                    {i.description}
+                                                </TableCell>
 
-                                            <TableCell align="right" style={{ fontSize: 14 }} >
-                                                Amount
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHead>
+                                                <TableCell align="right">
+                                                    {currencyFormatter(i.amount)}
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    }
 
-                                    <TableBody>
-                                        {
-                                            invoiceItems.map(i =>
-                                                <TableRow>
-                                                    <TableCell>
-                                                        {i.description}
-                                                    </TableCell>
+                                    <TableRow>
+                                        <TableCell align="right">
+                                            <p className="font__bold">Total:</p>
+                                        </TableCell>
 
-                                                    <TableCell align="right">
-                                                        {currencyFormatter(i.amount)}
-                                                    </TableCell>
-                                                </TableRow>
-                                            )
-                                        }
+                                        <TableCell align="right">
+                                            <p className="font__bold">{currencyFormatter(amount)}</p>
+                                        </TableCell>
+                                    </TableRow>
 
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Row>
-                        <Row>
-                            <Col></Col>
-                            <Col>
-                                <div className="payment-details__footer-right">
-                                    <DetailItem title="Total" value={currencyFormatter(amount)} />
-                                </div>
-                            </Col>
-                        </Row>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </>
                 }
             />
