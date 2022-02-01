@@ -67,6 +67,46 @@ namespace API.Controllers
       return Ok(tenant);
     }
 
+    [HttpGet("get-tenant-by-account-number/{id}")]
+    public async Task<ActionResult<TenantDto>> GetTenantByAccountNumber(string id)
+    {
+      var tenants = await _context.Tenants.Include(i => i.TenantContracts).ThenInclude(i => i.Unit)
+      .ToListAsync();
+
+      var tenantsDto = tenants.Select(i => new TenantDto
+      {
+        Id = i.Id,
+        FirstName = i.FirstName,
+        LastName = i.LastName,
+        Phone = i.Phone,
+        BusinessName = i.BusinessName,
+        DateCreated = i.DateCreated,
+        Address = i.Address,
+        TenantUniqueId = i.TenantUniqueId,
+        IsActive = i.TenantContracts.Any(i => i.Status == TenantContractStatus.Active),
+        Contract = i.TenantContracts != null && i.TenantContracts.Count() > 0 ?
+          i.TenantContracts.Select(t => new SlotContractDto
+          {
+            Id = t.Id,
+            SlotId = t.UnitId,
+            SlotNumber = t.Unit.SlotNumber,
+            Size = t.Unit.Size,
+            Price = t.Unit.Price,
+            StartDate = t.StartDate,
+            EndDate = t.EndDate,
+            NextBillingDate = t.NextPaymentDate,
+            Status = t.Status
+          }).FirstOrDefault() : null
+      });
+
+      var result = tenantsDto.FirstOrDefault(i => i.TenantUniqueId.ToLower() == id.ToLower());
+      if (result == null) {
+        return NotFound("Tenant not found.");
+      }
+
+      return result;
+    }
+
 
     [HttpPost]
     public async Task<ActionResult<TenantDto>> AddTenant(CreateTenantDto input)
