@@ -40,6 +40,7 @@ const User = () => {
         { title: 'Full Name' },
         { title: 'Contact Number' },
         { title: 'Address' },
+        { title: 'Role' },
         { title: '' },
     ]
 
@@ -81,6 +82,10 @@ const User = () => {
 
                                     <TableCell align="center">
                                         {user.address}
+                                    </TableCell>
+
+                                    <TableCell align="center">
+                                        {user.roles.join(", ")}
                                     </TableCell>
 
                                     <TableCell align="right">

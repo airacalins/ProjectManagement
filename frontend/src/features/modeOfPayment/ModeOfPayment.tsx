@@ -15,6 +15,7 @@ import { Select } from "semantic-ui-react";
 
 const ModeOfPayment = () => {
     const [searchKey, setSearchKey] = useState('');
+    const account = useAppSelecter(state => state.account);
     const { modeOfPayments, isFetching: isFetchingModeOfPayments } = useAppSelecter(state => state.modeOfPayment);
     const dispatch = useAppDispatch();
     const [selectedStatus, setSelectedStatus] = useState<boolean | undefined>(undefined);
@@ -65,7 +66,7 @@ const ModeOfPayment = () => {
                 <CustomTable
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Add Mode of Payment"
+                    buttonTitle={account.user?.roles.some(i => i.toLowerCase() === "admin") ? undefined : "Add Mode of Payment"}
                     navigateTo="/mode-of-payments/create"
                     columns={columns}
                     tableControls={
@@ -104,7 +105,7 @@ const ModeOfPayment = () => {
                                     </TableCell>
 
                                     <TableCell align="center">
-                                        <div onClick={() => onUpdate({...mop, isEnabled: !mop.isEnabled})}>
+                                        <div onClick={() => account.user?.roles.some(i => i.toLowerCase() === "admin") ? {} : onUpdate({...mop, isEnabled: !mop.isEnabled})}>
                                             {mop.isEnabled ?
                                                 <ToggleOnOutlinedIcon fontSize="medium" /> :
                                                 <ToggleOffOutlinedIcon fontSize="medium" />}
@@ -112,7 +113,7 @@ const ModeOfPayment = () => {
                                     </TableCell>
 
                                     <TableCell align="right">
-                                        <NavigateNextOutlinedIcon onClick={() => history.push(`/mode-of-payments/${mop.id}/details`)} />
+                                        {account.user?.roles.some(i => i.toLowerCase() === "admin") ? <></> : <NavigateNextOutlinedIcon onClick={() => history.push(`/mode-of-payments/${mop.id}/details`)} />}
                                     </TableCell>
 
                                 </TableRow>

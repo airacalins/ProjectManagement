@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import DeleteButton from '../../app/layouts/components/buttons/DeleteButton';
 import NavigationButton from '../../app/layouts/components/buttons/NavigationButton';
@@ -12,9 +12,24 @@ import { deleteUserDetailsAsync, fetchUserDetailsAsync, fetchUsersAsync } from '
 
 const UserDetails = () => {
     const { user, isFetchingDetails, isSaving } = useAppSelecter(state => state.user);
+    const account = useAppSelecter(state => state.account);
     const dispatch = useAppDispatch();
 
     const { id } = useParams<{ id: string }>();
+
+    const canEdit = useMemo(() => {
+        if(!!user) {
+            const isAdmin = account?.user?.roles.some(i => i.toLowerCase() === "admin");
+            if(isAdmin) return false;
+
+            const isOwner = user.roles.some(i => i.toLowerCase() === "owner");
+            if (isOwner) return false;
+
+            return true;
+        }
+
+        return false;
+    }, [user]);
 
     useEffect(() => {
         if (id) dispatch(fetchUserDetailsAsync(id));
@@ -29,7 +44,7 @@ const UserDetails = () => {
 
     if (isFetchingDetails || !user) return (<LoadingComponent content="Loading announcement details..." />)
 
-    const { username, firstName, lastName, phone, email, address } = user
+    const { username, firstName, lastName, phone, email, address, roles } = user
 
     return (
         <DetailsPage
@@ -42,11 +57,13 @@ const UserDetails = () => {
                     <DetailItem title="Last Name" value={lastName} />
                     <DetailItem title="Contact Number" value={phone} />
                     <DetailItem title="Address" value={address} />
-
-                    <FormButtonContainer>
-                        <NavigationButton title="Edit" navigateTo={`/users/${user.id}/manage`} />
-                        <DeleteButton onClick={() => handleDelete(user.id)} loading={isSaving} />
-                    </FormButtonContainer>
+                    <DetailItem title="Role" value={roles.join(", ")} />
+                    {canEdit &&
+                        <FormButtonContainer>
+                            <NavigationButton title="Edit" navigateTo={`/users/${user.id}/manage`} />
+                            <DeleteButton onClick={() => handleDelete(user.id)} loading={isSaving} />
+                        </FormButtonContainer>
+                    }
                 </>
             }
         />

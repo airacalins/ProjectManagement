@@ -23,10 +23,16 @@ const ModeOfPaymentForm = () => {
         isEnabled: true
     })
 
+    const account = useAppSelecter(state => state.account);
     const { modeOfPayment: modeOfPaymentData, isFetchingDetails, isSaving } = useAppSelecter(state => state.modeOfPayment);
     const dispatch = useAppDispatch();
 
     const { id } = useParams<{ id: string }>();
+
+    useEffect(() => {
+        if(!!account && account.user?.roles.some(i => i.toLowerCase() == "admin"))
+            history.push('/mode-of-payments')
+    }, [account])
 
     useEffect(() => {
         if (!!id) dispatch(fetchModeOfPaymentDetailsAsync(id));

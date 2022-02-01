@@ -1,6 +1,7 @@
 export interface IUser {
   id: string;
   username: string;
+  roles: string[];
   token: string;
 }
 
@@ -31,7 +32,8 @@ export interface IApplicationUser {
   lastName: string,
   phone: string,
   email: string,
-  address: string
+  address: string,
+  roles: string[]
 }
 
 export interface IUpdateUserPasswordInput {
