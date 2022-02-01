@@ -41,10 +41,10 @@ const AnnouncementForm = () => {
     )
 
     const handleResult = (data: any) => {
-        if (!!data.payload.errors) {
+        if (!!data.error) {
             console.log('error')
         } else {
-            history.push(`/announcements/${!!id ? id :( data.payload as any).id}/details`)
+            history.push(`/announcements/${!!id ? id : (data.payload as any).id}/details`)
         }
     }
 

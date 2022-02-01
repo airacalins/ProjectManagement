@@ -51,10 +51,10 @@ const SlotForm = () => {
     if (isFetchingDetails) return (<LoadingComponent content="Loading slot..." />)
 
     const handleResult = (data: any) => {
-        if (!!data.payload.errors) {
+        if (!!data.error) {
             console.log('error')
         } else {
-            history.push(`/slots/${!!id ? id :( data.payload as any).id}/details`)
+            history.push(`/slots/${!!id ? id : (data.payload as any).id}/details`)
         }
     }
 
@@ -67,11 +67,11 @@ const SlotForm = () => {
     }
 
     const slotStatusOptions = [
-        {text: getSlotStatusText(SlotStatus.Available), value: SlotStatus.Available},
-        {text: getSlotStatusText(SlotStatus.Reserved), value: SlotStatus.Reserved},
-        {text: getSlotStatusText(SlotStatus.UnderMaintenance), value: SlotStatus.UnderMaintenance},
-        {text: getSlotStatusText(SlotStatus.Archived), value: SlotStatus.Archived}
-      ]
+        { text: getSlotStatusText(SlotStatus.Available), value: SlotStatus.Available },
+        { text: getSlotStatusText(SlotStatus.Reserved), value: SlotStatus.Reserved },
+        { text: getSlotStatusText(SlotStatus.UnderMaintenance), value: SlotStatus.UnderMaintenance },
+        { text: getSlotStatusText(SlotStatus.Archived), value: SlotStatus.Archived }
+    ]
     return (
         <FormPage
             title={id ? "Update Slot" : "New Slot"}

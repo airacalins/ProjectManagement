@@ -20,7 +20,6 @@ const UserDetails = () => {
         if (id) dispatch(fetchUserDetailsAsync(id));
     }, [])
 
-
     const handleDelete = async (id: string) => {
         await dispatch(deleteUserDetailsAsync(id));
         history.push("/users");
