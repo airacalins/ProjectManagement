@@ -21,35 +21,63 @@ namespace API.Services
     }
     public async Task<PhotoUploadResultDto> AddPhoto(IFormFile file)
     {
-        if (file.Length > 0)
+      if (file.Length > 0)
+      {
+        await using var stream = file.OpenReadStream();
+        var uploadParams = new ImageUploadParams
         {
-            await using var stream = file.OpenReadStream();
-            var uploadParams = new ImageUploadParams
-            {
-                File = new FileDescription(file.FileName, stream)
-            };
+          File = new FileDescription(file.FileName, stream)
+        };
 
-            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+        var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
-            if (uploadResult.Error != null)
-            {
-                throw new Exception(uploadResult.Error.Message);
-            }
-
-            return new PhotoUploadResultDto
-            {
-                PublicId = uploadResult.PublicId,
-                Url = uploadResult.SecureUrl.ToString()
-            };
+        if (uploadResult.Error != null)
+        {
+          throw new Exception(uploadResult.Error.Message);
         }
 
-        return null;
+        return new PhotoUploadResultDto
+        {
+          PublicId = uploadResult.PublicId,
+          Url = uploadResult.SecureUrl.ToString()
+        };
+      }
+
+      return null;
     }
     public async Task<string> DeletePhoto(string publicId)
     {
-        var deleteParams = new DeletionParams(publicId);
-        var result = await _cloudinary.DestroyAsync(deleteParams);
-        return result.Result == "ok" ? result.Result : null;
+      var deleteParams = new DeletionParams(publicId);
+      var result = await _cloudinary.DestroyAsync(deleteParams);
+      return result.Result == "ok" ? result.Result : null;
+    }
+
+    public async Task<PhotoUploadResultDto> AddPhotoFromBase64(string base64String)
+    {
+        await using var stream = Base64ToImage(base64String);
+        var uploadParams = new ImageUploadParams
+        {
+          File = new FileDescription("file.jpg", stream)
+        };
+
+        var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+        if (uploadResult.Error != null)
+        {
+          throw new Exception(uploadResult.Error.Message);
+        }
+
+        return new PhotoUploadResultDto
+        {
+          PublicId = uploadResult.PublicId,
+          Url = uploadResult.SecureUrl.ToString()
+        };
+    }
+
+    public Stream Base64ToImage(string base64String)
+    {
+      byte[] imageBytes = Convert.FromBase64String(base64String);
+      return new MemoryStream(imageBytes, 0, imageBytes.Length);
     }
   }
 }

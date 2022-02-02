@@ -219,7 +219,8 @@ namespace API.Controllers
       invoice.InvoiceStatus = InvoiceStatus.Pending;
       await _context.SaveChangesAsync();
 
-      var photo = await _photoService.UploadPhoto(input.File);
+      // var photo = await _photoService.UploadPhoto(input.File);
+      var photo = await _photoService.UploadPhotoFromBase64(input.File);
       var payment = new Payment
       {
         TenantId = invoice.TenantId,

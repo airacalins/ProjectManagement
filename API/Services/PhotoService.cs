@@ -38,5 +38,14 @@ namespace API.Services
         await _context.SaveChangesAsync();
         return photo;
     }
+
+    public async Task<Photo> UploadPhotoFromBase64(string base64String)
+    {
+        var photoResult = await _photoAccessorService.AddPhotoFromBase64(base64String);
+        var photo = new Photo { Url = photoResult.Url, PublicId = photoResult.PublicId };
+        _context.Photos.Add(photo);
+        await _context.SaveChangesAsync();
+        return photo;
+    }
   }
 }

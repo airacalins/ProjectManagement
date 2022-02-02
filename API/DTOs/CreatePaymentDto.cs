@@ -11,8 +11,6 @@ namespace API.DTOs
         public Guid InvoiceId { get; set; }
         public Guid ModeOfPaymentId { get; set; }
         public double Amount { get; set; }
-
-        [FromForm(Name = "file")]        
-        public IFormFile File { get; set; }
+        public string File { get; set; }
     }
 }
