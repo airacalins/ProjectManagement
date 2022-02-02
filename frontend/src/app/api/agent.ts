@@ -123,6 +123,10 @@ const Users = {
   delete: (id: string) => request.delete(`users/${id}`),
 }
 
+const Report = {
+  getInvoiceReport: (values: any) => request.get(`reports?reportType=${values.reportType ?? ''}&date=${values.date ?? ''}`)
+}
+
 const agent = {
   Account,
   Announcement,
@@ -131,7 +135,8 @@ const agent = {
   Invoice,
   Slot,
   Tenant,
-  Users
+  Users,
+  Report
 };
 
 export default agent;

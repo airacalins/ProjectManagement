@@ -24,16 +24,17 @@ const Payment = () => {
   const dispatch = useAppDispatch();
 
   const data = useMemo(() => {
+    let result = invoices;
     if (!!searchKey) {
-      return invoices.filter(i =>
+      result = result.filter(i =>
         i.slotNumber.toLowerCase().includes(searchKey.toLowerCase()) ||
         i.firstName.toLowerCase().includes(searchKey.toLowerCase()) ||
         i.lastName.toLowerCase().includes(searchKey.toLowerCase())
       );
     }
 
-    return invoices;
-  }, [invoices, searchKey])
+    return result;
+  }, [invoices, searchKey, selectedStatus])
 
   useEffect(() => {
     dispatch(fetchInvoicesAsync());
@@ -95,7 +96,7 @@ const Payment = () => {
               value={selectedStatus}
               onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as PaymentStatus : undefined)}
               name="paymentStatus"
-              placeholder="Payment Status"
+              placeholder="Invoice Status"
             />
           }
           rows={

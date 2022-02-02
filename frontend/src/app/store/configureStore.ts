@@ -9,6 +9,7 @@ import { modeOfPaymentSlice } from "../../features/modeOfPayment/modeOfPaymentSl
 import { slotSlice } from "../../features/slot/slotSlice";
 import { tenantSlice } from "../../features/tenant/tenantSlice";
 import { userSlice } from "../../features/user/UserSlice";
+import { reportSlice } from "../../features/report/reportSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     slot: slotSlice.reducer,
     tenant: tenantSlice.reducer,
     user: userSlice.reducer,
+    report: reportSlice.reducer
   }
 })
 
