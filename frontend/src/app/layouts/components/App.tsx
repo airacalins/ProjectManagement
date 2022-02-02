@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import { useAppDispatch } from "../../store/configureStore";
+import { useAppDispatch, useAppSelecter } from "../../store/configureStore";
 import { useCallback, useEffect, useState } from "react";
 import { fetchCurrentUserAsync } from "../../../features/account/accountSlice";
 import PrivateRoute from "./PrivateRoute";
@@ -31,6 +31,8 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
+  
+  const account = useAppSelecter(state => state.account);
 
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
@@ -87,11 +89,15 @@ function App() {
           <Route path={'/tenants/:slotId/create'} element={<TenantForm />} />
           <Route path='/tenants/:id/manage' element={<TenantForm />} />
           <Route path='/tenants/:id/details' element={<TenantDetails />} />
-
+        {
+          !!account.user && !!account.user?.roles && account.user?.roles.every(i => i.toLowerCase() !== "admin") &&
+          <>
           <Route path="/users" element={<User />} />
           <Route path="/users/:id/details" element={<UserDetails />} />
           <Route path="/users/create" element={<UserForm />} />
           <Route path="/users/:id/manage" element={<UserForm />} />
+          </>
+        }
         </Route>
 
         <Route path='/login' element={<LoginForm />} />

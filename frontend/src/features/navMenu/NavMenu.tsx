@@ -14,11 +14,12 @@ import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 
 import NavMenuItem from "./NavMenuItem";
 import "./navMenu.scss"
-import { useAppDispatch } from "../../app/store/configureStore";
+import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { signOut } from "../account/accountSlice";
 
 const NavMenu = () => {
 
+    const account = useAppSelecter(state => state.account);
     const dispatch = useAppDispatch();
     return (
         <Nav className="navMenu flex-column vh-100" defaultActiveKey="/home">
@@ -30,13 +31,14 @@ const NavMenu = () => {
                 icon={<DashboardCustomizeOutlinedIcon className="me-2" />}
                 navigateTo="/"
             />
-
-            <NavMenuItem
-                name="Users"
-                icon={<PersonOutlinedIcon className="me-2" />}
-                navigateTo="/users"
-            />
-
+            {
+                !!account.user && !!account.user?.roles && account.user?.roles.every(i => i.toLowerCase() !== "admin") &&
+                <NavMenuItem
+                    name="Users"
+                    icon={<PersonOutlinedIcon className="me-2" />}
+                    navigateTo="/users"
+                />
+            }
             <NavMenuItem
                 name="Locator"
                 icon={<LocationOnOutlinedIcon className="me-2" />}
