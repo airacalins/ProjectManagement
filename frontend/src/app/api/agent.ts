@@ -32,7 +32,11 @@ axios.interceptors.response.use(
           }
           throw modelStateErrors.flat();
         }
+        
+        if(data.title)
         toast.error(data.title);
+        else
+        toast.error(data);
         break;
       case 401:
         toast.error(data.title || 'Unauthorized');
