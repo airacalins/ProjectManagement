@@ -50,30 +50,16 @@ const Announcement = () => {
                         !data.length ?
                             [
                                 <TableRow>
-                                    <TableCell align="center" colSpan={columns.length}>
-                                        No data
-                                    </TableCell>
+                                    <TableCell align="center" colSpan={columns.length}>No data</TableCell>
                                 </TableRow>
                             ]
                             :
                             data.map(announcement =>
                                 <TableRow key={announcement.id}>
-
-                                    <TableCell align="left">
-                                        {moment(announcement.dateCreated).format("MMM DD, YYYY")}
-                                    </TableCell>
-
-                                    <TableCell className="w-25" align="left">
-                                        {announcement.title}
-                                    </TableCell>
-
-                                    <TableCell className="w-50" align="left">
-                                        {announcement.message}
-                                    </TableCell>
-
-                                    <TableCell align="right">
-                                        <NavigateNextOutlinedIcon onClick={() => history.push(`/announcements/${announcement.id}/details`)} />
-                                    </TableCell>
+                                    <TableCell align="left">{moment(announcement.dateCreated).format("MMM DD, YYYY")}</TableCell>
+                                    <TableCell className="w-25" align="left">{announcement.title}</TableCell>
+                                    <TableCell className="w-50" align="left">{announcement.message}</TableCell>
+                                    <TableCell align="right"><NavigateNextOutlinedIcon onClick={() => history.push(`/announcements/${announcement.id}/details`)} /></TableCell>
                                 </TableRow >
                             )
                     }

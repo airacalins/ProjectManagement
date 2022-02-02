@@ -98,7 +98,7 @@ const Slot = {
   details: (id: string) => request.get(`slots/${id}`),
   create: (values: any) => request.post('slots', values),
   update: (values: any) => request.put('slots', values),
-  delete: (id: string) => request.delete(`slots/${id}`),
+  delete: (id: string) => request.delete(`slots/${id}`),  
 };
 
 const Tenant = {

@@ -18,6 +18,8 @@ import FormPage from "../../app/layouts/components/pages/FormPage";
 import { getSlotStatusColor, getSlotStatusText } from "../../app/utils/common";
 import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
 import { color } from "@mui/system";
+import DetailItem from "../../app/layouts/components/items/DetailItem";
+import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 
 const SlotForm = () => {
     const { id } = useParams<{ id: string }>();
@@ -89,7 +91,9 @@ const SlotForm = () => {
                                 {id && <Message
                                     content='Change in price will not affect any on going contract for this slot.'
                                 />}
-
+                                {!!id && slot.status === SlotStatus.Rented &&
+                                    <DetailItem title="Status" value={<Label content={getSlotStatusText(SlotStatus.Rented)} color={getSlotStatusColor(SlotStatus.Rented)} />} />
+                                }
                                 <FormTextInput label="Slot Number" name="slotNumber" placeholder="Slot Number" />
                                 <FormTextInput label="Size" name="size" placeholder="Size" />
                                 <FormTextInput label="Rental Fee" name="price" placeholder="Rental Fee" />
@@ -99,10 +103,8 @@ const SlotForm = () => {
                                     placeholder="Slot status"
                                     label="Status"
                                 />}
-                                {!!id && slot.status === SlotStatus.Rented &&
-                                    <Label content={getSlotStatusText(SlotStatus.Rented)} color={getSlotStatusColor(SlotStatus.Rented)}></Label>
-                                }
-                                <div className="form__button-container py-3">
+
+                                <FormButtonContainer>
                                     <Button
                                         className="form__button"
                                         type="submit"
@@ -110,7 +112,7 @@ const SlotForm = () => {
                                         color="orange"
                                         loading={isSaving}
                                     />
-                                </div>
+                                </FormButtonContainer>
 
                             </Form>
                         )
