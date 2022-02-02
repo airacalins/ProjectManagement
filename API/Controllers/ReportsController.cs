@@ -75,6 +75,10 @@ namespace API.Controllers
 
     private ReportDto GenerateReport(List<Invoice> invoices)
     {
+    
+        if(invoices == null || !invoices.Any()) {
+            return new ReportDto();
+        }
 
       var result = new ReportDto
       {
