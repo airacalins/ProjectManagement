@@ -36,6 +36,7 @@ namespace API.Controllers
       .Include(i => i.TenantContract)
       .Include(i => i.Unit)
       .Include(i => i.Payments)
+      .ThenInclude(i => i.Photo)
       .OrderByDescending(i => i.DateCreated)
       .Select(i => new InvoiceDto
       {
@@ -59,7 +60,8 @@ namespace API.Controllers
           AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
           DateCreated = p.DateCreated,
           Amount = p.Amount,
-          ReferenceNumber = p.ReferenceNumber
+          ReferenceNumber = p.ReferenceNumber,
+          ImageUrl = p.Photo.Url
         }),
         InvoiceItems = i.InvoiceItems.Select(j => new InvoiceItemDto
         {
@@ -83,6 +85,7 @@ namespace API.Controllers
       .Include(i => i.TenantContract)
       .Include(i => i.Unit)
       .Include(i => i.Payments)
+      .ThenInclude(i => i.Photo)
       .OrderByDescending(i => i.DateCreated)
       .Select(i => new InvoiceDto
       {
@@ -106,7 +109,8 @@ namespace API.Controllers
           AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
           DateCreated = p.DateCreated,
           Amount = p.Amount,
-          ReferenceNumber = p.ReferenceNumber
+          ReferenceNumber = p.ReferenceNumber,
+          ImageUrl = p.Photo.Url
         }),
         InvoiceItems = i.InvoiceItems.Select(j => new InvoiceItemDto
         {
@@ -131,6 +135,7 @@ namespace API.Controllers
       .Include(i => i.TenantContract)
       .Include(i => i.Unit)
       .Include(i => i.Payments)
+      .ThenInclude(i => i.Photo)
       .Where(i => i.Id == id)
       .OrderByDescending(i => i.DateCreated)
       .Select(i => new InvoiceDto
@@ -155,7 +160,9 @@ namespace API.Controllers
           AccountNumber = p.ModeOfPayment != null ? p.ModeOfPayment.AccountNumber : string.Empty,
           DateCreated = p.DateCreated,
           Amount = p.Amount,
-          ReferenceNumber = p.ReferenceNumber
+          ReferenceNumber = p.ReferenceNumber,
+          ImageUrl = p.Photo.Url
+
         }),
         InvoiceItems = i.InvoiceItems.Select(j => new InvoiceItemDto
         {
