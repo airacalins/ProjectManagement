@@ -23,5 +23,6 @@ namespace API.DTOs
         public DateTimeOffset DueDate { get; set; }
         public string InvoiceNumber { get; set; } = default!;
         public InvoiceStatus InvoiceStatus { get; set; }
+        public double Balance { get { return Payments != null ? Payments.Where(i => i.Status == PaymentStatus.Approved).Sum(i => i.Amount) : 0; }}
     }
 }
