@@ -35,6 +35,9 @@ namespace API.Controllers
       var result = new List<ApplicationUserDto>();
       foreach(var i in users)
       {
+        var roles = await _userManager.GetRolesAsync(i);
+        if (roles.Any(i => i.ToLower() == "admin")) 
+        {
         var item = new ApplicationUserDto
         {
           Id = i.Id,
@@ -44,9 +47,10 @@ namespace API.Controllers
           Phone = i.Phone,
           Address = i.Address,
           Username = i.UserName,
-          Roles = await _userManager.GetRolesAsync(i)
+          Roles = roles
         };
         result.Add(item);
+        }
       }
       return Ok(result);
     }
