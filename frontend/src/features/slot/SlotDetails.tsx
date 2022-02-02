@@ -83,7 +83,8 @@ const SlotDetails = () => {
         backNavigationLink="/slots"
         content={
           <>
-            <DetailItem title="Slot Number" value={<>{slot.slotNumber} <Label content={getSlotStatusText(slot.status)} color={getSlotStatusColor(slot.status)}></Label></>} />
+            <DetailItem title="Status" value={<Label content={getSlotStatusText(slot.status)} color={getSlotStatusColor(slot.status)}></Label>} />
+            <DetailItem title="Slot Number" value={slot.slotNumber} />
             <DetailItem title="Size" value={`${slot.size} sqm.`} />
             <DetailItem title="Rental Fee" value={slot.price ? currencyFormatter(slot.price) : "Not Configured"} />
             <FormButtonContainer>
@@ -101,21 +102,9 @@ const SlotDetails = () => {
         title="Tenants history"
         content={<>
           <CustomTable
-            searchValue={searchKey}
-            onSearch={(value: string) => setSearchKey(value)}
             buttonTitle={slot.status == SlotStatus.Available ? "Add Tenant" : undefined}
             navigateTo={`/tenants/${slot.id}/create`}
             columns={columns}
-            tableControls={
-              <Select
-                options={tenantStatusOptions}
-                value={selectedStatus}
-                onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as boolean : undefined)}
-                name="slotId"
-                placeholder="Select status"
-                label="Tenant Status"
-              />
-            }
             rows=
             {
               !data.length ?
