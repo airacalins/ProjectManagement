@@ -4,6 +4,7 @@ import { Badge, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
+import { SlotStatus } from "../../app/models/slot";
 import { useAppDispatch, useAppSelecter } from "../../app/store/configureStore";
 import { fetchSlotsAsync } from "../slot/slotSlice";
 
@@ -38,7 +39,7 @@ const Map = () => {
                 content={
                     <Row className="my-5" style={{ backgroundColor: "white", marginTop: "25px" }}>
                         {
-                            slots.map(s =>
+                            slots.filter(i => i.status === SlotStatus.Available).map(s =>
                                 <Col className="my-2" lg={1}>
                                     <a href={`/tenants/${s.id}/create`} className="badge__primary p-3 d-flex justify-content-center">
                                         <p className="badge__text">{s.slotNumber}</p>

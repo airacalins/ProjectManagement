@@ -55,7 +55,9 @@ namespace API.Data
         await userManager.AddToRoleAsync(admin, "ADMIN");
       }
 
-      // Slots data
+    if (!context.Units.Any())
+    {
+
       var units = new List<Unit>();
       units.Add(new Unit { SlotNumber = "A-001", Size = 7, Price = 10000, SlotStatus = Enums.SlotStatus.Available });
       units.Add(new Unit { SlotNumber = "A-002", Size = 7, Price = 10000, SlotStatus = Enums.SlotStatus.Available });
@@ -92,6 +94,7 @@ namespace API.Data
 
         context.Units.AddRange(units);
         context.SaveChanges();
+    }
 
       if (!context.Announcements.Any())
       {
