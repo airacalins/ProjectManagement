@@ -12,14 +12,14 @@ import { getInvoiceStatusColor, getInvoiceStatusText, getPaymentStatusColor, get
 import CustomTable from "../../app/layouts/components/table/CustomTable";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import MainPage from "../../app/layouts/components/pages/MainPage";
-import { IInvoice, PaymentStatus } from "../../app/models/invoice";
+import { IInvoice, InvoiceStatus, PaymentStatus } from "../../app/models/invoice";
 import { useParams } from "react-router-dom";
 import { fetchInvoicesAsync } from "./invoiceSlice";
 
 const Payment = () => {
   const { filter } = useParams<{ filter: string }>()
   const [searchKey, setSearchKey] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<PaymentStatus | undefined>(undefined);
+  const [selectedStatus, setSelectedStatus] = useState<InvoiceStatus | undefined>(undefined);
   const { invoices, isFetching: isFetchingPayments } = useAppSelecter(state => state.invoice);
   const dispatch = useAppDispatch();
 
@@ -33,6 +33,10 @@ const Payment = () => {
       );
     }
 
+    if(selectedStatus != undefined || selectedStatus != null) {
+      result = result.filter(i => i.invoiceStatus === selectedStatus);
+    }
+
     return result;
   }, [invoices, searchKey, selectedStatus])
 
@@ -43,16 +47,16 @@ const Payment = () => {
   useEffect(() => {
     switch (filter) {
       case "pending":
-        setSelectedStatus(PaymentStatus.Pending)
+        setSelectedStatus(InvoiceStatus.Pending)
         break;
       case "unpaid":
-        setSelectedStatus(PaymentStatus.Unpaid);
+        setSelectedStatus(InvoiceStatus.Unpaid);
         break
-      case "approved":
-        setSelectedStatus(PaymentStatus.Approved);
+      case "paid":
+        setSelectedStatus(InvoiceStatus.Paid);
         break;
-      case "declined":
-        setSelectedStatus(PaymentStatus.Declined);
+      case "partiallypaid":
+        setSelectedStatus(InvoiceStatus.PartiallyPaid);
         break;
       default:
         setSelectedStatus(undefined);
@@ -94,7 +98,7 @@ const Payment = () => {
             <Select
               options={paymentStatusOptions}
               value={selectedStatus}
-              onChange={(e, d) => setSelectedStatus(!!d.value ? d.value as PaymentStatus : undefined)}
+              onChange={(e, d) => setSelectedStatus(d.value as any)}
               name="paymentStatus"
               placeholder="Invoice Status"
             />

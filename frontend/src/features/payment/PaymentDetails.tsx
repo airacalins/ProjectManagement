@@ -188,9 +188,9 @@ const PaymentDetails = () => {
                                                 </TableCell>
 
                                                 <TableCell align="center">
-                                                    {/* <a href={payment.photo} target='_blank'  > */}
+                                                    <a href={payment.imageUrl} target='_blank'  >
                                                     <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
-                                                    {/* </a> */}
+                                                    </a>
                                                 </TableCell>
 
                                                 <TableCell align="center">

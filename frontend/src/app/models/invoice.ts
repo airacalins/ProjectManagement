@@ -23,7 +23,8 @@ export interface IPayment {
   accountNumber: string,
   dateCreated: Date,
   amount: number,
-  referenceNumber: string
+  referenceNumber: string,
+  imageUrl: string
 }
 
 export interface IInvoiceItem {
