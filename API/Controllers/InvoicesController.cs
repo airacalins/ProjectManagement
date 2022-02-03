@@ -213,7 +213,7 @@ namespace API.Controllers
     }
 
     [HttpPost("payment")]
-    public async Task<ActionResult> Payment([FromForm]CreatePaymentDto input)
+    public async Task<ActionResult<PaymentReference>> Payment([FromForm]CreatePaymentDto input)
     {
       var isValidUniqueId = false;
       var uniqueId = string.Empty;
@@ -249,8 +249,12 @@ namespace API.Controllers
 
       _context.Payments.Add(payment);
       await _context.SaveChangesAsync();
-
-      return Ok();
+      var result = new PaymentReference {
+        Amount = payment.Amount,
+        ReferenceNumber = payment.ReferenceNumber,
+        DateCreated = payment.DateCreated
+      };
+      return Ok(result);
     }
   }
 }
