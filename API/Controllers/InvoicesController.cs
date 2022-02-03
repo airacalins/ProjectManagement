@@ -204,6 +204,11 @@ namespace API.Controllers
         invoice.InvoiceStatus = InvoiceStatus.Unpaid;
       }
 
+      if (invoice.InvoiceStatus == InvoiceStatus.Paid)
+      {
+        invoice.DatePaid = DateTimeOffset.UtcNow;
+      }
+
       return Ok();
     }
 
@@ -224,6 +229,7 @@ namespace API.Controllers
         return NotFound("Invoice not found");
 
       invoice.InvoiceStatus = InvoiceStatus.Pending;
+      invoice.LastPaymentDate = DateTimeOffset.UtcNow;
       await _context.SaveChangesAsync();
 
       // var photo = await _photoService.UploadPhoto(input.File);

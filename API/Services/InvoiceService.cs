@@ -32,7 +32,10 @@ namespace API.Services
       {
         var isValidUniqueId = false;
         var uniqueId = string.Empty;
-        while(!isValidUniqueId)
+        var lastInvoice = await _context.Invoices.Include(i => i.InvoiceItems).OrderByDescending(i => i.DateCreated)
+        .Where(i => i.TenantContractId == contract.Id).FirstOrDefaultAsync();
+
+        while (!isValidUniqueId)
         {
           uniqueId = _randomStringService.GetRandomString(6).ToUpper();
           isValidUniqueId = !(await _context.Invoices.AnyAsync(i => i.InvoiceNumber == uniqueId));
@@ -59,7 +62,42 @@ namespace API.Services
 
         _context.InvoiceItems.Add(invoiceItem);
         await _context.SaveChangesAsync();
-        
+
+        if (lastInvoice != null)
+        {
+          if (lastInvoice.LastPaymentDate != null)
+          {
+            if (lastInvoice.LastPaymentDate > lastInvoice.DueDate)
+            {
+              var lateDays = lastInvoice.LastPaymentDate.Value.Subtract(lastInvoice.DueDate).Days;
+              var latePenalty = lateDays < 60 ? 0.03 : 0.08;
+              var latePenaltyPayment = new InvoiceItem
+              {
+                InvoiceId = invoice.Id,
+                Description = lateDays < 60 ? $"Late Payment Fee (5%)" : $"Late Payment Fee (8%)",
+                Amount = contract.Price + (contract.Price * latePenalty)
+              };
+              _context.InvoiceItems.Add(latePenaltyPayment);
+              await _context.SaveChangesAsync();
+            }
+          }
+          if (lastInvoice.LastPaymentDate == null && lastInvoice.DueDate < DateTimeOffset.UtcNow)
+          {
+            var lateDays = DateTimeOffset.UtcNow.Subtract(lastInvoice.DueDate).Days;
+            var latePenalty = lateDays < 60 ? 0.03 : 0.08;
+            var latePenaltyPayment = new InvoiceItem
+            {
+              InvoiceId = invoice.Id,
+              Description = lateDays < 60 ? $"Late Payment Fee (5%)" : $"Late Payment Fee (8%)",
+              Amount = contract.Price + (contract.Price * latePenalty)
+            };
+            _context.InvoiceItems.Add(latePenaltyPayment);
+            await _context.SaveChangesAsync();
+
+          }
+        }
+
+
         var nextBillDate = contract.NextPaymentDate.AddMonths(1);
         if (nextBillDate > contract.EndDate)
         {
