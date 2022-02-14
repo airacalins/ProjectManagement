@@ -232,8 +232,7 @@ namespace API.Controllers
       invoice.LastPaymentDate = DateTimeOffset.UtcNow;
       await _context.SaveChangesAsync();
 
-      // var photo = await _photoService.UploadPhoto(input.File);
-      var photo = await _photoService.UploadPhotoFromBase64(input.File);
+
       var payment = new Payment
       {
         TenantId = invoice.TenantId,
@@ -242,11 +241,17 @@ namespace API.Controllers
         Status = PaymentStatus.Pending,
         ModeOfPaymentId = input.ModeOfPaymentId,
         DateCreated = DateTimeOffset.UtcNow,
-        PhotoId = photo.Id,
         Amount = input.Amount,
         ReferenceNumber = uniqueId
       };
 
+
+      // var photo = await _photoService.UploadPhoto(input.File);
+      if(input.File != null)
+      {
+        var photo = await _photoService.UploadPhotoFromBase64(input.File);
+        payment.PhotoId = photo.Id;
+      }
       _context.Payments.Add(payment);
       await _context.SaveChangesAsync();
       var result = new PaymentReference {
