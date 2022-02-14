@@ -247,11 +247,18 @@ namespace API.Controllers
 
 
       // var photo = await _photoService.UploadPhoto(input.File);
-      if(input.File != null)
+      if(input.FileString != null)
       {
-        var photo = await _photoService.UploadPhotoFromBase64(input.File);
+        var photo = await _photoService.UploadPhotoFromBase64(input.FileString);
         payment.PhotoId = photo.Id;
       }
+      
+      if(input.File != null)
+      {
+        var photo = await _photoService.UploadPhoto(input.File);
+        payment.PhotoId = photo.Id;
+      }
+
       _context.Payments.Add(payment);
       await _context.SaveChangesAsync();
       var result = new PaymentReference {
@@ -261,5 +268,6 @@ namespace API.Controllers
       };
       return Ok(result);
     }
+
   }
 }
