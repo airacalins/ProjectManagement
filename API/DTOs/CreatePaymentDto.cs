@@ -16,6 +16,6 @@ namespace API.DTOs
         public double Amount { get; set; }
         public string? FileString { get; set; }
         [FromForm(Name = "file")]
-        public IFormFile File { get; set; }
+        public IFormFile? File { get; set; }
     }
 }
