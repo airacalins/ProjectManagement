@@ -51,7 +51,7 @@ namespace API.Controllers
         InvoiceNumber = i.InvoiceNumber,
         InvoiceStatus = i.InvoiceStatus,
         TenantUniqueId = i.Tenant.TenantUniqueId,
-        Payments = i.Payments.Select(p => new InvoicePaymentDto
+        Payments = i.Payments.OrderByDescending(i => i.DateCreated).Select(p => new InvoicePaymentDto
         {
           Id = p.Id,
           Status = p.Status,
@@ -100,7 +100,7 @@ namespace API.Controllers
         Amount = i.InvoiceItems.Sum(s => s.Amount),
         InvoiceNumber = i.InvoiceNumber,
         InvoiceStatus = i.InvoiceStatus,
-        Payments = i.Payments.Select(p => new InvoicePaymentDto
+        Payments = i.Payments.OrderByDescending(i => i.DateCreated).Select(p => new InvoicePaymentDto
         {
           Id = p.Id,
           Status = p.Status,
@@ -151,7 +151,7 @@ namespace API.Controllers
         InvoiceNumber = i.InvoiceNumber,
         InvoiceStatus = i.InvoiceStatus,
         TenantUniqueId = i.Tenant.TenantUniqueId,
-        Payments = i.Payments.Select(p => new InvoicePaymentDto
+        Payments = i.Payments.OrderByDescending(i => i.DateCreated).Select(p => new InvoicePaymentDto
         {
           Id = p.Id,
           Status = p.Status,
