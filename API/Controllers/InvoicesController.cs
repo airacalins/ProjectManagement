@@ -264,7 +264,8 @@ namespace API.Controllers
       var result = new PaymentReference {
         Amount = payment.Amount,
         ReferenceNumber = payment.ReferenceNumber,
-        DateCreated = payment.DateCreated
+        DateCreated = payment.DateCreated,
+        Id = payment.Id
       };
       return Ok(result);
     }

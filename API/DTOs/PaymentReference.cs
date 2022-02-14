@@ -10,5 +10,6 @@ namespace API.DTOs
         public DateTimeOffset DateCreated { get; set; }
         public double Amount { get; set; }
         public string ReferenceNumber { get; set; } = default!;
+        public Guid Id { get; set; } = default!;
     }
 }
