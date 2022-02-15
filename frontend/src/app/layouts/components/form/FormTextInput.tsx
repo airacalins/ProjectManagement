@@ -22,14 +22,15 @@ const FormTextInput = (props: Props) => {
             <Col>
                 <Form.Field className="form__input" error={meta.touched && !!meta.error}>
                     <input {...field} {...props} />
-                    {
-                        meta.touched && meta.error ?
-                            (
-                                <Label className="my-1" basic color="red">{meta.error}</Label>
-                            ) :
-                            null
-                    }
                 </Form.Field>
+
+                {
+                    meta.touched && meta.error ?
+                        (
+                            <Label className="my-1" basic color="red">{meta.error}</Label>
+                        ) :
+                        null
+                }
             </Col>
         </Row>
     );

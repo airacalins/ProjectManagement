@@ -21,17 +21,15 @@ const FormTextArea = (props: Props) => {
 
             <Col>
                 <Form.Field className="w-100" error={meta.touched && !!meta.error}>
-
                     <textarea {...field} {...props} />
-
-                    {
-                        meta.touched && meta.error ?
-                            (
-                                <Label className="my-1" basic color="red">{meta.error}</Label>
-                            ) :
-                            null
-                    }
                 </Form.Field>
+                {
+                    meta.touched && meta.error ?
+                        (
+                            <Label className="my-1" basic color="red">{meta.error}</Label>
+                        ) :
+                        null
+                }
             </Col>
         </Row>
     );

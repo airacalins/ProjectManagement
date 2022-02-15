@@ -36,7 +36,12 @@ const PaymentDetails = () => {
         if (id) dispatch(fetchInvoiceDetailsAsync(id));
     }, [])
 
-    const totalAmountPaid = useMemo(() => !!invoice && !!invoice.payments ? invoice.payments.reduce((previousValue, currentValue) => previousValue + currentValue.amount, 0) : 0, [invoice]);
+    const totalAmountPaid = useMemo(
+        () => !!invoice && !!invoice.payments ?
+            invoice.payments.filter(i => i.status == 2).reduce((previousValue, currentValue) =>
+                previousValue + currentValue.amount, 0) : 0,
+        [invoice]
+    );
 
     if (isFetchingDetails || !invoice) return (<LoadingComponent content="Loading invoice details..." />)
 
@@ -201,8 +206,8 @@ const PaymentDetails = () => {
                                                     {
                                                         !(payment.status === PaymentStatus.Approved || payment.status === PaymentStatus.Declined) &&
                                                         <>
-                                                            <UpdateButton title="Approved" color="blue" onClick={() => handleApproval(payment.id)} />
-                                                            <UpdateButton title="Declined" color="red" onClick={() => updateStatus(payment.id, false)} />
+                                                            <UpdateButton title="Approve" color="blue" onClick={() => handleApproval(payment.id)} />
+                                                            <UpdateButton title="Decline" color="red" onClick={() => updateStatus(payment.id, false)} />
                                                         </>
                                                     }
                                                 </TableCell>
