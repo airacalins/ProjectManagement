@@ -64,10 +64,6 @@ const PaymentDetails = () => {
         await dispatch(fetchInvoiceDetailsAsync(id));
     }
 
-    const handleApproval = async (id: string) => {
-        updateStatus(id, true)
-    }
-
     const paymentTableColumn = [
         { title: 'Date' },
         { title: 'Mode of Payment' },
@@ -194,7 +190,7 @@ const PaymentDetails = () => {
 
                                                 <TableCell align="center">
                                                     <a href={payment.imageUrl} target='_blank'  >
-                                                    <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
+                                                        <ImageOutlinedIcon sx={{ color: "#F2711C" }} />
                                                     </a>
                                                 </TableCell>
 
@@ -206,7 +202,7 @@ const PaymentDetails = () => {
                                                     {
                                                         !(payment.status === PaymentStatus.Approved || payment.status === PaymentStatus.Declined) &&
                                                         <>
-                                                            <UpdateButton title="Approve" color="blue" onClick={() => handleApproval(payment.id)} />
+                                                            <UpdateButton title="Approve" color="blue" onClick={() => updateStatus(payment.id, true)} />
                                                             <UpdateButton title="Decline" color="red" onClick={() => updateStatus(payment.id, false)} />
                                                         </>
                                                     }
