@@ -24,6 +24,6 @@ namespace API.DTOs
         public string InvoiceNumber { get; set; } = default!;
         public InvoiceStatus InvoiceStatus { get; set; }
         public double AmountPaid { get { return Payments != null ? Payments.Where(i => i.Status == PaymentStatus.Approved).Sum(i => i.Amount) : 0; }}
-        public double Balance { get { return Amount - AmountPaid }}
+        public double Balance { get { return Amount - AmountPaid; }}
     }
 }
