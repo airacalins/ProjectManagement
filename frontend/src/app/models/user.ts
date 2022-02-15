@@ -1,8 +1,8 @@
 export interface IUser {
   id: string;
-  username: string;
   roles: string[];
   token: string;
+  username: string;
 }
 
 export interface ICreateUserInput {

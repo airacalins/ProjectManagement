@@ -18,9 +18,9 @@ const UserDetails = () => {
     const { id } = useParams<{ id: string }>();
 
     const canEdit = useMemo(() => {
-        if(!!user) {
+        if (!!user) {
             const isAdmin = account?.user?.roles.some(i => i.toLowerCase() === "admin");
-            if(isAdmin) return false;
+            if (isAdmin) return false;
 
             const isOwner = user.roles.some(i => i.toLowerCase() === "owner");
             if (isOwner) return false;
@@ -48,7 +48,7 @@ const UserDetails = () => {
 
     return (
         <DetailsPage
-            title="User Details"
+            title="Staff Details"
             backNavigationLink='/users'
             content={
                 <>

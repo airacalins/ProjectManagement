@@ -44,16 +44,16 @@ const User = () => {
         { title: '' },
     ]
 
-    if (isFetchingUsers || isSaving) return <LoadingComponent content="Loading users..." />
+    if (isFetchingUsers || isSaving) return <LoadingComponent content="Loading staffs..." />
 
     return (
         <MainPage
-            title="App Users"
+            title="Staff"
             content={
                 <CustomTable
                     searchValue={searchKey}
                     onSearch={(value: string) => setSearchKey(value)}
-                    buttonTitle="Add User"
+                    buttonTitle="Add Staff"
                     navigateTo="/users/create"
                     columns={columns}
                     rows={

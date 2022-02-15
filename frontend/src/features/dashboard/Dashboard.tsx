@@ -14,15 +14,21 @@ import MainPage from "../../app/layouts/components/pages/MainPage"
 import DashboardCard from "../../app/layouts/components/cards/DashboardCard"
 import { fetchDashboardAsync } from "./DashboardSlice"
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import { fetchCurrentUserAsync } from "../account/accountSlice";
 
 const Dashboard = () => {
     const { dashboard: dashboardData, isFetching: isFetchingDashboard } = useAppSelecter(state => state.dashboard);
+    const { user: userData } = useAppSelecter(state => state.account);
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (!dashboardData)
             dispatch(fetchDashboardAsync());
+    }, [])
+
+    useEffect(() => {
+        if (!!userData) fetchCurrentUserAsync()
     }, [])
 
     const dashboardCardInfos = [
@@ -72,6 +78,8 @@ const Dashboard = () => {
             <h4 className="page__title w-100 d-flex align-items-center px-4">
                 Dashboard
             </h4>
+
+            <h1>{userData?.username}</h1>
 
             <div className="rounded px-5 py-4" >
                 <Row className="mx-3">

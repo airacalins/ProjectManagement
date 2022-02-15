@@ -34,7 +34,7 @@ const NavMenu = () => {
             {
                 !!account.user && !!account.user?.roles && account.user?.roles.every(i => i.toLowerCase() !== "admin") &&
                 <NavMenuItem
-                    name="Users"
+                    name="Staff"
                     icon={<PersonOutlinedIcon className="me-2" />}
                     navigateTo="/users"
                 />

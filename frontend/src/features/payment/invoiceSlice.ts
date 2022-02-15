@@ -120,7 +120,6 @@ export const invoiceSlice = createSlice({
       state.isSaving = true;
     });
     builder.addCase(updateInvoiceDetailsAsync.fulfilled, (state, action) => {
-      state.invoice = action.payload;
       state.isSaving = false;
     });
     builder.addCase(updateInvoiceDetailsAsync.rejected, (state, action) => {
@@ -132,7 +131,6 @@ export const invoiceSlice = createSlice({
       state.isSaving = true;
     });
     builder.addCase(updateInvoicePaymentStatusAsync.fulfilled, (state, action) => {
-      state.invoice = action.payload;
       state.isSaving = false;
     });
     builder.addCase(updateInvoicePaymentStatusAsync.rejected, (state, action) => {

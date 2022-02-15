@@ -47,6 +47,7 @@ const PaymentDetails = () => {
 
     const {
         amount,
+        balance,
         businessName,
         dueDate,
         firstName,
@@ -59,9 +60,9 @@ const PaymentDetails = () => {
     } = invoice
 
     const status = () => <Label content={getInvoiceStatusText(invoice.invoiceStatus)} color={getInvoiceStatusColor(invoice.invoiceStatus)} />
-    const updateStatus = async (id: string, isApproved: boolean) => {
-        await dispatch(updateInvoicePaymentStatusAsync({ id, isApproved }))
-        await dispatch(fetchInvoiceDetailsAsync(id));
+    const updateStatus = async (paymentId: string, isApproved: boolean) => {
+        await dispatch(updateInvoicePaymentStatusAsync({ id: paymentId, isApproved }))
+        dispatch(fetchInvoiceDetailsAsync(id!));
     }
 
     const paymentTableColumn = [

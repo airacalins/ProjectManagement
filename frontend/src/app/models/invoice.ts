@@ -12,7 +12,8 @@ export interface IInvoice {
   dateCreated: Date,
   dueDate: Date,
   invoiceNumber: string,
-  invoiceStatus: InvoiceStatus
+  invoiceStatus: InvoiceStatus,
+  balance: number
 }
 
 export interface IPayment {

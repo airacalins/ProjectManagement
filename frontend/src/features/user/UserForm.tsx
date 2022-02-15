@@ -76,7 +76,7 @@ const UserForm = () => {
 
     return (
         <FormPage
-            title={userData ? "Update User" : "Add User"}
+            title={userData ? "Update Staff" : "Add Staff"}
             backNavigationLink="/users"
             form={
                 <Formik
