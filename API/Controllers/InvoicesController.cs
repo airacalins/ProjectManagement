@@ -208,6 +208,7 @@ namespace API.Controllers
       {
         invoice.DatePaid = DateTimeOffset.UtcNow;
       }
+      await _context.SaveChangesAsync();
 
       return Ok();
     }
