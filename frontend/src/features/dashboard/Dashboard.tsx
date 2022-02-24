@@ -79,8 +79,6 @@ const Dashboard = () => {
                 Dashboard
             </h4>
 
-            <h1>{userData?.username}</h1>
-
             <div className="rounded px-5 py-4" >
                 <Row className="mx-3">
                     {
