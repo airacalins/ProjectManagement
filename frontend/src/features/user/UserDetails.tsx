@@ -42,7 +42,7 @@ const UserDetails = () => {
     }
 
 
-    if (isFetchingDetails || !user) return (<LoadingComponent content="Loading announcement details..." />)
+    if (isFetchingDetails || !user) return (<LoadingComponent content="Loading staffs details..." />)
 
     const { username, firstName, lastName, phone, email, address, roles } = user
 
