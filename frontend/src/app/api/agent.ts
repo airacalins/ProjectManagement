@@ -4,8 +4,8 @@ import { ICreateTenantInput } from '../models/tenant';
 import { store } from '../store/configureStore';
 import history from '../utils/history';
 
-// axios.defaults.baseURL = 'https://fast-badlands-66183.herokuapp.com/api/';
-axios.defaults.baseURL = 'https://localhost:7019/api/';
+axios.defaults.baseURL = 'https://fast-badlands-66183.herokuapp.com/api/';
+// axios.defaults.baseURL = 'https://localhost:7019/api/';
 
 const responseBody = (response: AxiosResponse) => response.data;
 
