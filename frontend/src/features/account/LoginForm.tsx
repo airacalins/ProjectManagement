@@ -7,7 +7,7 @@ import FormPage from '../../app/layouts/components/pages/FormPage';
 import { IAccount } from '../../app/models/account';
 import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import history from '../../app/utils/history';
-import { signInUserAsync } from './accountSlice';
+import { fetchCurrentUserAsync, signInUserAsync } from './accountSlice';
 import * as Yup from 'yup';
 import FormTextInput from '../../app/layouts/components/form/FormTextInput';
 import FormButtonContainer from '../../app/layouts/components/form/FormButtonContainer';
@@ -32,6 +32,7 @@ const LoginForm = () => {
 
     const onSubmit = async (data: FieldValues) => {
         await dispatch(signInUserAsync(data));
+        await dispatch(fetchCurrentUserAsync());
         await dispatch(fetchDashboardAsync())
         history.push('/');
     }
