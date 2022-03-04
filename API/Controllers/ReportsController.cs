@@ -41,7 +41,7 @@ namespace API.Controllers
       if (reportType == ReportType.Weekly)
       {
         var weekDates = GetWeekDates(date.Value);
-        var weeklyInvoices = invoices.Where(i => weekDates[0].Date >= i.DateCreated.Date && i.DateCreated.Date <= weekDates[6].Date).ToList();
+        var weeklyInvoices = invoices.Where(i => i.DateCreated.Date >= weekDates[0].Date && i.DateCreated.Date <= weekDates[6].Date).ToList();
         return GenerateReport(weeklyInvoices);
       }
 
@@ -50,16 +50,16 @@ namespace API.Controllers
         var dateTimeFirstDayOfMonth = new DateTime(date.Value.Year, date.Value.Month, 1);
         var firstDayOfMonth = new DateTimeOffset(dateTimeFirstDayOfMonth);
         var lastDayOfMonth = new DateTimeOffset(dateTimeFirstDayOfMonth.AddMonths(1).AddDays(-1));
-        var monthlyInvoices = invoices.Where(i => firstDayOfMonth.Date >= i.DateCreated.Date && i.DateCreated.Date <= lastDayOfMonth.Date).ToList();
+        var monthlyInvoices = invoices.Where(i => i.DateCreated.Date >= firstDayOfMonth.Date && i.DateCreated.Date <= lastDayOfMonth.Date).ToList();
         return GenerateReport(monthlyInvoices);
       }
 
-      if (reportType == ReportType.Monthly)
+      if (reportType == ReportType.Yearly)
       {
         var dateTimeFirstDayOfYear = new DateTime(date.Value.Year, 1, 1);
         var firstDayOfYear = new DateTimeOffset(dateTimeFirstDayOfYear);
         var lastDayOfYear = new DateTimeOffset(new DateTime(date.Value.Year, 12, 31));
-        var yearlyInvoices = invoices.Where(i => firstDayOfYear.Date >= i.DateCreated.Date && i.DateCreated.Date <= lastDayOfYear.Date).ToList();
+        var yearlyInvoices = invoices.Where(i => i.DateCreated.Date >= firstDayOfYear.Date && i.DateCreated.Date <= lastDayOfYear.Date).ToList();
         return GenerateReport(yearlyInvoices);
       }
 

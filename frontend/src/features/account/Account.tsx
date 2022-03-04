@@ -15,6 +15,8 @@ import { Message } from 'semantic-ui-react';
 import history from '../../app/utils/history';
 import { fetchCurrentUserAsync } from './accountSlice';
 import { previousDay } from 'date-fns';
+import responseHandler from '../../app/utils/reponseHandler';
+import { toast } from 'react-toastify';
 
 const Account = () => {
     const [password, setPassword] = useState(
@@ -48,7 +50,8 @@ const Account = () => {
             return;
         }
 
-        await dispatch(updateUserPasswordAsync({ id: userData?.id!, password: newPassword }));
+        const response = await dispatch(updateUserPasswordAsync({ id: userData?.id!, password: newPassword }));
+        responseHandler({response, callback: () => toast.success("Password succeffuly changed.ss")})
         setPassword({ newPassword: "", verifyPassword: "" })
     }
 
