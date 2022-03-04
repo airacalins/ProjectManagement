@@ -87,7 +87,12 @@ const TenantForm = () => {
         lastName: Yup.string().required("Last Name is required."),
         businessName: Yup.string().required("Business name is required."),
         address: Yup.string().required("Address is required."),
-        contact: Yup.string().required("Contact number is required."),
+        contact: Yup
+            .number()
+            .typeError("That doesn't look like a phone number")
+            .positive("A phone number can't start with a minus")
+            .integer("A phone number can't include a decimal point")
+            .min(8).required("Contact number is required."),
         startDate: Yup.string().required("End date is required."),
         endDate: Yup.string().required("End date is required."),
     })
