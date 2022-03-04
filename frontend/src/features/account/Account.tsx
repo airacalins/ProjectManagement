@@ -51,7 +51,7 @@ const Account = () => {
         }
 
         const response = await dispatch(updateUserPasswordAsync({ id: userData?.id!, password: newPassword }));
-        responseHandler({response, callback: () => toast.success("Password succeffuly changed.ss")})
+        responseHandler({response, callback: () => toast.success("Password successfully changed.")})
         setPassword({ newPassword: "", verifyPassword: "" })
     }
 
