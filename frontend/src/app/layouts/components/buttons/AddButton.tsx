@@ -7,13 +7,14 @@ interface Props {
     title?: string,
     loading?: boolean
     disabled: boolean,
+    fullWidth?: boolean
 }
 
-const AddButton: React.FC<Props> = ({ title, loading, disabled }) => {
+const AddButton: React.FC<Props> = ({ title, loading, disabled, fullWidth }) => {
     return (
 
         <Button
-            className="button__primary"
+            className={`button__primary ${fullWidth && "w-100"}`}
             type="submit"
             content={title ? title : "Submit"}
             loading={loading}

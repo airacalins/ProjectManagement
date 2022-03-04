@@ -11,7 +11,6 @@
 }
 
 .form {
-
   &__title {
     background-color: white;
     color: $primary;
@@ -83,5 +82,9 @@
 .font {
   &__bold {
     font-weight: bold;
+  }
+
+  &__burnt-sienna {
+    color: $burnt-sienna;
   }
 }

@@ -7,6 +7,7 @@ interface Props {
     name: string
     label?: string
     type?: string
+    inputFullWidth?: boolean
 }
 
 const FormTextInput = (props: Props) => {
@@ -20,7 +21,7 @@ const FormTextInput = (props: Props) => {
             </Col>
 
             <Col>
-                <Form.Field className="form__input" error={meta.touched && !!meta.error}>
+                <Form.Field className={`form__input ${props.inputFullWidth ? "w-100" : ""}`} error={meta.touched && !!meta.error}>
                     <input {...field} {...props} />
                 </Form.Field>
 

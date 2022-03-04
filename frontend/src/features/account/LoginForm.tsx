@@ -13,6 +13,8 @@ import FormTextInput from '../../app/layouts/components/form/FormTextInput';
 import FormButtonContainer from '../../app/layouts/components/form/FormButtonContainer';
 import AddButton from '../../app/layouts/components/buttons/AddButton';
 import { fetchDashboardAsync } from '../dashboard/DashboardSlice';
+import { Container } from 'react-bootstrap';
+import BackgroundImage from '/login-bg.jpg';
 
 const LoginForm = () => {
     const [account, setAccount] = useState<IAccount>(
@@ -38,9 +40,10 @@ const LoginForm = () => {
     }
 
     return (
-        <FormPage
-            title="Login"
-            form={
+        <Container className="vh-100 d-flex justify-content-center align-items-center" fluid style={{ backgroundImage: `url(/login-bg.jpg)` }} >
+            <div className='w-50 text-center p-5' style={{backgroundColor: "white"}}>
+                <h1 className='font__burnt-sienna py-5'>Login your account</h1>
+
                 <Formik
                     validationSchema={validationSchema}
                     enableReinitialize
@@ -49,17 +52,19 @@ const LoginForm = () => {
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                <FormTextInput label="Username" name="username" placeholder="Username" />
-                                <FormTextInput type="password" label="Password" name="password" placeholder="Password" />
+                                <FormTextInput inputFullWidth  label="Username" name="username" placeholder="Username" />
+                                <FormTextInput inputFullWidth type="password" label="Password" name="password" placeholder="Password" />
                                 <FormButtonContainer>
-                                    <AddButton title="Login" disabled={!isValid} />
+                                    <AddButton fullWidth title="Login" disabled={!isValid} />
                                 </FormButtonContainer>
                             </Form>
                         )
                     }
                 </Formik>
-            }
-        />
+
+            </div>
+
+        </Container >
     )
 };
 
