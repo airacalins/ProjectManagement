@@ -41,7 +41,7 @@ const LoginForm = () => {
 
     return (
         <Container className="vh-100 d-flex justify-content-center align-items-center" fluid style={{ backgroundImage: `url(/login-bg.jpg)` }} >
-            <div className='w-50 text-center p-5' style={{backgroundColor: "white"}}>
+            <div className='w-50 p-5' style={{backgroundColor: "white"}}>
                 <h1 className='font__burnt-sienna py-5'>Login your account</h1>
 
                 <Formik
@@ -52,7 +52,7 @@ const LoginForm = () => {
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                <FormTextInput inputFullWidth  label="Username" name="username" placeholder="Username" />
+                                <FormTextInput inputFullWidth label="Username" name="username" placeholder="Username" />
                                 <FormTextInput inputFullWidth type="password" label="Password" name="password" placeholder="Password" />
                                 <FormButtonContainer>
                                     <AddButton fullWidth title="Login" disabled={!isValid} />

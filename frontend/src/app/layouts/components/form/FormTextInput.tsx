@@ -21,14 +21,14 @@ const FormTextInput = (props: Props) => {
             </Col>
 
             <Col>
-                <Form.Field className={`form__input ${props.inputFullWidth ? "w-100" : ""}`} error={meta.touched && !!meta.error}>
+                <Form.Field className={props.inputFullWidth ? "form__input-100" : "form__input"} error={meta.touched && !!meta.error}>
                     <input {...field} {...props} />
                 </Form.Field>
 
                 {
                     meta.touched && meta.error ?
                         (
-                            <Label className="my-1" basic color="red">{meta.error}</Label>
+                            <Label className="mb-3 p-0" basic color="red" style={{borderStyle: "none"}} >{meta.error}</Label>
                         ) :
                         null
                 }
