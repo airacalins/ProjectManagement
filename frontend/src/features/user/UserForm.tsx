@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IApplicationUser, ICreateUserInput, IUpdateUserInput, IUser } from '../../app/models/user';
+import { IApplicationUser, ICreateUserInput } from '../../app/models/user';
 import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import * as Yup from 'yup';
 import { createUserAsync, fetchUserDetailsAsync, updateUserDetailsAsync } from './UserSlice';
@@ -11,7 +11,6 @@ import FormTextInput from '../../app/layouts/components/form/FormTextInput';
 import FormButtonContainer from '../../app/layouts/components/form/FormButtonContainer';
 import AddButton from '../../app/layouts/components/buttons/AddButton';
 import { useParams } from 'react-router-dom';
-import { PayloadAction } from '@reduxjs/toolkit/dist/createAction';
 
 const UserForm = () => {
     const { id } = useParams<{ id: string }>();

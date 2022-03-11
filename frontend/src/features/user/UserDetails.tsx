@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import DeleteButton from '../../app/layouts/components/buttons/DeleteButton';
 import NavigationButton from '../../app/layouts/components/buttons/NavigationButton';

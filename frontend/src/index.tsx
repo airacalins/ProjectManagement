@@ -4,7 +4,6 @@ import './app/layouts/styles/styles.css'
 import './app/layouts/styles/styles.scss'
 import App from './app/layouts/components/App';
 import reportWebVitals from './reportWebVitals';
-import { Router } from 'react-router-dom';
 import { store } from './app/store/configureStore';
 import history from './app/utils/history';
 import { Provider } from 'react-redux';

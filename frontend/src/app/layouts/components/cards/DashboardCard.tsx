@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Nav, NavLink, Row } from 'react-bootstrap';
+import { NavLink } from 'react-bootstrap';
 import './cards.scss'
 
 interface Props {

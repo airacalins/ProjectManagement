@@ -7,17 +7,13 @@ import { Formik, Form } from "formik"
 import * as Yup from 'yup';
 
 import { Button, Message, Label } from "semantic-ui-react";
-import MenuOpenOutlinedIcon from '@mui/icons-material/MenuOpenOutlined';
 
 import { ISlot, SlotStatus } from "../../app/models/slot";
-import FormContainer from "../../app/layouts/components/form/FormContainer";
 import LoadingComponent from "../../app/layouts/components/loading/LoadingComponent";
 import FormTextInput from "../../app/layouts/components/form/FormTextInput";
-import MainPage from "../../app/layouts/components/pages/MainPage";
 import FormPage from "../../app/layouts/components/pages/FormPage";
 import { getSlotStatusColor, getSlotStatusText } from "../../app/utils/common";
 import FormSelectInput from "../../app/layouts/components/form/FormSelectInput";
-import { color } from "@mui/system";
 import DetailItem from "../../app/layouts/components/items/DetailItem";
 import FormButtonContainer from "../../app/layouts/components/form/FormButtonContainer";
 

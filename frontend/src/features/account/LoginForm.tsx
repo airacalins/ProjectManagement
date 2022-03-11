@@ -1,9 +1,7 @@
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { Button, Form, Header, Image, Segment } from 'semantic-ui-react'
-import LoadingComponent from '../../app/layouts/components/loading/LoadingComponent';
-import FormPage from '../../app/layouts/components/pages/FormPage';
+import { Form } from 'semantic-ui-react'
 import { IAccount } from '../../app/models/account';
 import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
 import history from '../../app/utils/history';
@@ -14,7 +12,6 @@ import FormButtonContainer from '../../app/layouts/components/form/FormButtonCon
 import AddButton from '../../app/layouts/components/buttons/AddButton';
 import { fetchDashboardAsync } from '../dashboard/DashboardSlice';
 import { Container } from 'react-bootstrap';
-import BackgroundImage from '/login-bg.jpg';
 
 const LoginForm = () => {
     const [account, setAccount] = useState<IAccount>(
@@ -52,8 +49,8 @@ const LoginForm = () => {
                     {
                         ({ handleSubmit, isValid }) => (
                             <Form className="ui form" onSubmit={handleSubmit} autoComplete="off" >
-                                <FormTextInput inputFullWidth label="Username" name="username" placeholder="Username" />
-                                <FormTextInput inputFullWidth type="password" label="Password" name="password" placeholder="Password" />
+                                <FormTextInput inputFullWidth label="Username" name="username" placeholder="system_admin" />
+                                <FormTextInput inputFullWidth type="password" label="Password" name="password" placeholder="system_admin" />
                                 <FormButtonContainer>
                                     <AddButton fullWidth title="Login" disabled={!isValid} />
                                 </FormButtonContainer>

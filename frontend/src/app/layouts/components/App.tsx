@@ -23,14 +23,11 @@ import SlotForm from "../../../features/slot/SlotForm";
 import Tenant from "../../../features/tenant/Tenant";
 import TenantForm from "../../../features/tenant/TenantForm";
 import TenantDetails from "../../../features/tenant/TenantDetails";
-import TenantUpdateForm from "../../../features/tenant/TenantUpdateForm";
 import User from "../../../features/user/User";
 import UserDetails from "../../../features/user/UserDetails";
 import UserForm from "../../../features/user/UserForm";
-import { ToastContainer } from "react-toastify";
 
 function App() {
-  const location = useLocation();
   
   const account = useAppSelecter(state => state.account);
 

@@ -1,21 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import MainPage from '../../app/layouts/components/pages/MainPage';
 import CustomTable from '../../app/layouts/components/table/CustomTable';
 import history from '../../app/utils/history';
 import { useAppDispatch, useAppSelecter } from '../../app/store/configureStore';
-import { deleteUserDetailsAsync, fetchUserDetailsAsync, fetchUsersAsync, updateUserDetailsAsync } from './UserSlice';
+import { fetchUsersAsync } from './UserSlice';
 import LoadingComponent from '../../app/layouts/components/loading/LoadingComponent';
-import DeleteButton from '../../app/layouts/components/buttons/DeleteButton';
-import { Label } from 'semantic-ui-react';
-import NavigationButton from '../../app/layouts/components/buttons/NavigationButton';
 import { useParams } from 'react-router-dom';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 
 
 const User = () => {
-    const { id } = useParams<{ id: string }>();
     const [searchKey, setSearchKey] = useState('');
     const { users, isFetching: isFetchingUsers, isSaving } = useAppSelecter(state => state.user);
 
